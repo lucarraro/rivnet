@@ -1,5 +1,6 @@
 export(download_river)
 export(extract_river)
+import(shapefiles)
 import(spam)
 import(raster)
 import(sf)
@@ -7,4 +8,4 @@ import(terra)
 import(elevatr)
 import(traudem)
 import(withr)
-import(shapefiles)
+
