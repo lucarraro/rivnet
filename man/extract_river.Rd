@@ -2,7 +2,7 @@
 \alias{extract_river}
 \title{Extract a river}
 \usage{
-extract_river(fel, p, ssa, thrA=NULL, maxReachLength=Inf)
+extract_river(riverdata, thrA=NULL, maxReachLength=Inf)
 }
 \description{
 Extracts a river
