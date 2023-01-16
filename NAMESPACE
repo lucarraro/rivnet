@@ -1,6 +1,5 @@
-export(download_river)
+export(get_river_data)
 export(extract_river)
-import(shapefiles)
 import(spam)
 import(raster)
 import(sf)

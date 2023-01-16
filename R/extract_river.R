@@ -1,51 +1,18 @@
 # extract river with given thrA value
-extract_river <- function(riverdata, thrA=NULL, maxReachLength=Inf){
-
-  fel <- riverdata$fel
-  p <- riverdata$p
-  ssa <- riverdata$ssa
+extract_river <- function(river, thrA=NULL, maxReachLength=Inf){
 
   if (is.null(thrA)){
-    thrA <- 0.002*max(cellsize^2*values(ssa),na.rm=T)
+    thrA <- 0.002*max(river$FD$A,na.rm=T)
   }
 
-  cellsize <- sqrt(prod(res(fel)))
-
-  A <- cellsize^2*values(ssa)
-  X <- xFromCell(ssa,1:ncell(ssa))
-  Y <- yFromCell(ssa,1:ncell(ssa))
-  Z <- values(fel)[indFD]
-
-  indFD <- which(!is.na(values(ssa)))
-  A_FD <- A[indFD]; X_FD <- X[indFD]; Y_FD <- Y[indFD]; Z_FD <- Z[indFD]
-
-  ncols <- ncol(ssa)
-  nrows <- nrow(ssa)
-
-  flowDir <- values(p)
-  Length <- cellsize*(1 + as.numeric(flowDir %% 2 ==0)*(sqrt(2)-1))
-  Length_FD <- Length[indFD]
-
-  FD <- list(X=X_FD, Y=Y_FD, Z=Z_FD, A=A_FD, leng=Length_FD)
-
-  ssa_cont <- classify(ssa,matrix(c(NA,NA,-1e6,1,Inf,1e6),2,3,byrow=T))
-  cont <- as.contour(ssa_cont,levels=c(0,1e6))
-  cont <- subset(cont, cont$level==0) # pick most external contour
-  XContour <-  crds(cont)[,1]
-  YContour <-  crds(cont)[,2]
-  CM <- list(XContour=XContour, YContour=YContour, A=max(A_FD,na.rm=T))
-  river <- list(FD=FD, CM=CM, dimY=nrows, dimX=ncols, cellsize=cellsize)
-
-
-
   cat("Connectivity at RN level... \n")
-  indexRNNodes <- which(A >=thrA)
+  indexRNNodes <- which(river$FD$A >=thrA)
 
-  X_RN <- X[indexRNNodes]
-  Y_RN <- Y[indexRNNodes]
-  A_RN <- A[indexRNNodes]
-  Z_RN <- Z[indexRNNodes]
-  Length_RN <- Length[indexRNNodes]
+  X_RN <- river$FD$X[indexRNNodes]
+  Y_RN <- river$FD$Y[indexRNNodes]
+  A_RN <- river$FD$A[indexRNNodes]
+  Z_RN <- river$FD$Z[indexRNNodes]
+  Length_RN <- river$FD$leng[indexRNNodes]
 
   ## W, downNode at RN level
 
@@ -57,7 +24,7 @@ extract_river <- function(riverdata, thrA=NULL, maxReachLength=Inf){
 
   k <- 1
   for (i in 1:nNodes_RN){
-    mov <- neigh(flowDir[indexRNNodes[i]])
+    mov <- neigh(river$FD$flowDir[indexRNNodes[i]])
     d <- which(indexRNNodes==(indexRNNodes[i]+mov[1]+mov[2]*river$dimX)) # indices from top-left corner to the right, then next row...
     if (length(d)!=0){
       ind[k, ] <- c(i,d)
