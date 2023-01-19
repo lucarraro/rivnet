@@ -1,290 +1,317 @@
-# extract river with given thrA value
-extract_river <- function(river, thrA=NULL, maxReachLength=Inf){
+extract_river <- function(outlet,
+                           EPSG=NULL,
+                           ext=NULL,
+                           z=NULL,
+                           DEM=NULL,
+                           as.river=TRUE,
+                           as.rast=FALSE,
+                           filename=NULL,
+                           plot.rast=FALSE,
+                           threshold_parameter=1000,
+                           n_processes=1,
+                           quiet=TRUE,
+                           src="aws"){
 
-  if (is.null(thrA)){
-    thrA <- 0.002*max(river$FD$A,na.rm=T)
+  if (!is.null(DEM)){
+    elev <- rast(DEM)
+    ext <- as.vector(ext(elev))}
+
+  if (as.rast==T & is.null(filename)){
+    stop("filename cannot be NULL if as.rast = TRUE.")
   }
 
-  cat("Connectivity at RN level... \n")
-  indexRNNodes <- which(river$FD$A >=thrA)
+  if (ext[2] < ext[1] | ext[4] < ext[3]){
+    stop('ext has wrong format. It should be provided as c(xmin, xmax, ymin, ymax).')
+  }
 
-  X_RN <- river$FD$X[indexRNNodes]
-  Y_RN <- river$FD$Y[indexRNNodes]
-  A_RN <- river$FD$A[indexRNNodes]
-  Z_RN <- river$FD$Z[indexRNNodes]
-  Length_RN <- river$FD$leng[indexRNNodes]
+  if (is.vector(outlet)) {outlet <- matrix(outlet, nrow=length(outlet)/2, ncol=2, byrow=T)}
 
-  ## W, downNode at RN level
+  if (any(outlet[,1]>ext[2] | outlet[,1]<ext[1] | outlet[,2]>ext[4] | outlet[,2]<ext[3]) ){
+    stop('outlet coordinates are beyond the region defined by ext')
+  }
 
-  nNodes_RN <- length(indexRNNodes)
-  W_RN <- spam(0,nNodes_RN,nNodes_RN)
-  ind <- matrix(0,nNodes_RN,2)
-  downNode_RN <- numeric(nNodes_RN)
-  Slope_RN <-  numeric(nNodes_RN)
+  if ("x" %in% names(outlet)){x_outlet <- outlet$x} else {x_outlet <- outlet[,1]}
+  if ("y" %in% names(outlet)){y_outlet <- outlet$y} else {y_outlet <- outlet[,2]}
 
-  k <- 1
-  for (i in 1:nNodes_RN){
-    mov <- neigh(river$FD$flowDir[indexRNNodes[i]])
-    d <- which(indexRNNodes==(indexRNNodes[i]+mov[1]+mov[2]*river$dimX)) # indices from top-left corner to the right, then next row...
-    if (length(d)!=0){
-      ind[k, ] <- c(i,d)
-      k <- k + 1
-      Slope_RN[i] <- (Z_RN[i]-Z_RN[d])/Length_RN[i]
+  test_dir <- withr::local_tempdir() # temporary directory storing intermediary files created by TauDEM
+
+  if (is.null(DEM)){
+
+  # use elevatr to download DEM
+  loc.df <- data.frame(x=c(ext[1], ext[2]), y=c(ext[3],ext[4]))
+  r <- rast()
+  crs(r) <- paste0("epsg:",EPSG)
+  crs_str <- crs(r)
+
+  elev <- get_elev_raster(locations = loc.df, prj = crs_str, z=z, verbose=!quiet, clip="bbox", src=src) # call elevatr
+  elev <- rast(elev) # transform into spatRaster object
+  elev <- classify(elev, matrix(c(NA,NA,0),1,3)) # all pixels with elev=NA are set to 0. Then the pit remove algorithm will take care of them
+  }
+
+  writeRaster(elev,filename=file.path(test_dir, "DEM.tif")) # write elevation raster to temporary directory
+
+  # apply TauDEM functions
+  # Remove pits
+  out_fel <- traudem::taudem_pitremove(file.path(test_dir, "DEM.tif"),
+                                       n_processes = n_processes,
+                                       quiet = quiet)
+
+  # D8 flow directions
+  out_p <- traudem::taudem_d8flowdir(out_fel,
+                                     n_processes = n_processes,
+                                     quiet = quiet)
+  out_p <- out_p$output_d8flowdir_grid # file path of flow direction file
+
+  # Contributing area
+  out_ad8 <- traudem::taudem_aread8(out_p,
+                                    n_processes = n_processes,
+                                    quiet = quiet)
+  ad8 <- rast(out_ad8) # contributing area for the whole region
+
+  # Threshold
+  out_src <- traudem::taudem_threshold(out_ad8,
+                                       threshold_parameter = threshold_parameter,
+                                       n_processes = n_processes,
+                                       quiet = quiet)
+
+  p.sf <- sf::st_as_sf(data.frame(x = x_outlet,y= y_outlet), coords = c("x", "y")) # crs=EPSG
+  out_shp <- file.path(test_dir,"ApproxOutlet.shp")
+  sf::st_write(p.sf, out_shp, driver="ESRI Shapefile", quiet=quiet)
+
+
+  # Move outlet to stream
+  out_moved.shp <- traudem::taudem_moveoutletstostream(out_p, out_src, outlet_file = out_shp,
+                                                       output_moved_outlets_file = file.path(test_dir,"Outlet.shp"),
+                                                       n_processes = n_processes,
+                                                       quiet = quiet)
+
+
+  # Contributing area upstream of outlet
+  out_ssa <- traudem::taudem_aread8(out_p, output_contributing_area_grid = file.path(test_dir,"ssa.tif"),
+                                    n_processes = n_processes,
+                                    outlet_file = out_moved.shp, quiet = quiet)
+
+  # Derive spatRaster from TauDEM output for subsequent elaboration
+  fel <- rast(out_fel) # pit-filled DEM
+  p <- rast(out_p) # DB flow direction map
+  ssa <- rast(out_ssa) # contributing area within the catchment contour
+
+  shp <- sf::st_read(out_moved.shp,quiet=T)
+  out_moved <- sf::st_coordinates(shp)
+
+  # create catchment contour
+  cellsize <- sqrt(prod(res(fel)))
+  ssa_cont <- classify(ssa,matrix(c(NA,NA,-1e6,1,Inf,1e6),2,3,byrow=T))
+  cont <- as.contour(ssa_cont,levels=c(0,1e6))
+  cont <- subset(cont, cont$level==0) # pick most external contour
+  XContour <-  crds(cont)[,1]
+  YContour <-  crds(cont)[,2]
+  # patch for irregular contour: cut part of a contour that is unconnected to the rest
+  ind_cut <- which(abs(diff(XContour))>10*cellsize | abs(diff(YContour))>10*cellsize)
+  if (length(ind_cut)>0){
+    XContour <- XContour[1:ind_cut]
+    YContour <- YContour[1:ind_cut]
+  }
+
+
+  if (plot.rast==T){
+    plot(ad8,col=hcl.colors(1000))
+    lines(XContour,YContour,col="magenta")
+    title(sprintf('Max drainage area: %.2e m2',max(values(ssa)*prod(res(ssa)),na.rm=T)))
+  }
+
+  if (as.rast==T){
+    rr <- c(fel, p, ssa) # export this if you can yield the source data
+    names(rr) <- c("fel","p","ssa")
+    writeRaster(rr,filename,overwrite=T)
+  }
+
+  if (as.river==TRUE){
+    if (!quiet){
+      cat("Creation of river object... \n")
     }
-  }
-  ind <- ind[-k, ]
-  downNode_RN[ind[,1]] <- ind[,2]
-  W_RN[ind] <- 1
-  rm(ind)
-  Outlet_RN <- which(downNode_RN==0)
+    ncols <- ncol(ssa)
+    nrows <- nrow(ssa)
+    ssa_val <- values(ssa)
+    flowDir <- values(p)
 
-  # find AG nodes ####
-  cat("Connectivity at AG level... \n")
-  DegreeIn <- colSums(W_RN)
-  DegreeOut <- rowSums(W_RN)
-  Confluence <- DegreeIn>1
-  Source <- DegreeIn==0
-  SourceOrConfluence <- Source|Confluence
-  ConfluenceNotOutlet <- Confluence&(downNode_RN!=0)
-  ChannelHeads <- SourceOrConfluence  #Source|ConfluenceNotOutlet
+    Nnodes_FD <- sum(!is.na(ssa_val))
+    FD_to_DEM <- which(!is.na(ssa_val))
 
-  OutletNotChannelHead <- (downNode_RN==0)&(!ChannelHeads)
-  IsNodeAG <- SourceOrConfluence|OutletNotChannelHead
-  whichNodeAG <- which(IsNodeAG)
+    X_FD <- xFromCell(ssa,1:ncell(ssa))[FD_to_DEM]
+    Y_FD <- yFromCell(ssa,1:ncell(ssa))[FD_to_DEM]
+    Z_FD <- values(fel)[FD_to_DEM]
+    A_FD <- cellsize^2*ssa_val[FD_to_DEM]
 
-  nNodes_AG <- sum(IsNodeAG)
-  Length_AG <- numeric(nNodes_AG)
-  RN_to_AG <- numeric(nNodes_RN)
-  reachID <- 1
-  X_AG <- NaN*numeric(nNodes_AG)
-  Y_AG <- NaN*numeric(nNodes_AG)
-  Z_AG <- NaN*numeric(nNodes_AG)
-  A_AG <- NaN*numeric(nNodes_AG)
-  while (length(whichNodeAG) != 0){ # explore all AG Nodes
-    i <- whichNodeAG[1] # select the first
-    RN_to_AG[i] <- reachID
-    j <- downNode_RN[i]
-    X_AG[reachID] <- X_RN[i]
-    Y_AG[reachID] <- Y_RN[i]
-    Z_AG[reachID] <- Z_RN[i]
-    A_AG[reachID] <- A_RN[i]
-    Length_AG[reachID] <- Length_RN[i]
-    tmp_length <- Length_RN[i]
-    tmp <- NULL
-    j0 <- j
-    while (!IsNodeAG[j] && j!=0) {
-      tmp <- c(tmp, j)
-      tmp_length <-  tmp_length + Length_RN[j]
-      j_old <- j
-      j <- downNode_RN[j]}
+    Length <- cellsize*(1 + as.numeric(flowDir %% 2 ==0)*(sqrt(2)-1))
+    Length_FD <- Length[FD_to_DEM]
 
-    if (tmp_length > maxReachLength){
-      n_splits <- ceiling(tmp_length/maxReachLength)
-      new_maxLength <- tmp_length/n_splits
-      j <- j0
-      while (!IsNodeAG[j] && j!=0 && Length_AG[reachID] <= new_maxLength) {
-        RN_to_AG[j] <- reachID
-        Length_AG[reachID] <-  Length_AG[reachID] + Length_RN[j]
-        j_old <- j
-        j <- downNode_RN[j]}
-      if (Length_AG[reachID] > new_maxLength){
-        j <- j_old
-        Length_AG[reachID] <-  Length_AG[reachID] - Length_RN[j]
-        ChannelHeads[j] <- 1
-        whichNodeAG <- c(whichNodeAG,j)}
+    nNodes_FD <- length(FD_to_DEM)
+    W_FD <- spam(0,nNodes_FD,nNodes_FD)
+    ind <- matrix(0,nNodes_FD,2)
+    downNode_FD <- numeric(nNodes_FD)
+    Slope_FD <-  numeric(nNodes_FD)
 
-    } else {
-      RN_to_AG[tmp] <- reachID
-      Length_AG[reachID] <- tmp_length
-    }
-
-    reachID <- reachID + 1
-    whichNodeAG <- whichNodeAG[-1]
-  }
-  nNodes_AG <- length(X_AG)
-
-  # W, downNode at AG level ####
-
-  downNode_AG <- numeric(nNodes_AG)
-  W_AG <- spam(0,nNodes_AG,nNodes_AG)
-  ind <- matrix(0,nNodes_AG,2)
-  reachID <- sum(ChannelHeads) + 1
-  for (i in 1:nNodes_RN){
-    if (downNode_RN[i] != 0 && RN_to_AG[downNode_RN[i]] != RN_to_AG[i]) {
-      downNode_AG[RN_to_AG[i]] <- RN_to_AG[downNode_RN[i]]
-      ind[RN_to_AG[i],] <- c(RN_to_AG[i],downNode_AG[RN_to_AG[i]])
-    }
-  }
-  ind <- ind[-which(ind[,1]==0),]
-  W_AG[ind] <- 1
-  Outlet_AG <- RN_to_AG[Outlet_RN]
-
-  AG_to_RN <- vector("list", nNodes_AG)
-  for(i in 1:nNodes_AG) { # attribute river network pixels to fields of the AG_to_FD list
-    AG_to_RN[[i]] <- which(RN_to_AG==i)
-  }
-
-  FD_to_SC <- NA*numeric(length(flowDir))
-  SC_to_FD <- vector("list",nNodes_AG)
-  FD_to_SC[indexRNNodes] <- RN_to_AG
-  for (i in 1:nNodes_AG){
-    SC_to_FD[[i]] <- indexRNNodes[which(RN_to_AG==i)]
-  }
-
-
-  # find FD_to_SC
-  drainageArea <- A
-  indexFDNodes <- which(drainageArea>0)
-  ind_head <- indexFDNodes[which(drainageArea[indexFDNodes]==cellsize^2)]
-
-  for (i in 1:length(ind_head)){
-    d <- ind_head[i]
-    k <- NA; d_new <- d; sub_d <- numeric(0)
-    while (is.na(k)){
-      k <- FD_to_SC[d_new]
-      if (is.na(k)){
-        sub_d <- c(sub_d, d_new)
-        mov <- neigh(flowDir[d_new])
-        d_new <- d_new + mov[1] + mov[2]*river$dimX # indices from top-left corner to the right, then next row...
+    k <- 1
+    for (i in 1:nNodes_FD){
+      mov <- neigh(flowDir[FD_to_DEM[i]])
+      d <- which(FD_to_DEM==(FD_to_DEM[i]+mov[1]+mov[2]*ncols)) # indices from top-left corner to the right, then next row...
+      if (length(d)!=0){
+        ind[k, ] <- c(i,d)
+        k <- k + 1
+        Slope_FD[i] <- (Z_FD[i]-Z_FD[d])/Length_FD[i]
       }
     }
-    FD_to_SC[sub_d] <- k
-    SC_to_FD[[k]] <- c(SC_to_FD[[k]], sub_d)
-  }
-
-
-  # Upstream_RN : list containing IDs of all reaches upstream of each reach (plus reach itself)
-  Upstream_RN <- vector("list",nNodes_RN)
-  nUpstream_RN <- numeric(nNodes_RN)
-  for (i in 1:nNodes_RN){
-    UpOneLevel <- which(downNode_RN==i) # find reaches at one level upstream
-    Upstream_RN[[i]] <- UpOneLevel      # add them to the list
-    while (length(UpOneLevel)!=0) { # continue until there are no more reaches upstream
-      ContinuePath <- UpOneLevel # jump 1 level above
-      UpOneLevel <- which(downNode_RN %in% ContinuePath) # find reaches at one level upstream
-      Upstream_RN[[i]] <- c(Upstream_RN[[i]],UpOneLevel) # add them to the list
+    ind <- ind[-(k:nNodes_FD), ]
+    downNode_FD[ind[,1]] <- ind[,2]
+    W_FD[ind] <- 1
+    rm(ind)
+    Outlet_FD <- which(downNode_FD==0)
+    # reassign outlet order
+    if (length(Outlet_FD)>1){
+      ind_out <- numeric(length(Outlet_FD))
+      for (i in 1:length(Outlet_FD)){
+        dist <- sqrt((X_FD[Outlet_FD[i]]-out_moved[,1])^2+(Y_FD[Outlet_FD[i]]-out_moved[,2])^2)
+        ind_out[i] <- which(dist==min(dist))
+      }
+      Outlet_FD <- Outlet_FD[ind_out]
     }
-    Upstream_RN[[i]] <- c(Upstream_RN[[i]],i)
-    nUpstream_RN[i] <- length(Upstream_RN[[i]])
-    if ((i %% 100)==0){
-      message(sprintf("%.2f%% done\r",100*i/nNodes_RN),appendLF = F)
+
+    newW <- new("spam")
+    slot(newW, "entries", check = FALSE) <- W_FD@entries[-1]
+    slot(newW, "colindices", check = FALSE) <- W_FD@colindices[-1]
+    slot(newW, "rowpointers", check = FALSE) <- c(W_FD@rowpointers[1],W_FD@rowpointers[-1]-W_FD@rowpointers[1])
+    slot(newW, "dimension", check = FALSE) <- W_FD@dimension
+    W_FD <- newW
+
+    pl <- initial_permutation(downNode_FD)
+    pl <- as.integer(pl$perm)
+
+    toCM <- numeric(Nnodes_FD)
+    for (i in 1:length(Outlet_FD)){
+      tmp <- which(pl==Outlet_FD[i])
+      toCM[pl[(tmp - A_FD[Outlet_FD[i]]/cellsize^2 + 1):tmp]] <- i
     }
-  }
-  message('100.00% done \n',appendLF = F)
 
-  # Upstream_AG : list containing IDs of all reaches upstream of each reach (plus reach itself)
-  Upstream_AG <- vector("list",nNodes_AG)
-  nUpstream_AG <- numeric(nNodes_AG)
-  for (i in 1:nNodes_AG){
-    UpOneLevel <- which(downNode_AG==i) # find reaches at one level upstream
-    Upstream_AG[[i]] <- UpOneLevel      # add them to the list
-    while (length(UpOneLevel)!=0) { # continue until there are no more reaches upstream
-      ContinuePath <- UpOneLevel # jump 1 level above
-      UpOneLevel <- which(downNode_AG %in% ContinuePath) # find reaches at one level upstream
-      Upstream_AG[[i]] <- c(Upstream_AG[[i]],UpOneLevel) # add them to the list
+    # draw contours of single catchments if length(Outlet_FD)>1
+    if (length(Outlet_FD)>1){
+      XContour <- YContour <- list()
+      for (i in 1:length(Outlet_FD)){
+        ssa_tmp <- ssa
+        mask <- NA*numeric(length(values(ssa_tmp)))
+        mask[FD_to_DEM[which(toCM==i)]] <- 1
+        values(ssa_tmp) <- values(ssa_tmp)*mask
+
+        ssa_cont <- classify(ssa_tmp,matrix(c(NA,NA,-1e6,1,Inf,1e6),2,3,byrow=T))
+        cont <- as.contour(ssa_cont,levels=c(0,1e6))
+        cont <- subset(cont, cont$level==0) # pick most external contour
+        XCont <-  crds(cont)[,1]
+        YCont <-  crds(cont)[,2]
+        # patch for irregular contour: cut part of a contour that is unconnected to the rest
+        ind_cut <- which(abs(diff(XCont))>10*cellsize | abs(diff(YCont))>10*cellsize)
+        if (length(ind_cut)>0){
+          XCont <- XCont[1:ind_cut]
+          YCont <- YCont[1:ind_cut]
+        }
+        XContour <- c(XContour, list(list(XCont)))
+        YContour <- c(YContour, list(list(YCont)))
+      }
+    } else {
+      XContour <- list(list(XContour))
+      YContour <- list(list(YContour))
     }
-    Upstream_AG[[i]] <- c(Upstream_AG[[i]],i)
-    nUpstream_AG[i] <- length(Upstream_AG[[i]])
+
+    CM <- list(A=A_FD[Outlet_FD], XContour=XContour, YContour=YContour,
+               XContourDraw=XContour, YContourDraw=YContour)
+    FD <- list(A=A_FD,W=W_FD,downNode=downNode_FD,X=X_FD,Y=Y_FD,nNodes=Nnodes_FD,outlet=Outlet_FD,perm=pl,
+               Z=Z_FD,slope=Slope_FD,leng=Length_FD,XDraw=X_FD,YDraw=Y_FD,toCM=toCM)
+
+    river <- list(FD=FD,CM=CM,dimX=ncols,dimY=nrows,cellsize=cellsize,nOutlet=length(Outlet_FD),periodicBoundaries=FALSE)
+
+    river_S4 <- new("river")
+    fieldnames <- names(river)
+    for (i in 1:length(fieldnames)){slot(river_S4, fieldnames[i]) <- river[[fieldnames[i]]]}
+
+    invisible(river_S4)
   }
-
-
-  # calculate Strahler stream order
-  StreamOrder_AG <- numeric(nNodes_AG)
-  for (i in 1:nNodes_AG){
-    j <- order(nUpstream_AG)[i] # index that explores reaches in a downstream direction
-    tmp <- which(downNode_AG==j) # set of reaches draining into j
-    if (length(tmp)>0){
-      IncreaseOrder <- sum(StreamOrder_AG[tmp]==max(StreamOrder_AG[tmp])) # check whether tmp reaches have the same stream order
-      if (IncreaseOrder > 1) {
-        StreamOrder_AG[j] <- 1 + max(StreamOrder_AG[tmp]) # if so, increase stream order
-      } else {StreamOrder_AG[j] <- max(StreamOrder_AG[tmp])} # otherwise, keep previous stream order
-    } else {StreamOrder_AG[j] <- 1} # if j is an headwater, impose StreamOrder = 1
-  }
-
-
-  #print('Length and slope at AG level...',quote=FALSE)
-  # Calculate length and slopes of reaches
-  #Length_AG <- rep(0,Nnodes_AG)
-  Slope_AG <- numeric(nNodes_AG)
-  for (i in 1:nNodes_AG){
-    #Length_AG[i] <- sum(OCN$FD$leng[AG_to_FD[[i]]])
-    Slope_AG[i] <- (Slope_RN[RN_to_AG==i] %*% Length_RN[RN_to_AG==i])/Length_AG[i] # scalar product between vector of slopes and lengths of nodes at RN level belonging to reach i
-  }
-
-
-  nNodes_SC <- nNodes_AG
-  Z_SC <- numeric(nNodes_SC)
-  Alocal_SC <- numeric(nNodes_SC)
-  for (i in 1:nNodes_SC) {
-    Z_SC[i] <- mean(river$FD$Z[which(FD_to_SC==i)])
-    Alocal_SC[i] <- sum(FD_to_SC==i,na.rm=T)*cellsize^2
-  }
-
-  Areach_AG <- numeric(nNodes_AG)
-  for (i in 1:nNodes_AG) {
-    Areach_AG[i] <- sum(Alocal_SC[Upstream_AG[[i]]])
-  }
-
-  # coordinates of AG nodes considered at the downstream end of the respective edge
-  XReach <- numeric(nNodes_AG)
-  YReach <- numeric(nNodes_AG)
-  ZReach <- numeric(nNodes_AG)
-  for (i in 1:nNodes_AG){
-    tmp <- AG_to_RN[[i]]
-    ind <- which(A_RN[tmp]==max(A_RN[tmp]))
-    node <- tmp[ind]
-    XReach[i] <- X_RN[node]
-    YReach[i] <- Y_RN[node]
-    ZReach[i] <- Z_RN[node]
-  }
-  XReach[Outlet_AG] <- NaN
-  YReach[Outlet_AG] <- NaN
-  ZReach[Outlet_AG] <- NaN
-
-  river$FD[["nNodes"]] <- length(river$FD$X)
-  river$FD[["toSC"]] <- FD_to_SC
-  river$FD[["toCM"]] <- 1+numeric(length(FD_to_SC))
-
-  river$RN[["A"]] <- A_RN
-  river$RN[["downNode"]] <- downNode_RN
-  river$RN[["outlet"]] <- which(downNode_RN==0)
-  river$RN[["leng"]] <- Length_RN
-  river$RN[["upstream"]] <- Upstream_RN
-  river$RN[["nUpstream"]] <- nUpstream_RN
-  river$RN[["X"]] <- X_RN
-  river$RN[["Y"]] <- Y_RN
-  river$RN[["toAGReach"]] <- RN_to_AG
-  river$RN[["nNodes"]] <- nNodes_RN
-
-  river$AG[["A"]] <- A_AG
-  river$AG[["AReach"]] <- Areach_AG
-  river$AG[["downNode"]] <- downNode_AG
-  river$AG[["upstream"]] <- Upstream_AG
-  river$AG[["nUpstream"]] <- nUpstream_AG
-  river$AG[["leng"]] <- Length_AG
-  river$AG[["outlet"]] <- Outlet_AG
-  river$AG[["slope"]] <- Slope_AG
-  river$AG[["streamOrder"]] <- StreamOrder_AG
-  river$AG[["Upstream"]] <- Upstream_AG
-  river$AG[["X"]] <- X_AG
-  river$AG[["Y"]] <- Y_AG
-  river$AG[["Z"]] <- Z_AG
-  river$AG[["W"]] <- W_AG
-  river$AG[["nNodes"]] <- nNodes_AG
-  pl <- initial_permutation(downNode_AG)
-  river$AG[["perm"]] <- pl$perm
-
-  river$SC[["toFD"]] <- SC_to_FD
-  river$SC[["A"]] <- Alocal_SC
-
-  river[["thrA"]] <- thrA
-  river[["nOutlet"]] <- 1
-
-  cat(sprintf("Total catchment area: %d cells  -   %.2f km2   -  nNodes: %d   -  nLinks: %d \n",
-              max(A_RN)/cellsize^2,river$CM$A/1e6,river$RN$nNodes,river$AG$nNodes))
-
-  invisible(river)
 }
+
+setClass("river",
+         slots= c(FD="list", dimX="numeric", dimY="numeric", cellsize="numeric", nOutlet="numeric",
+                  periodicBoundaries="logical", expEnergy="numeric", coolingRate="numeric",
+                  typeInitialState="character", nIter="numeric", initialNoCoolingPhase="numeric", energyInit="numeric",
+                  CM="list",RN="list",AG="list",OptList="list",SC="list",thrA="numeric",
+                  slope0="numeric", zMin="numeric",streamOrderType="character",maxReachLength="numeric",
+                  widthMax="numeric",depthMax="numeric",velocityMax="numeric",expWidth="numeric",expDepth="numeric",expVelocity="numeric"))
+
+setMethod("$","river",
+          function(x,name){
+            slot(x,name)
+          })
+
+
+setMethod("show", "river",
+          function(object){
+            isOCN <- length(object$coolingRate) > 0
+            isElev <- length(object$CM) > 0
+            isAggr <- length(object$RN) > 0
+            isPath <- length(object$AG$downstreamPath) > 0
+            isRivG <- length(object$AG$width) > 0
+
+            cat("Class         : river \n")
+            if (isOCN){
+              if (object$typeInitialState=="custom"){
+                cat("Type          : Optimal Channel Network (general contour) \n")
+              } else {
+                cat("Type          : Optimal Channel Network \n")}
+            } else {
+              cat("Type          : Real river \n")
+            }
+            cat(sprintf("No. FD nodes  : %d \n", object$FD$nNodes))
+            cat(sprintf('Dimensions    : %d x %d \n',object$dimX,object$dimY))
+            cat(sprintf('Cell size     : %.2f \n',object$cellsize))
+            cat("Has elevation :",isElev,"\n" )
+            if (isElev){
+              cat("Aggregated    :",isAggr,"\n" )
+              if (isAggr){
+                cat(sprintf("   Threshold area  : %.2f \n",object$thrA))
+                cat(sprintf("   Max reach length: %.2f \n",object$maxReachLength))
+                cat(sprintf("   No. RN nodes    : %d \n",object$RN$nNodes))
+                cat(sprintf("   No. AG nodes    : %d \n",object$AG$nNodes))
+                cat(        "   Has paths       : ",isPath,"\n")
+                cat(        "   River geometry  : ",isRivG,"\n")
+              }}
+          })
+
+
+setMethod("names",signature=c(x="river"),
+          function(x){
+            slotNames(x)
+          })
+
+setMethod("$<-",signature=c(x="river"),
+          function(x,name,value){
+            slot(x, name) <- value
+            return(x)
+          })
+
+setMethod("plot", signature(x="river",y="missing"),
+          function(x, ...){
+            if (length(x$AG) > 0) {
+              OCNet::draw_thematic_OCN(x, ...)
+            } else if (length(x$CM) > 0) {
+              OCNet::draw_contour_OCN(x, ...)
+            } else {
+              OCNet::draw_simple_OCN(x, ...)}})
+
+setMethod("plot", signature(x="river",y="numeric"),
+          function(x, y, ...){
+            OCNet::draw_thematic_OCN(y, x, ...)})
+
+setMethod("plot", signature(y="numeric",x="river"),
+          function(x, y, ...){
+            OCNet::draw_thematic_OCN(y, x, ...)})
+
 
 neigh <- function(dir) {
   mov <- c(0,0)
@@ -300,7 +327,6 @@ neigh <- function(dir) {
   return(mov)
 }
 
-# inherited from OCNet
 initial_permutation <- function(DownNode){
 
   Outlet <- which(DownNode==0)
@@ -331,3 +357,4 @@ initial_permutation <- function(DownNode){
 
   invisible(OutList)
 }
+

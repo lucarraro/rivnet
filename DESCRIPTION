@@ -1,12 +1,16 @@
 Package: rivers
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Extract And Analyze Rivers From Elevation Data 
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-Imports: spam, raster, sf, terra, withr, traudem, elevatr 
-License: What license is it under?
+Author: Luca Carraro
+Maintainer: Luca Carraro <luca.carraro@hotmail.it>
+Description: Seamless extraction of river networks from Digital 
+    Elevation Models data. The package allows analysis of 
+    externally provided DEMs or downloaded from open source 
+    repositories (thus interfacing with the 'elevatr' package'). 
+    Extraction is performed via TauDEM's D8 flow direction algorithm 
+    (thus interfacing with the 'traudem' package). Resulting river
+    networks are compatible with functions from the 'OCNet' package. 
+Imports: spam, raster, sf, terra, withr, traudem, elevatr, OCNet, methods 
+License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
