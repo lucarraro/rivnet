@@ -7,7 +7,7 @@ Maintainer: Luca Carraro <luca.carraro@hotmail.it>
 Description: Seamless extraction of river networks from Digital 
     Elevation Models data. The package allows analysis of 
     externally provided DEMs or downloaded from open source 
-    repositories (thus interfacing with the 'elevatr' package'). 
+    repositories (thus interfacing with the 'elevatr' package). 
     Extraction is performed via TauDEM's D8 flow direction algorithm 
     (thus interfacing with the 'traudem' package). Resulting river
     networks are compatible with functions from the 'OCNet' package. 
