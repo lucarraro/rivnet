@@ -78,6 +78,7 @@ If nested outlets are specified, the function ignores the upstream outlet.
  fp <- system.file("extdata/wigger.tif", package="rivers")
  r <- extract_river(outlet=c(637478,237413),
 	DEM=fp)
+r
 	
 
 \donttest{
@@ -109,4 +110,5 @@ plot(r)
 r <- aggregate_river(r)
 plot(r, chooseCM = 2)  # display only the second catchment 
 # (i.e. that identified by the second outlet)
+}
 }
