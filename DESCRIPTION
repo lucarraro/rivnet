@@ -1,4 +1,4 @@
-Package: rivers
+Package: rivnet
 Type: Package
 Title: Extract And Analyze Rivers From Elevation Data 
 Version: 0.1.0
@@ -14,4 +14,4 @@ Description: Seamless extraction of river networks from Digital
 Imports: spam, raster, sf, terra, withr, traudem, elevatr, OCNet, methods 
 License: MIT + file LICENSE
 Encoding: UTF-8
-URL: https://lucarraro.github.io/rivers/
+URL: https://lucarraro.github.io/rivnet/
