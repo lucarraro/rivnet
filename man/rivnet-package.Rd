@@ -1,7 +1,7 @@
 \docType{package}
-\name{rivers-package}
-\alias{rivers-package}
-\alias{rivers}
+\name{rivnet-package}
+\alias{rivnet-package}
+\alias{rivnet}
 \title{Extract And Analyze Rivers From Elevation Data.}
 \description{Seamless extraction of river networks from Digital 
     Elevation Models data. The package allows analysis of 
