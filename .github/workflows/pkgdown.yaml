@@ -21,6 +21,8 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GH_TOKEN }}
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -44,4 +46,4 @@ jobs:
           clean: false
           branch: gh-pages
           folder: docs
-          token: ${{ secrets.GH_TOKEN }}
+          
