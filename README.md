@@ -1,4 +1,4 @@
-# rivers
+# rivnet
 
 Seamless extraction of river networks from Digital Elevation Models data. 
 
