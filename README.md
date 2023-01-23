@@ -1,6 +1,6 @@
-# rivnet
-
 <img align="right" width="250" src="man/figures/rivnet_logo.png">
+
+# rivnet
 
 Seamless extraction of river networks from Digital Elevation Models data. 
 
