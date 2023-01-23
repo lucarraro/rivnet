@@ -33,7 +33,7 @@ r <- extract_river(outlet=c(637478,237413),
 
 ## Installation issues
 
-`rivnet` depends on `traudem`, whose installation might require some caution depending on your operating system. Please read (its documentation)[https://lucarraro.github.io/traudem/] carefully.
+`rivnet` depends on `traudem`, whose installation might require some caution depending on your operating system. Please read [its documentation](https://lucarraro.github.io/traudem/) carefully.
 
 ## Author
 
