@@ -42,8 +42,8 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre><code>locate_site &lt;- function(X,Y,river, eucledian = TRUE, showPlot = FALSE, 
-						xlim = NULL, ylim = NULL)</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">locate_site</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, <span class="va">river</span>, euclidean <span class="op">=</span> <span class="cn">TRUE</span>, showPlot <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>  xlim <span class="op">=</span> <span class="cn">NULL</span>, ylim <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -53,9 +53,19 @@
 coordinate system as the <code>river</code> object.</p></dd>
 
 <dt>river</dt>
-<dd><p>River object where the site is to be located. It must have been aggregated (via</p></dd>
-</dl><p><code>aggregate_river</code>).</p>
-    </div>
+<dd><p>River object where the site is to be located. It must have been aggregated (via <code>aggregate_river</code>).</p></dd>
+
+<dt>euclidean</dt>
+<dd><p>Logical. Should the location of the site in the <code>river</code> be attributed "as the crow flies"? 
+If <code>FALSE</code>, the downstream path from (<code>X</code>, <code>Y</code>) is followed until the river network is met.</p></dd>
+
+<dt>showPlot</dt>
+<dd><p>Logical. Should a close-up of the relocated site be shown?</p></dd>
+
+<dt>xlim, ylim</dt>
+<dd><p>Ranges of x- and y-axis limits for the plot. Only active if <code>showPlots = TRUE</code>.</p></dd>
+
+</dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
@@ -74,15 +84,18 @@ coordinate system as the <code>river</code> object.</p></dd>
 an arbitrary site of coordinates <code>X</code>, <code>Y</code>.</p>
 <p>Desired coordinates X, Y can be found in an interactive way by clicking on the river map and using 
 function <code>locator</code>.</p>
+<p>Nodes at the RN level thus found can be defined as new breakpoints for reaches (see <code>aggregate_OCN</code> 
+and argument <code>breakpoints</code>).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="https://rdrr.io/r/graphics/locator.html" class="external-link">locator</a></code></p></div>
+    <div class="dont-index"><p><code>aggregate_OCN</code>, <code><a href="https://rdrr.io/r/graphics/locator.html" class="external-link">locator</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span> <span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/wigger.tif"</span>, package <span class="op">=</span> <span class="st">"rivers"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span> <span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/wigger.tif"</span>, package <span class="op">=</span> <span class="st">"rivers"</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_river.html">extract_river</a></span><span class="op">(</span>outlet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">637478</span>, <span class="fl">237413</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                    DEM <span class="op">=</span> <span class="va">fp</span><span class="op">)</span>            </span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in taudem_exec(n_processes = n_processes, program = "pitremove",     args = args, quiet = quiet):</span> <span style="color: #BB0000;">✖</span> Can't find TauDEM</span>
@@ -90,7 +103,24 @@ function <code>locator</code>.</p>
 <span class="r-in"><span> <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="aggregate_river.html">aggregate_river</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "slope" %in% names(OCN$FD):</span> object 'r' not found</span>
 <span class="r-in"><span> </span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="va">X</span> <span class="op">&lt;-</span> <span class="fl">641329</span>; <span class="va">Y</span> <span class="op">&lt;-</span> <span class="fl">227414</span> </span></span>
+<span class="r-in"><span> <span class="fu">locate_site</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, <span class="va">r</span>, showPlot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># as the crow flies</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in locate_site(X, Y, r, showPlot = TRUE):</span> object 'r' not found</span>
+<span class="r-in"><span> <span class="fu">locate_site</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, <span class="va">r</span>, showPlot <span class="op">=</span> <span class="cn">TRUE</span>, euclidean <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># follow downstream path</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in locate_site(X, Y, r, showPlot = TRUE, euclidean = FALSE):</span> object 'r' not found</span>
+<span class="r-in"><span> <span class="co"># }</span></span></span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span> <span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="co"># define X, Y by clicking on the map</span></span></span>
+<span class="r-in"><span> <span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/wigger.tif"</span>, package <span class="op">=</span> <span class="st">"rivers"</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_river.html">extract_river</a></span><span class="op">(</span>outlet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">637478</span>, <span class="fl">237413</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                    DEM <span class="op">=</span> <span class="va">fp</span><span class="op">)</span>            </span></span>
+<span class="r-in"><span> <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="aggregate_river.html">aggregate_river</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span> <span class="va">point</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/locator.html" class="external-link">locator</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># click on the map to define point</span></span></span>
+<span class="r-in"><span> <span class="fu">locate_site</span><span class="op">(</span><span class="va">point</span><span class="op">$</span><span class="va">X</span>, <span class="va">point</span><span class="op">$</span><span class="va">Y</span>, <span class="va">r</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
