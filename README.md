@@ -1,5 +1,7 @@
 # rivnet
 
+<img align="right" width="250" src="man/figures/rivnet_logo.png">
+
 Seamless extraction of river networks from Digital Elevation Models data. 
 
 ## What this package does 
