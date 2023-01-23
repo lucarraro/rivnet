@@ -90,7 +90,7 @@ be created?</p></dd>
 
 <dt>filename</dt>
 <dd><p>Filename of the raster file produced if <code>as.rast=TRUE</code>. Only required if 
-<code>as.rast=TRUE</code>. It can be a single filename, or three filenames, in which case three different 
+<code>as.rast=TRUE</code>. It can be a single filename, or four filenames, in which case four different 
 raster files are produced. See Details.</p></dd>
 
 <dt>plot.rast</dt>
@@ -98,7 +98,8 @@ raster files are produced. See Details.</p></dd>
 contour be produced?</p></dd>
 
 <dt>threshold_parameter</dt>
-<dd><p>Value passed to <code>taudem_threshold</code>.</p></dd>
+<dd><p>Value passed to <code>taudem_threshold</code>. See example and `traudem` 
+documentation for details.</p></dd>
 
 <dt>n_processes</dt>
 <dd><p>Value passed to the <code>traudem</code> functions.</p></dd>
@@ -125,11 +126,14 @@ river networks from elevation data. The output river object is compatible with <
  <code>PitRemove</code> -&gt; <code>D8FlowDir</code> -&gt; <code>D8ContributingArea</code> -&gt; <code>StreamDefByThreshold</code> -&gt;  
  <code>MoveOutletsToStreams</code> -&gt; <code>D8ContributingArea</code>.
  See <a href="https://hydrology.usu.edu/taudem/taudem5/index.html" class="external-link">https://hydrology.usu.edu/taudem/taudem5/index.html</a> for details on TauDEM.</p> 
-<p>When <code>as.rast = TRUE</code>, a raster file is returned. It consists of three layers:</p><dl><dt>fel</dt>
+<p>When <code>as.rast = TRUE</code>, a raster file is returned. It consists of four layers:</p><dl><dt>fel</dt>
 <dd><p>pit-filled elevation data</p></dd>
 
  <dt>p</dt>
 <dd><p>D8 flow directions</p></dd>
+
+ <dt>ad8</dt>
+<dd><p>contributing area for the whole region</p></dd>
 
  <dt>ssa</dt>
 <dd><p>contributing area with respect to the outlet(s) used</p></dd>
@@ -148,8 +152,10 @@ river networks from elevation data. The output river object is compatible with <
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># extract the river Wigger (Switzerland) from DEM raster file</span></span></span>
+<span class="r-in"><span><span class="co"># outlet coordinates are expressed in the CH1903/LV03 coordinate system </span></span></span>
+<span class="r-in"><span><span class="co"># (i.e. same as the DEM file)</span></span></span>
 <span class="r-in"><span> <span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/wigger.tif"</span>, package<span class="op">=</span><span class="st">"rivers"</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">extract_river</span><span class="op">(</span>outlet<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">637478</span>,<span class="fl">237413</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span> <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">extract_river</span><span class="op">(</span>outlet<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">637478</span>,<span class="fl">237413</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>  DEM<span class="op">=</span><span class="va">fp</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in taudem_exec(n_processes = n_processes, program = "pitremove",     args = args, quiet = quiet):</span> <span style="color: #BB0000;">✖</span> Can't find TauDEM</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Refer to ?traudem::taudem_sitrep</span>
@@ -193,6 +199,28 @@ river networks from elevation data. The output river object is compatible with <
 <span class="r-in"><span><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">r</span>, chooseCM <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>  <span class="co"># display only the second catchment </span></span></span>
 <span class="r-in"><span><span class="co"># (i.e. that identified by the second outlet)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># effect of threshold_parameter</span></span></span>
+<span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">extract_river</span><span class="op">(</span>outlet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">637478</span>, <span class="fl">237413</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                    EPSG <span class="op">=</span> <span class="fl">21781</span>, <span class="co">#CH1903/LV03 coordinate system</span></span></span>
+<span class="r-in"><span>                    ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6.2e5</span>, <span class="fl">6.6e5</span>, <span class="fl">2e5</span>, <span class="fl">2.5e5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                    z <span class="op">=</span> <span class="fl">8</span>, threshold_parameter <span class="op">=</span> <span class="fl">50</span>,</span></span>
+<span class="r-in"><span>            plot.rast <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="co"># if threshold_parameter is too small, the outlet might be located </span></span></span>
+<span class="r-in"><span><span class="co"># in a smaller river reach, and the extracted river network would be too small</span></span></span>
+<span class="r-in"><span><span class="co"># plot.rast = TRUE can help identify what is going on</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">extract_river</span><span class="op">(</span>outlet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">637478</span>, <span class="fl">237413</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                    EPSG <span class="op">=</span> <span class="fl">21781</span>, <span class="co">#CH1903/LV03 coordinate system</span></span></span>
+<span class="r-in"><span>                    ext <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6.2e5</span>, <span class="fl">6.6e5</span>, <span class="fl">2e5</span>, <span class="fl">2.5e5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                    z <span class="op">=</span> <span class="fl">8</span>, threshold_parameter <span class="op">=</span> <span class="fl">1e5</span>,</span></span>
+<span class="r-in"><span>            plot.rast <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="co"># if threshold_parameter is too large, the outlet pixel might not be</span></span></span>
+<span class="r-in"><span><span class="co"># located at all (for instance, in this case no cells have contributing area </span></span></span>
+<span class="r-in"><span><span class="co"># above threshold_parameter), hence throwing an error</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
