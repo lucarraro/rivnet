@@ -33,11 +33,12 @@ details. It is required if \code{DEM} is not specified, and not used otherwise.}
 \item{as.rast}{Logical. Should a raster file containing results from \code{traudem} functions output
 be created?}
 \item{filename}{Filename of the raster file produced if \code{as.rast=TRUE}. Only required if 
-\code{as.rast=TRUE}. It can be a single filename, or three filenames, in which case three different 
+\code{as.rast=TRUE}. It can be a single filename, or four filenames, in which case four different 
 raster files are produced. See Details.}
 \item{plot.rast}{Logical. Should a plot of the calculated contributing area and extracted catchment 
 contour be produced?}
-\item{threshold_parameter}{Value passed to \code{taudem_threshold}.}
+\item{threshold_parameter}{Value passed to \code{taudem_threshold}. See example and `traudem` 
+documentation for details.}
 \item{n_processes}{Value passed to the \code{traudem} functions.}
 \item{quiet}{Logical. If \code{FALSE} console output is suppressed.}
 \item{src}{Value passed to \code{get_elev_raster}.}
@@ -56,10 +57,11 @@ The workflow of TauDEM commands used is as follows:
  \code{MoveOutletsToStreams} -> \code{D8ContributingArea}.
  See \url{https://hydrology.usu.edu/taudem/taudem5/index.html} for details on TauDEM.
  
- When \code{as.rast = TRUE}, a raster file is returned. It consists of three layers:
+ When \code{as.rast = TRUE}, a raster file is returned. It consists of four layers:
  \describe{
  \item{fel}{pit-filled elevation data}
  \item{p}{D8 flow directions}
+ \item{ad8}{contributing area for the whole region}
  \item{ssa}{contributing area with respect to the outlet(s) used}
  }
 The raster file is written via \code{terra::writeRaster}.
@@ -75,8 +77,10 @@ If nested outlets are specified, the function ignores the upstream outlet.
 \examples{
 
 # extract the river Wigger (Switzerland) from DEM raster file
+# outlet coordinates are expressed in the CH1903/LV03 coordinate system 
+# (i.e. same as the DEM file)
  fp <- system.file("extdata/wigger.tif", package="rivers")
- r <- extract_river(outlet=c(637478,237413),
+ r <- extract_river(outlet=c(637478,237413), 
 	DEM=fp)
 r
 	
@@ -111,4 +115,26 @@ r <- aggregate_river(r)
 plot(r, chooseCM = 2)  # display only the second catchment 
 # (i.e. that identified by the second outlet)
 }
+
+\dontrun{
+# effect of threshold_parameter
+r <- extract_river(outlet = c(637478, 237413),
+                    EPSG = 21781, #CH1903/LV03 coordinate system
+                    ext = c(6.2e5, 6.6e5, 2e5, 2.5e5),
+                    z = 8, threshold_parameter = 50,
+				    plot.rast = TRUE)
+plot(r) # if threshold_parameter is too small, the outlet might be located 
+# in a smaller river reach, and the extracted river network would be too small
+# plot.rast = TRUE can help identify what is going on
+
+r <- extract_river(outlet = c(637478, 237413),
+                    EPSG = 21781, #CH1903/LV03 coordinate system
+                    ext = c(6.2e5, 6.6e5, 2e5, 2.5e5),
+                    z = 8, threshold_parameter = 1e5,
+				    plot.rast = TRUE)
+plot(r) # if threshold_parameter is too large, the outlet pixel might not be
+# located at all (for instance, in this case no cells have contributing area 
+# above threshold_parameter), hence throwing an error
+}
+
 }

@@ -66,7 +66,6 @@ extract_river <- function(outlet,
   out_ad8 <- traudem::taudem_aread8(out_p,
                                     n_processes = n_processes,
                                     quiet = quiet)
-  ad8 <- rast(out_ad8) # contributing area for the whole region
 
   # Threshold
   out_src <- traudem::taudem_threshold(out_ad8,
@@ -94,6 +93,7 @@ extract_river <- function(outlet,
   # Derive spatRaster from TauDEM output for subsequent elaboration
   fel <- rast(out_fel) # pit-filled DEM
   p <- rast(out_p) # DB flow direction map
+  ad8 <- rast(out_ad8) # contributing area for the whole region
   ssa <- rast(out_ssa) # contributing area within the catchment contour
 
   shp <- sf::st_read(out_moved.shp,quiet=T)
@@ -121,8 +121,8 @@ extract_river <- function(outlet,
   }
 
   if (as.rast==T){
-    rr <- c(fel, p, ssa) # export this if you can yield the source data
-    names(rr) <- c("fel","p","ssa")
+    rr <- c(fel, p, ad8, ssa) # export this if you can yield the source data
+    names(rr) <- c("fel","p","ad8", "ssa")
     writeRaster(rr,filename,overwrite=T)
   }
 
