@@ -2,7 +2,7 @@
 
 # rivnet
 
-An R- package allowing seamless extraction of river networks from Digital Elevation Models data. 
+An R-package allowing seamless extraction of river networks from Digital Elevation Models data. 
 
 ## What this package does 
 
