@@ -2,8 +2,8 @@
 \alias{locate_site}
 \title{Locate site in a river}
 \usage{
-locate_site <- function(X,Y,river, eucledian = TRUE, showPlot = FALSE, 
-						xlim = NULL, ylim = NULL)
+locate_site(X, Y, river, euclidean = TRUE, showPlot = FALSE, 
+  xlim = NULL, ylim = NULL)
 }
 \description{
 Finds location of a site (with coordinates X,Y) within a river object.
@@ -12,8 +12,8 @@ Finds location of a site (with coordinates X,Y) within a river object.
 \arguments{
 \item{X, Y}{Longitudinal and latitudinal coordinates of the site. They must be given in the same
 coordinate system as the \code{river} object.}
-\item{river} River object where the site is to be located. It must have been aggregated (via \code{aggregate_river}).}
-\item{eucledian}{Logical. Should the location of the site in the \code{river} be attributed "as the crow flies"? 
+\item{river}{River object where the site is to be located. It must have been aggregated (via \code{aggregate_river}).}
+\item{euclidean}{Logical. Should the location of the site in the \code{river} be attributed "as the crow flies"? 
 If \code{FALSE}, the downstream path from (\code{X}, \code{Y}) is followed until the river network is met.}
 \item{showPlot}{Logical. Should a close-up of the relocated site be shown?}
 \item{xlim, ylim}{Ranges of x- and y-axis limits for the plot. Only active if \code{showPlots = TRUE}.}
@@ -31,19 +31,36 @@ an arbitrary site of coordinates \code{X}, \code{Y}.
 
 Desired coordinates X, Y can be found in an interactive way by clicking on the river map and using 
 function \code{locator}.
+
+Nodes at the RN level thus found can be defined as new breakpoints for reaches (see \code{aggregate_OCN} 
+and argument \code{breakpoints}).
 }
 
 \seealso{
-\code{\link{locator}}
+\code{\link{aggregate_OCN}}, \code{\link{locator}}
 }
 
 \examples{
+\donttest{
  fp <- system.file("extdata/wigger.tif", package = "rivers")
  r <- extract_river(outlet = c(637478, 237413),
 	                  DEM = fp)					  
  r <- aggregate_river(r)
  
-
-}
-
+ X <- 641329; Y <- 227414 
+ locate_site(X, Y, r, showPlot = TRUE) # as the crow flies
+ locate_site(X, Y, r, showPlot = TRUE, euclidean = FALSE) # follow downstream path
+ }
+ 
+ \dontrun{
+ # define X, Y by clicking on the map
+ fp <- system.file("extdata/wigger.tif", package = "rivers")
+ r <- extract_river(outlet = c(637478, 237413),
+	                  DEM = fp)					  
+ r <- aggregate_river(r)
+ plot(r)
+ 
+ point <- locator(1) # click on the map to define point
+ locate_site(point$X, point$Y, r)
+ }
 }
