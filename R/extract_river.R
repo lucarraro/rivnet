@@ -142,6 +142,8 @@ extract_river <- function(outlet,
     Y_FD <- yFromCell(ssa,1:ncell(ssa))[FD_to_DEM]
     Z_FD <- values(fel)[FD_to_DEM]
     A_FD <- cellsize^2*ssa_val[FD_to_DEM]
+    xllcorner <- min(xFromCell(ssa,1:ncell(ssa)))
+    yllcorner <- min(yFromCell(ssa,1:ncell(ssa)))
 
     Length <- cellsize*(1 + as.numeric(flowDir %% 2 ==0)*(sqrt(2)-1))
     Length_FD <- Length[FD_to_DEM]
@@ -224,9 +226,10 @@ extract_river <- function(outlet,
     CM <- list(A=A_FD[Outlet_FD], XContour=XContour, YContour=YContour,
                XContourDraw=XContour, YContourDraw=YContour)
     FD <- list(A=A_FD,W=W_FD,downNode=downNode_FD,X=X_FD,Y=Y_FD,nNodes=Nnodes_FD,outlet=Outlet_FD,perm=pl,
-               Z=Z_FD,slope=Slope_FD,leng=Length_FD,XDraw=X_FD,YDraw=Y_FD,toCM=toCM)
+               Z=Z_FD,slope=Slope_FD,leng=Length_FD,XDraw=X_FD,YDraw=Y_FD,toCM=toCM, toDEM=FD_to_DEM)
 
-    river <- list(FD=FD,CM=CM,dimX=ncols,dimY=nrows,cellsize=cellsize,nOutlet=length(Outlet_FD),periodicBoundaries=FALSE)
+    river <- list(FD=FD,CM=CM,dimX=ncols,dimY=nrows,cellsize=cellsize,nOutlet=length(Outlet_FD),periodicBoundaries=FALSE,
+                  xllcorner=xllcorner, yllcorner=yllcorner)
 
     river_S4 <- new("river")
     fieldnames <- names(river)
@@ -239,7 +242,8 @@ extract_river <- function(outlet,
 setClass("river",
          slots= c(FD="list", dimX="numeric", dimY="numeric", cellsize="numeric", nOutlet="numeric",
                   periodicBoundaries="logical", expEnergy="numeric", coolingRate="numeric",
-                  typeInitialState="character", nIter="numeric", initialNoCoolingPhase="numeric", energyInit="numeric",
+                  typeInitialState="character", nIter="numeric", initialNoCoolingPhase="numeric",
+                  energyInit="numeric", xllcorner="numeric", yllcorner="numeric",
                   CM="list",RN="list",AG="list",OptList="list",SC="list",thrA="numeric",
                   slope0="numeric", zMin="numeric",streamOrderType="character",maxReachLength="numeric",
                   widthMax="numeric",depthMax="numeric",velocityMax="numeric",expWidth="numeric",expDepth="numeric",expVelocity="numeric"))

@@ -46,6 +46,7 @@ locate_site <- function(X,Y,river,
   }
 
   explist <- vector("list")
+  explist[["FDnode"]] <- indFD
   explist[["AGnode"]] <- AGnode
   explist[["RNnode"]] <- RNnode
 

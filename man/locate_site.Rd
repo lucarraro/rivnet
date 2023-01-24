@@ -21,6 +21,8 @@ If \code{FALSE}, the downstream path from (\code{X}, \code{Y}) is followed until
 
 \value{
 A list with objects:
+\item{FDode}{index at the FD level of the node that is closest to (\code{X}, \code{Y}). This is generally not a node
+that belongs to the river network.}
 \item{RNode}{index at the RN level of the relocated site.}
 \item{AGode}{index at the AG level of the relocated site.}
 }
