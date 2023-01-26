@@ -13,14 +13,15 @@
 
 \usage{
 \S4method{plot}{river,numeric}(x, y, ...)
-\S4method{plot}{numeric,river}(y, x, ...)
+\S4method{plot}{numeric,river}(x, y, ...)
 \S4method{plot}{river,missing}(x, y, ...)
 }
 
 \arguments{
-\item{x}{A river object.}
-\item{y}{A numeric vector to be displayed. It is equivalent to \code{theme} in \code{draw_thematic_OCN}.
-If \code{y} is specified, the river must have been aggregated. See details.}
+\item{x}{A river object (or a numeric vector if \code{y} is a river).}
+\item{y}{A numeric vector to be displayed (or a river if \code{x} is a numeric vector). 
+It is equivalent to \code{theme} in \code{draw_thematic_OCN}. If \code{y} is specified, the river must 
+have been aggregated. See details.}
 \item{...}{Arguments passed to the plotting functions \code{draw_simple_OCN}, \code{draw_contour_OCN}, 
 \code{draw_thematic_OCN}. See details.} 
 }
@@ -39,7 +40,7 @@ has not been aggregated (via \code{aggregate_OCN} or \code{aggregate_river}), th
 }
 
 \examples{
-fp <- system.file("extdata/wigger.tif", package="rivers")
+fp <- system.file("extdata/wigger.tif", package="rivnet")
 r <- extract_river(outlet=c(637478,237413),
 	DEM=fp)
 plot(r)	# equivalent to draw_contour_OCN

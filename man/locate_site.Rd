@@ -23,6 +23,8 @@ If \code{FALSE}, the downstream path from (\code{X}, \code{Y}) is followed until
 A list with objects:
 \item{FDode}{index at the FD level of the node that is closest to (\code{X}, \code{Y}). This is generally not a node
 that belongs to the river network.}
+\item{distance}{The distance between \code{FDnode} and \code{RNnode}, expressed either as Euclidean distance (if 
+\code{euclidean = TRUE}), or as downstream distance alternatively.}
 \item{RNode}{index at the RN level of the relocated site.}
 \item{AGode}{index at the AG level of the relocated site.}
 }
@@ -44,7 +46,7 @@ and argument \code{breakpoints}).
 
 \examples{
 \donttest{
- fp <- system.file("extdata/wigger.tif", package = "rivers")
+ fp <- system.file("extdata/wigger.tif", package = "rivnet")
  r <- extract_river(outlet = c(637478, 237413),
 	                  DEM = fp)					  
  r <- aggregate_river(r)
@@ -56,7 +58,7 @@ and argument \code{breakpoints}).
  
  \dontrun{
  # define X, Y by clicking on the map
- fp <- system.file("extdata/wigger.tif", package = "rivers")
+ fp <- system.file("extdata/wigger.tif", package = "rivnet")
  r <- extract_river(outlet = c(637478, 237413),
 	                  DEM = fp)					  
  r <- aggregate_river(r)

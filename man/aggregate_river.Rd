@@ -16,7 +16,7 @@ This is an alias to \code{\link{aggregate_OCN}}.
 }
 \examples{
 \donttest{
- fp <- system.file("extdata/wigger.tif", package="rivers")
+ fp <- system.file("extdata/wigger.tif", package="rivnet")
  r <- extract_river(outlet=c(637478,237413),
 	DEM=fp)
 r <- aggregate_river(r)	

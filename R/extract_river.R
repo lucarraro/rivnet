@@ -312,7 +312,7 @@ setMethod("plot", signature(x="river",y="numeric"),
           function(x, y, ...){
             OCNet::draw_thematic_OCN(y, x, ...)})
 
-setMethod("plot", signature(y="numeric",x="river"),
+setMethod("plot", signature(x="numeric",y="river"),
           function(x, y, ...){
             OCNet::draw_thematic_OCN(y, x, ...)})
 

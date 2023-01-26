@@ -4,8 +4,12 @@ locate_site <- function(X,Y,river,
                         xlim=NULL,
                         ylim=NULL){
 
-  distVec <- sqrt((river$FD$X-X)^2 + (river$FD$Y-Y)^2)
-  indFD <- which(distVec == min(distVec))[1]
+  if (!("RN" %in% names(river))){
+    stop('Missing fields in river. You should run aggregate_river prior to locate_site.')
+  }
+
+  distVec_FD <- sqrt((river$FD$X-X)^2 + (river$FD$Y-Y)^2)
+  indFD <- which(distVec_FD == min(distVec_FD))[1]
 
   Xgrid <- river$FD$X[indFD]
   Ygrid <- river$FD$Y[indFD]
@@ -13,11 +17,16 @@ locate_site <- function(X,Y,river,
   if (euclidean){
     # find closest site as the crow flies
     distVec <- sqrt((river$RN$X-Xgrid)^2 + (river$RN$Y-Ygrid)^2)
-    RNnode <- which(distVec == min(distVec))[1]
+    distanz <- min(distVec)
+    RNnode <- which(distVec == distanz)[1]
   } else {
+    distanz <- 0
     # follow downstream direction
     j <- indFD
-    while (river$FD$toRN[j]==0){  j <- river$FD$downNode[j]}
+    while (river$FD$toRN[j]==0){
+      distanz <- distanz + river$FD$leng[j]
+      j <- river$FD$downNode[j]}
+    distanz <- distanz + river$FD$leng[j]
     RNnode <- river$FD$toRN[j]
   }
 
@@ -47,6 +56,7 @@ locate_site <- function(X,Y,river,
 
   explist <- vector("list")
   explist[["FDnode"]] <- indFD
+  explist[["distance"]] <- distanz
   explist[["AGnode"]] <- AGnode
   explist[["RNnode"]] <- RNnode
 

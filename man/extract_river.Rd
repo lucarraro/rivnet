@@ -79,7 +79,7 @@ If nested outlets are specified, the function ignores the upstream outlet.
 # extract the river Wigger (Switzerland) from DEM raster file
 # outlet coordinates are expressed in the CH1903/LV03 coordinate system 
 # (i.e. same as the DEM file)
- fp <- system.file("extdata/wigger.tif", package="rivers")
+ fp <- system.file("extdata/wigger.tif", package="rivnet")
  r <- extract_river(outlet=c(637478,237413), 
 	DEM=fp)
 r
