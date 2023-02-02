@@ -14,4 +14,9 @@ Description: Seamless extraction of river networks from Digital
 Imports: spam, raster, sf, terra, withr, traudem, elevatr, OCNet, methods 
 License: MIT + file LICENSE
 Encoding: UTF-8
+Suggests: 
+    knitr,
+    rmarkdown,
+    bookdown
+VignetteBuilder: knitr
 URL: https://lucarraro.github.io/rivnet/
