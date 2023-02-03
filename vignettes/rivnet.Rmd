@@ -72,6 +72,7 @@ knitr::include_graphics("TauDEM_workflow.png")
 
 Extract a river (Wigger, Switzerland) from an user-provided DEM:
 ```{r}
+traudem::taudem_sitrep()
 fp <- system.file("extdata/wigger.tif", package = "rivnet")
 r <- extract_river(outlet = c(637478, 237413), DEM = fp)
 r
