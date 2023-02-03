@@ -73,34 +73,43 @@ knitr::include_graphics("TauDEM_workflow.png")
 Extract a river (Wigger, Switzerland) from an user-provided DEM:
 ```r
 fp <- system.file("extdata/wigger.tif", package = "rivnet")
-out_fel <- taudem_pitremove(fp)
-```
-
-```r
-fp <- system.file("extdata/wigger.tif", package = "rivnet")
 r <- extract_river(outlet = c(637478, 237413), DEM = fp)
 r
+#> Class         : river 
+#> Type          : Real river 
+#> No. FD nodes  : 8768 
+#> Dimensions    : 195 x 242 
+#> Cell size     : 208.23 
+#> Has elevation : TRUE 
+#> Aggregated    : FALSE 
 ```
 Outlet coordinates must be expressed in the same coordinate system as the input DEM.
 
 The same river can be extracted starting from DEM data downloaded from open-source servers:
-```{r, fig.width=7, fig.height=7}
+```r
 r2 <- extract_river(outlet = c(637478, 237413),
 	EPSG = 21781, #CH1903/LV03 coordinate system
 	ext = c(6.2e5, 6.6e5, 2e5, 2.5e5),
 	z = 8)
 
-
 plot(r2)
-
 ```
+
+```{r wigg1, echo=FALSE, out.width = '80%'}
+knitr::include_graphics("wigger1.png")
+```
+
 
 A `plot` method has been defined for `river` objects, which calls different drawing functions from the `OCNet` package. Its default behavior depends on the attributes included in the `river` object:
-```{r, fig.width=7, fig.height=7}
+```r
 r2 <- aggregate_river(r2)
 plot(r2)
-
 ```
+
+```{r wigg2, echo=FALSE, out.width = '70%'}
+knitr::include_graphics("wigger2.png")
+```
+In the first case, `plot` calls `draw_simple_OCN`; in the second case, it calls `draw_thematic_OCN`.
 
 For computational speed issues, the examples provided are derived from rather coarse DEMs. To increase the resolution of the DEM (and thus of the resulting `river`), it is possible to increase the `z` value in `extract_river` (see `elevatr` documentation for details).
 
