@@ -71,8 +71,34 @@ knitr::include_graphics("TauDEM_workflow.png")
 # A minimal example
 
 Extract a river (Wigger, Switzerland) from an user-provided DEM:
-```{r}
+```r
 traudem::taudem_sitrep()
+#> ✔ Found GDAL version GDAL 2.1.0, released 2016/04/25.
+#> ✔ Found Microsoft MPI Startup Program [Version 7.1.12437.25] (MPI).
+#> ✔ Found TauDEM path (C:/PROGRA~1/TauDEM/TAUDEM~1).
+#> ✔ Found TauDEM executables directory (C:/PROGRA~1/TauDEM/TAUDEM~1).
+#> ✔ Found all TauDEM executables.
+#> ℹ Testing TauDEM on an example file (please wait a bit)...
+#> ── TauDEM output ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> PitRemove version 5.3.7
+#> Input file DEM.tif has projected coordinate system.
+#> Processes: 1
+#> Header read time: 0.004543
+#> Data read time: 0.000637
+#> Compute time: 0.004145
+#> Write time: 0.005104
+#> Total time: 0.014429
+#> This run may take on the order of 1 minutes to complete.
+#> This estimate is very approximate. 
+#> Run time is highly uncertain as it depends on the complexity of the input data 
+#> and speed and memory of the computer. This estimate is based on our testing on 
+#> a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
+#>  ── End of TauDEM output ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+#> ✔ Was able to launch a TauDEM example!
+#> ! Double-check above output for serious error messages.
+```
+
+```{r}
 fp <- system.file("extdata/wigger.tif", package = "rivnet")
 r <- extract_river(outlet = c(637478, 237413), DEM = fp)
 r
