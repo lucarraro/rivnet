@@ -92,23 +92,7 @@ fs::file_copy(
   file.path(test_dir, "DEM.tif")
 )
 output <- taudem_pitremove(file.path(test_dir, "DEM.tif"))
-#> PitRemove version 5.3.9
-#> Input file /tmp/Rtmp64HAv3/filefc9c38806e1b/DEM.tif has projected coordinate system.
-#> Nodata value input to create partition from file: nan
-#> Nodata value recast to float used in partition raster: nan
-#> Processes: 1
-#> Header read time: 0.002983
-#> Data read time: 0.001157
-#> Compute time: 0.016390
-#> Write time: 0.001719
-#> Total time: 0.022249
-#> This run may take on the order of 1 minutes to complete.
-#> This estimate is very approximate. 
-#> Run time is highly uncertain as it depends on the complexity of the input data 
-#> and speed and memory of the computer. This estimate is based on our testing on 
-#> a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
 output
-#> [1] "/tmp/Rtmp64HAv3/filefc9c38806e1b/DEMfel.tif"
 ```
 
 We ran the example above in a temporary directory that `withr` automatically deletes.
