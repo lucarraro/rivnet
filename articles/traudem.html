@@ -151,23 +151,7 @@ PitRemove</a>:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">test_dir</span>, <span class="st">"DEM.tif"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lucarraro.github.io/traudem/reference/taudem_pitremove.html" class="external-link">taudem_pitremove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">test_dir</span>, <span class="st">"DEM.tif"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; PitRemove version 5.3.9</span></span>
-<span><span class="co">#&gt; Input file /tmp/Rtmp64HAv3/filefc9c38806e1b/DEM.tif has projected coordinate system.</span></span>
-<span><span class="co">#&gt; Nodata value input to create partition from file: nan</span></span>
-<span><span class="co">#&gt; Nodata value recast to float used in partition raster: nan</span></span>
-<span><span class="co">#&gt; Processes: 1</span></span>
-<span><span class="co">#&gt; Header read time: 0.002983</span></span>
-<span><span class="co">#&gt; Data read time: 0.001157</span></span>
-<span><span class="co">#&gt; Compute time: 0.016390</span></span>
-<span><span class="co">#&gt; Write time: 0.001719</span></span>
-<span><span class="co">#&gt; Total time: 0.022249</span></span>
-<span><span class="co">#&gt; This run may take on the order of 1 minutes to complete.</span></span>
-<span><span class="co">#&gt; This estimate is very approximate. </span></span>
-<span><span class="co">#&gt; Run time is highly uncertain as it depends on the complexity of the input data </span></span>
-<span><span class="co">#&gt; and speed and memory of the computer. This estimate is based on our testing on </span></span>
-<span><span class="co">#&gt; a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.</span></span>
-<span><span class="va">output</span></span>
-<span><span class="co">#&gt; [1] "/tmp/Rtmp64HAv3/filefc9c38806e1b/DEMfel.tif"</span></span></code></pre></div>
+<span><span class="va">output</span></span></code></pre></div>
 <p>We ran the example above in a temporary directory that
 <code>withr</code> automatically deletes. If you want to automatically
 get rid of some of the intermediary files created by TauDEM in one of
