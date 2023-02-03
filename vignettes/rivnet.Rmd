@@ -109,6 +109,7 @@ plot(r2)
 ```{r wigg2, echo=FALSE, out.width = '70%'}
 knitr::include_graphics("wigger2.png")
 ```
+
 In the first case, `plot` calls `draw_simple_OCN`; in the second case, it calls `draw_thematic_OCN`.
 
 For computational speed issues, the examples provided are derived from rather coarse DEMs. To increase the resolution of the DEM (and thus of the resulting `river`), it is possible to increase the `z` value in `extract_river` (see `elevatr` documentation for details).
