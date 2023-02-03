@@ -47,31 +47,7 @@ In particular, after installing the TauDEM CLI and dependencies as well as the R
 
 ```r
 traudem::taudem_sitrep()
-#> ✔ Found GDAL version 3.0.4.
-#> ✔ Found mpiexec (OpenRTE) 4.0.3 (MPI).
-#> ✔ Found TauDEM path (/usr/local/taudem).
-#> ✔ Found TauDEM executables directory (/usr/local/taudem).
-#> ✔ Found all TauDEM executables.
-#> ℹ Testing TauDEM on an example file (please wait a bit)...
-#> ── TauDEM output ────────────────────────────────────────────────────────────────────
-#> PitRemove version 5.3.9
-#> Input file DEM.tif has projected coordinate system.
-#> Nodata value input to create partition from file: nan
-#> Nodata value recast to float used in partition raster: nan
-#> Processes: 1
-#> Header read time: 0.008202
-#> Data read time: 0.003174
-#> Compute time: 0.028233
-#> Write time: 0.002115
-#> Total time: 0.041723
-#> This run may take on the order of 1 minutes to complete.
-#> This estimate is very approximate. 
-#> Run time is highly uncertain as it depends on the complexity of the input data 
-#> and speed and memory of the computer. This estimate is based on our testing on 
-#> a dual quad core Dell Xeon E5405 2.0GHz PC with 16GB RAM.
-#> ── End of TauDEM output ─────────────────────────────────────────────────────────────
-#> ✔ Was able to launch a TauDEM example!
-#> ! Double-check above output for serious error messages.
+
 ```
 
 You can install traudem from CRAN:
@@ -248,7 +224,11 @@ z <- get_elev_raster(locations = loc.df, prj = crs_str, z = zoom, verbose = F)
 #>  repeated warnings suppressed
 #>  Discarded datum CH1903 in Proj4 definition
 #> 
-#>  Accessing raster elevation [-------------------------]   0% Accessing raster elevation [=====>-------------------]  25% Accessing raster elevation [===========>-------------]  50% Accessing raster elevation [==================>------]  75% Accessing raster elevation [=========================] 100%
+#>  Accessing raster elevation [-------------------------]   0%
+ Accessing raster elevation [=====>-------------------]  25%
+ Accessing raster elevation [===========>-------------]  50%
+ Accessing raster elevation [==================>------]  75%
+ Accessing raster elevation [=========================] 100%
 #> Mosaicing & Projecting
 z <- rast(z)
 z <- crop(z, ext(x_ll, x_tr, y_ll, y_tr))
