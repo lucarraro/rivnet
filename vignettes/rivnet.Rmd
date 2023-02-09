@@ -90,7 +90,7 @@ The same river can be extracted starting from DEM data downloaded from open-sour
 r2 <- extract_river(outlet = c(637478, 237413),
 	EPSG = 21781, #CH1903/LV03 coordinate system
 	ext = c(6.2e5, 6.6e5, 2e5, 2.5e5),
-	z = 8)
+	z = 10)
 
 plot(r2)
 ```

@@ -9,7 +9,7 @@ extract_river <- function(outlet,
                            plot.rast=FALSE,
                            threshold_parameter=1000,
                            n_processes=1,
-                           quiet=TRUE,
+                           displayUpdates=FALSE,
                            src="aws"){
 
   if (!is.null(DEM)){
@@ -34,6 +34,8 @@ extract_river <- function(outlet,
   if ("y" %in% names(outlet)){y_outlet <- outlet$y} else {y_outlet <- outlet[,2]}
 
   test_dir <- withr::local_tempdir() # temporary directory storing intermediary files created by TauDEM
+
+  quiet <- !displayUpdates
 
   if (is.null(DEM)){
 
@@ -127,9 +129,7 @@ extract_river <- function(outlet,
   }
 
   if (as.river==TRUE){
-    if (!quiet){
-      cat("Creation of river object... \n")
-    }
+    if (!quiet){message("Creation of river object...      \r", appendLF = FALSE)}
     ncols <- ncol(ssa)
     nrows <- nrow(ssa)
     ssa_val <- values(ssa)
@@ -137,6 +137,8 @@ extract_river <- function(outlet,
 
     Nnodes_FD <- sum(!is.na(ssa_val))
     FD_to_DEM <- which(!is.na(ssa_val))
+    DEM_to_FD <- numeric(max(FD_to_DEM))
+    DEM_to_FD[FD_to_DEM] <- 1:Nnodes_FD
 
     X_FD <- xFromCell(ssa,1:ncell(ssa))[FD_to_DEM]
     Y_FD <- yFromCell(ssa,1:ncell(ssa))[FD_to_DEM]
@@ -154,15 +156,22 @@ extract_river <- function(outlet,
     downNode_FD <- numeric(nNodes_FD)
     Slope_FD <-  numeric(nNodes_FD)
 
+    downNode_rev <- vector(nNodes_FD,mode="list")
+
     k <- 1
     for (i in 1:nNodes_FD){
       mov <- neigh(flowDir[FD_to_DEM[i]])
-      d <- which(FD_to_DEM==(FD_to_DEM[i]+mov[1]+mov[2]*ncols)) # indices from top-left corner to the right, then next row...
-      if (length(d)!=0){
+      d <- DEM_to_FD[FD_to_DEM[i]+mov[1]+mov[2]*ncols]# indices from top-left corner to the right, then next row...
+      #d <- which(FD_to_DEM==(FD_to_DEM[i]+mov[1]+mov[2]*ncols)) # slow alternative
+      if (d!=0){
         ind[k, ] <- c(i,d)
         k <- k + 1
         Slope_FD[i] <- (Z_FD[i]-Z_FD[d])/Length_FD[i]
+        downNode_rev[[d]] <- c(downNode_rev[[d]],i)
       }
+      # if (!quiet){
+      #   if ((i %% round(nNodes_FD*0.01))==0){
+      #   message(sprintf("Creation of river object... %.1f%% \r",i/(1.001*nNodes_FD)*100), appendLF = FALSE)}}
     }
     ind <- ind[-(k:nNodes_FD), ]
     downNode_FD[ind[,1]] <- ind[,2]
@@ -186,7 +195,7 @@ extract_river <- function(outlet,
     slot(newW, "dimension", check = FALSE) <- W_FD@dimension
     W_FD <- newW
 
-    pl <- initial_permutation(downNode_FD)
+    pl <- initial_permutation_rev(downNode_rev, Outlet_FD)
     pl <- as.integer(pl$perm)
 
     toCM <- numeric(Nnodes_FD)
@@ -222,6 +231,8 @@ extract_river <- function(outlet,
       XContour <- list(list(XContour))
       YContour <- list(list(YContour))
     }
+
+    if (!quiet){message("Creation of river object... 100.0% \n", appendLF = FALSE)}
 
     CM <- list(A=A_FD[Outlet_FD], XContour=XContour, YContour=YContour,
                XContourDraw=XContour, YContourDraw=YContour)
@@ -331,11 +342,43 @@ neigh <- function(dir) {
   return(mov)
 }
 
-initial_permutation <- function(DownNode){
 
-  Outlet <- which(DownNode==0)
+# initial_permutation <- function(DownNode){
+#
+#   Outlet <- which(DownNode==0)
+#   NodesToExplore <- Outlet # start from outlets
+#   reverse_perm <- numeric(length(DownNode)) # build permutation vector from outlets to headwaters, then flip it
+#
+#   k <- 0
+#   while (length(NodesToExplore)>0){ # continue until all the network has been explored
+#     k <- k + 1
+#     node <- NodesToExplore[1] # explore a node
+#     reverse_perm[k] <- node # assign position in the permutation vector
+#     NodesToExplore <- NodesToExplore[-1] # remove explored node
+#     UpNodes <- which(DownNode==node) # find nodes upstream of node
+#     while (length(UpNodes)>0){ # continue upstream until a headwater is found
+#       k <- k + 1
+#       node <- UpNodes[1] # explore first upstream node
+#       reverse_perm[k] <- node
+#       if (length(UpNodes)>1){ # if there is a bifurcation upstream, add the other upstream connections at the top of NodesToExplore
+#         NodesToExplore <- c(UpNodes[2:length(UpNodes)],NodesToExplore)
+#       }
+#       UpNodes <- which(DownNode==node)
+#     }
+#   }
+#
+#   perm <- reverse_perm[length(DownNode):1] # flip permutation
+#
+#   OutList = list(perm=perm,noDAG=0)
+#
+#   invisible(OutList)
+# }
+
+initial_permutation_rev <- function(downNode_rev, Outlet){
+
+  nNodes <- length(downNode_rev)
   NodesToExplore <- Outlet # start from outlets
-  reverse_perm <- numeric(length(DownNode)) # build permutation vector from outlets to headwaters, then flip it
+  reverse_perm <- numeric(nNodes) # build permutation vector from outlets to headwaters, then flip it
 
   k <- 0
   while (length(NodesToExplore)>0){ # continue until all the network has been explored
@@ -343,7 +386,7 @@ initial_permutation <- function(DownNode){
     node <- NodesToExplore[1] # explore a node
     reverse_perm[k] <- node # assign position in the permutation vector
     NodesToExplore <- NodesToExplore[-1] # remove explored node
-    UpNodes <- which(DownNode==node) # find nodes upstream of node
+    UpNodes <- downNode_rev[[node]] # find nodes upstream of node
     while (length(UpNodes)>0){ # continue upstream until a headwater is found
       k <- k + 1
       node <- UpNodes[1] # explore first upstream node
@@ -351,11 +394,11 @@ initial_permutation <- function(DownNode){
       if (length(UpNodes)>1){ # if there is a bifurcation upstream, add the other upstream connections at the top of NodesToExplore
         NodesToExplore <- c(UpNodes[2:length(UpNodes)],NodesToExplore)
       }
-      UpNodes <- which(DownNode==node)
+      UpNodes <- downNode_rev[[node]]
     }
   }
 
-  perm <- reverse_perm[length(DownNode):1] # flip permutation
+  perm <- reverse_perm[nNodes:1] # flip permutation
 
   OutList = list(perm=perm,noDAG=0)
 

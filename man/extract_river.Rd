@@ -4,7 +4,7 @@
 \usage{
 extract_river(outlet, EPSG=NULL, ext=NULL, z=NULL, DEM=NULL, 
   as.river=TRUE, as.rast=FALSE, filename=NULL, plot.rast=FALSE,
-  threshold_parameter=1000, n_processes=1, quiet=TRUE, src="aws")
+  threshold_parameter=1000, n_processes=1, displayUpdates=FALSE, src="aws")
 }
 \description{
 Function that extracts a river network from elevation data via TauDEM's D8 flow direction 
@@ -40,7 +40,9 @@ contour be produced?}
 \item{threshold_parameter}{Value passed to \code{taudem_threshold}. See example and `traudem` 
 documentation for details.}
 \item{n_processes}{Value passed to the \code{traudem} functions.}
-\item{quiet}{Logical. If \code{FALSE} console output is suppressed.}
+\item{displayUpdates}{Logical. If \code{FALSE} console output is suppressed (barring some messages from 
+\code{elevatr::get_elev_raster}, if \code{DEM} is not provided). If \code{TRUE}, console output from 
+\code{elevatr::get_elev_raster} and \code{traudem} functions is displayed. }
 \item{src}{Value passed to \code{get_elev_raster}.}
 }
 
