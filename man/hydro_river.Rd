@@ -12,7 +12,7 @@ scaling relationships and/or uniform flow equations.
 }
 
 \arguments{
-\item{x}{Data frame containing measured hydraulic variables. It must consist of columns \code{data} (numeric values of width in m, depth in m or discharge in m^3 s^(-1)), \code{type} (containing the variable type: width (\code{"w"}), depth (\code{"d"}) or discharge (\code{"Q"})), and \code{type} (ID of AG or RN nodes to where \code{data} have been measured). See details.} 
+\item{x}{Data frame containing measured hydraulic variables. It must consist of columns \code{data} (numeric values of width in m, depth in m or discharge in m^3 s^(-1)), \code{type} (containing the variable type: width (\code{"w"}), depth (\code{"d"}) or discharge (\code{"Q"})), and \code{node} (ID of AG or RN nodes to where \code{data} have been measured). See details.} 
 \item{river}{River object. It must have been aggregated (via \code{aggregate_river}).}
 \item{level}{Aggregation level at which the nodes in \code{x$node} are defined and at which hydraulic variables are calculated. Possible values are \code{"RN"}, \code{"AG"}. See \code{\link{OCNet}} for details.}
 \item{leopold}{Logical. Should scaling relationships of hydraulic variables with drainage area (in the spirit of Leopold and Maddock, 1953) be preferred over uniform flow (Gauchler-Strickler/Manning) relationships? See details.}

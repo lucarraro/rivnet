@@ -163,6 +163,7 @@ extract_river <- function(outlet,
       mov <- neigh(flowDir[FD_to_DEM[i]])
       d <- DEM_to_FD[FD_to_DEM[i]+mov[1]+mov[2]*ncols]# indices from top-left corner to the right, then next row...
       #d <- which(FD_to_DEM==(FD_to_DEM[i]+mov[1]+mov[2]*ncols)) # slow alternative
+      if (is.na(d)){d=0}
       if (d!=0){
         ind[k, ] <- c(i,d)
         k <- k + 1

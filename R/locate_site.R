@@ -47,7 +47,7 @@ locate_site <- function(X,Y,river,
 
     xy_lim <- par("usr")
 
-    legend(x=xy_lim[1]+river$cellsize, y=xy_lim[4], legend=c("Original site","RN node","AG node"),
+    legend(x=xy_lim[1]+river$cellsize, y=xy_lim[4], legend=c("Original site","RN node","AG reach"),
            col=c("red","black","orange"), pch=c(15,20,NA),lty=c(0,0,1))
     points(X,Y,pch=15,col="red")
     points(Xnew,Ynew,pch=20,col="black")

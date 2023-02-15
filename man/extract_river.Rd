@@ -77,7 +77,7 @@ If nested outlets are specified, the function ignores the upstream outlet.
 }
 
 \examples{
-
+\dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # extract the river Wigger (Switzerland) from DEM raster file
 # outlet coordinates are expressed in the CH1903/LV03 coordinate system 
 # (i.e. same as the DEM file)
@@ -138,5 +138,5 @@ plot(r) # if threshold_parameter is too large, the outlet pixel might not be
 # located at all (for instance, in this case no cells have contributing area 
 # above threshold_parameter), hence throwing an error
 }
-
+\dontshow{\}) # examplesIf}
 }
