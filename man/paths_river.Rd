@@ -15,6 +15,7 @@ Find paths in a river
 This is an alias to \code{\link{paths_OCN}}.
 }
 \examples{
+\dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
  fp <- system.file("extdata/wigger.tif", package="rivnet")
  r <- extract_river(outlet=c(637478,237413),
@@ -22,4 +23,5 @@ This is an alias to \code{\link{paths_OCN}}.
 r <- aggregate_river(r)	
 r <- paths_river(r)
 }
+\dontshow{\}) # examplesIf}
 }

@@ -40,6 +40,7 @@ has not been aggregated (via \code{aggregate_OCN} or \code{aggregate_river}), th
 }
 
 \examples{
+\dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 fp <- system.file("extdata/wigger.tif", package="rivnet")
 r <- extract_river(outlet=c(637478,237413),
 	DEM=fp)
@@ -52,5 +53,5 @@ plot(r) # equivalent to draw_thematic_OCN
 # equivalent to draw_thematic_OCN with 'theme' specified
 plot(r, r$AG$streamOrder, discreteLevels=TRUE) 
 }
-	
+\dontshow{\}) # examplesIf}	
 }

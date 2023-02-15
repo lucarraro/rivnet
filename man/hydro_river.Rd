@@ -61,6 +61,7 @@ Cross-sections are assumed as vertically symmetric. If \code{crossSection = "nat
 }
 
 \examples{
+\dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
  
 fp <- system.file("extdata/wigger.tif", package="rivnet")
@@ -88,6 +89,6 @@ river <- hydro_river(x[-5, ], river) # case 1
 river <- hydro_river(x[-6, ], river) # case 2
 
  }
- 
+\dontshow{\}) # examplesIf}	 
  
 }

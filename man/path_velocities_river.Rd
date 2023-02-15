@@ -33,6 +33,7 @@ In both cases, diagonal entries of \code{pathVelocity} are set equal to the resp
 }
 
 \examples{
+\dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
  
 fp <- system.file("extdata/wigger.tif", package="rivnet")
@@ -54,6 +55,6 @@ river2 <- path_velocities_river(river2, level = "AG") # now downstream nodes are
 river2$AG$pathVelocities[176, 176] 
 river2$AG$pathVelocities[176, 174]
  }
- 
+ \dontshow{\}) # examplesIf}	
  
 }

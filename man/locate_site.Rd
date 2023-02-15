@@ -45,6 +45,7 @@ and argument \code{breakpoints}).
 }
 
 \examples{
+\dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
  fp <- system.file("extdata/wigger.tif", package = "rivnet")
  r <- extract_river(outlet = c(637478, 237413),
@@ -67,4 +68,5 @@ and argument \code{breakpoints}).
  point <- locator(1) # click on the map to define point
  locate_site(point$X, point$Y, r)
  }
+\dontshow{\}) # examplesIf}
 }

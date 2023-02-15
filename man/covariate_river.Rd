@@ -45,6 +45,7 @@ is run repeated times (for instance, to compute covariates for one SpatRaster ob
 }
 
 \examples{
+\dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
  
 fp <- system.file("extdata/wigger.tif", package="rivnet")
@@ -71,6 +72,6 @@ plot(river$SC$locCov[, 5], river) # the layer has been added after the 4 previou
 names(river$SC$locCov) 
  
  }
- 
+\dontshow{\}) # examplesIf}	
  
 }
