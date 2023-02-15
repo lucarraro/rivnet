@@ -85,40 +85,29 @@ In both cases, diagonal entries of <code>pathVelocity</code> are set equal to th
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive() &amp;&amp; traudem::can_register_taudem()</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/wigger.tif"</span>, package<span class="op">=</span><span class="st">"rivnet"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">river</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_river.html">extract_river</a></span><span class="op">(</span>outlet<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">637478</span>,<span class="fl">237413</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                       DEM<span class="op">=</span><span class="va">fp</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in taudem_exec(n_processes = n_processes, program = "pitremove",     args = args, quiet = quiet):</span> <span style="color: #BB0000;">✖</span> Can't find TauDEM</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Refer to ?traudem::taudem_sitrep</span>
 <span class="r-in"><span><span class="va">river</span> <span class="op">&lt;-</span> <span class="fu"><a href="aggregate_river.html">aggregate_river</a></span><span class="op">(</span><span class="va">river</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "slope" %in% names(OCN$FD):</span> object 'river' not found</span>
 <span class="r-in"><span><span class="va">river</span> <span class="op">&lt;-</span> <span class="fu"><a href="paths_river.html">paths_river</a></span><span class="op">(</span><span class="va">river</span>, includePaths <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "RN" %in% names(OCN):</span> object 'river' not found</span>
 <span class="r-in"><span><span class="va">river</span> <span class="op">&lt;-</span> <span class="fu">OCNet</span><span class="fu">::</span><span class="fu"><a href="https://lucarraro.github.io/OCNet/reference/rivergeometry_OCN.html" class="external-link">rivergeometry_OCN</a></span><span class="op">(</span><span class="va">river</span><span class="op">)</span> <span class="co"># simplified alternative to hydro_river</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "AG" %in% names(OCN):</span> object 'river' not found</span>
 <span class="r-in"><span>                                  <span class="co"># to attribute velocities at all RN and AG nodes</span></span></span>
 <span class="r-in"><span>                  </span></span>
 <span class="r-in"><span><span class="va">river</span> <span class="op">&lt;-</span> <span class="fu">path_velocities_river</span><span class="op">(</span><span class="va">river</span>, level <span class="op">=</span> <span class="st">"AG"</span><span class="op">)</span> <span class="co"># downstream nodes are not included in paths</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "RN" %in% names(river):</span> object 'river' not found</span>
 <span class="r-in"><span><span class="va">river</span><span class="op">$</span><span class="va">AG</span><span class="op">$</span><span class="va">pathVelocities</span><span class="op">[</span><span class="fl">176</span>, <span class="fl">176</span><span class="op">]</span> </span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'river' not found</span>
 <span class="r-in"><span><span class="va">river</span><span class="op">$</span><span class="va">AG</span><span class="op">$</span><span class="va">pathVelocities</span><span class="op">[</span><span class="fl">176</span>, <span class="fl">174</span><span class="op">]</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'river' not found</span>
 <span class="r-in"><span> <span class="co"># node 174 is immediately downstream of 176; if downstream nodes are not included </span></span></span>
 <span class="r-in"><span> <span class="co"># in paths, the two velocities are equal</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">river2</span> <span class="op">&lt;-</span> <span class="fu"><a href="paths_river.html">paths_river</a></span><span class="op">(</span><span class="va">river</span>, includePaths <span class="op">=</span> <span class="cn">TRUE</span>, includeDownstreamNode <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "RN" %in% names(OCN):</span> object 'river' not found</span>
 <span class="r-in"><span><span class="va">river2</span> <span class="op">&lt;-</span> <span class="fu">path_velocities_river</span><span class="op">(</span><span class="va">river2</span>, level <span class="op">=</span> <span class="st">"AG"</span><span class="op">)</span> <span class="co"># now downstream nodes are included in paths</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "RN" %in% names(river):</span> object 'river2' not found</span>
 <span class="r-in"><span><span class="va">river2</span><span class="op">$</span><span class="va">AG</span><span class="op">$</span><span class="va">pathVelocities</span><span class="op">[</span><span class="fl">176</span>, <span class="fl">176</span><span class="op">]</span> </span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'river2' not found</span>
 <span class="r-in"><span><span class="va">river2</span><span class="op">$</span><span class="va">AG</span><span class="op">$</span><span class="va">pathVelocities</span><span class="op">[</span><span class="fl">176</span>, <span class="fl">174</span><span class="op">]</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'river2' not found</span>
 <span class="r-in"><span> <span class="co"># }</span></span></span>
-<span class="r-in"><span> </span></span>
+<span class="r-in"><span> <span class="op">}</span>  </span></span>
 <span class="r-in"><span> </span></span>
 </code></pre></div>
     </div>

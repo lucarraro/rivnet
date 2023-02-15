@@ -99,42 +99,34 @@ is run repeated times (for instance, to compute covariates for one SpatRaster ob
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive() &amp;&amp; traudem::can_register_taudem()</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/wigger.tif"</span>, package<span class="op">=</span><span class="st">"rivnet"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">river</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_river.html">extract_river</a></span><span class="op">(</span>outlet<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">637478</span>,<span class="fl">237413</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                       DEM<span class="op">=</span><span class="va">fp</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in taudem_exec(n_processes = n_processes, program = "pitremove",     args = args, quiet = quiet):</span> <span style="color: #BB0000;">✖</span> Can't find TauDEM</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">ℹ</span> Refer to ?traudem::taudem_sitrep</span>
 <span class="r-in"><span><span class="va">river</span> <span class="op">&lt;-</span> <span class="fu"><a href="aggregate_river.html">aggregate_river</a></span><span class="op">(</span><span class="va">river</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "slope" %in% names(OCN$FD):</span> object 'river' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># land cover raster file (categorical)</span></span></span>
 <span class="r-in"><span><span class="va">r1</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/landcover.tif"</span>, package<span class="op">=</span><span class="st">"rivnet"</span><span class="op">)</span><span class="op">)</span> </span></span>
 <span class="r-in"><span><span class="co"># legend: 1-urban; 2-agriculture; 3-forest; 4-improductive</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">river</span> <span class="op">&lt;-</span> <span class="fu">covariate_river</span><span class="op">(</span><span class="va">r1</span>, <span class="va">river</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "RN" %in% names(river):</span> object 'river' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">river</span><span class="op">$</span><span class="va">SC</span><span class="op">$</span><span class="va">locCov</span><span class="op">[</span> , <span class="fl">1</span><span class="op">]</span>, <span class="va">river</span><span class="op">)</span> <span class="co"># fraction of urban area within a subcatchment</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> error in evaluating the argument 'x' in selecting a method for function 'plot': object 'river' not found</span>
 <span class="r-in"><span><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">river</span><span class="op">$</span><span class="va">SC</span><span class="op">$</span><span class="va">upsCov</span><span class="op">[</span> , <span class="fl">1</span><span class="op">]</span>, <span class="va">river</span><span class="op">)</span> <span class="co"># fraction of upstream-averaged urban area  </span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> error in evaluating the argument 'x' in selecting a method for function 'plot': object 'river' not found</span>
 <span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="co"># mean air temperature raster file (continuous) </span></span></span>
 <span class="r-in"><span><span class="va">r2</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/temperature.tif"</span>, package<span class="op">=</span><span class="st">"rivnet"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">river</span> <span class="op">&lt;-</span> <span class="fu">covariate_river</span><span class="op">(</span><span class="va">r2</span>, <span class="va">river</span>, categorical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "RN" %in% names(river):</span> object 'river' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="plot.html">plot</a></span><span class="op">(</span><span class="va">river</span><span class="op">$</span><span class="va">SC</span><span class="op">$</span><span class="va">locCov</span><span class="op">[</span>, <span class="fl">5</span><span class="op">]</span>, <span class="va">river</span><span class="op">)</span> <span class="co"># the layer has been added after the 4 previous ones</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> error in evaluating the argument 'x' in selecting a method for function 'plot': object 'river' not found</span>
 <span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">river</span><span class="op">$</span><span class="va">SC</span><span class="op">$</span><span class="va">locCov</span><span class="op">)</span> </span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'river' not found</span>
 <span class="r-in"><span> </span></span>
 <span class="r-in"><span> <span class="co"># }</span></span></span>
-<span class="r-in"><span> </span></span>
+<span class="r-in"><span><span class="op">}</span>  </span></span>
 <span class="r-in"><span> </span></span>
 </code></pre></div>
     </div>
