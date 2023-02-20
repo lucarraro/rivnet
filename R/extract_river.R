@@ -312,21 +312,31 @@ setMethod("$<-",signature=c(x="river"),
           })
 
 setMethod("plot", signature(x="river",y="missing"),
-          function(x, ...){
+          function(x, level, ...){
+            if (missing(level)) level <- "RN"
             if (length(x$AG) > 0) {
-              OCNet::draw_thematic_OCN(x, ...)
+              if (level=="SC"){
+                OCNet::draw_subcatchments_OCN(x, ...)
+              } else {OCNet::draw_thematic_OCN(x, ...)}
             } else if (length(x$CM) > 0) {
               OCNet::draw_contour_OCN(x, ...)
             } else {
               OCNet::draw_simple_OCN(x, ...)}})
 
-setMethod("plot", signature(x="river",y="numeric"),
-          function(x, y, ...){
-            OCNet::draw_thematic_OCN(y, x, ...)})
-
 setMethod("plot", signature(x="numeric",y="river"),
-          function(x, y, ...){
-            OCNet::draw_thematic_OCN(y, x, ...)})
+          function(x, y, level, ...){
+            if (missing(level)) level <- "RN"
+            if (isTRUE(level=="SC")) {
+              OCNet::draw_subcatchments_OCN(y, x, ...)
+            } else { OCNet::draw_thematic_OCN(y, x, ...)}})
+
+setMethod("plot", signature(x="river",y="numeric"),
+          function(x, y, level, ...){
+            if (missing(level)) level <- "RN"
+            if (isTRUE(level=="SC")) {
+              OCNet::draw_subcatchments_OCN(x, y, ...)
+            } else { OCNet::draw_thematic_OCN(y, x, ...)}
+            })
 
 
 neigh <- function(dir) {
@@ -343,37 +353,6 @@ neigh <- function(dir) {
   return(mov)
 }
 
-
-# initial_permutation <- function(DownNode){
-#
-#   Outlet <- which(DownNode==0)
-#   NodesToExplore <- Outlet # start from outlets
-#   reverse_perm <- numeric(length(DownNode)) # build permutation vector from outlets to headwaters, then flip it
-#
-#   k <- 0
-#   while (length(NodesToExplore)>0){ # continue until all the network has been explored
-#     k <- k + 1
-#     node <- NodesToExplore[1] # explore a node
-#     reverse_perm[k] <- node # assign position in the permutation vector
-#     NodesToExplore <- NodesToExplore[-1] # remove explored node
-#     UpNodes <- which(DownNode==node) # find nodes upstream of node
-#     while (length(UpNodes)>0){ # continue upstream until a headwater is found
-#       k <- k + 1
-#       node <- UpNodes[1] # explore first upstream node
-#       reverse_perm[k] <- node
-#       if (length(UpNodes)>1){ # if there is a bifurcation upstream, add the other upstream connections at the top of NodesToExplore
-#         NodesToExplore <- c(UpNodes[2:length(UpNodes)],NodesToExplore)
-#       }
-#       UpNodes <- which(DownNode==node)
-#     }
-#   }
-#
-#   perm <- reverse_perm[length(DownNode):1] # flip permutation
-#
-#   OutList = list(perm=perm,noDAG=0)
-#
-#   invisible(OutList)
-# }
 
 initial_permutation_rev <- function(downNode_rev, Outlet){
 

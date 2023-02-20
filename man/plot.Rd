@@ -12,31 +12,33 @@
 \description{Plots a river object}
 
 \usage{
-\S4method{plot}{river,numeric}(x, y, ...)
-\S4method{plot}{numeric,river}(x, y, ...)
-\S4method{plot}{river,missing}(x, y, ...)
+\S4method{plot}{river,numeric}(x, y, level, ...)
+\S4method{plot}{numeric,river}(x, y, level, ...)
+\S4method{plot}{river,missing}(x, level, ...)
 }
 
 \arguments{
 \item{x}{A river object (or a numeric vector if \code{y} is a river).}
 \item{y}{A numeric vector to be displayed (or a river if \code{x} is a numeric vector). 
-It is equivalent to \code{theme} in \code{draw_thematic_OCN}. If \code{y} is specified, the river must 
+It is equivalent to \code{theme} in \code{draw_subcatchments_OCN} and \code{draw_thematic_OCN}. If \code{y} is specified, the river must 
 have been aggregated. See details.}
+\item{level}{Optional argument. If \code{level = "SC"}, \code{draw_subcatchments_OCN} is used (provided that the river object is aggregated); alternatively,
+\code{draw_thematic_OCN} is used.}
 \item{...}{Arguments passed to the plotting functions \code{draw_simple_OCN}, \code{draw_contour_OCN}, 
 \code{draw_thematic_OCN}. See details.} 
 }
 
 \details{
-This is an interface to the plotting functions \code{draw_simple_OCN}, \code{draw_contour_OCN}, 
+This is an interface to the plotting functions \code{draw_simple_OCN}, \code{draw_contour_OCN}, \code{draw_subcatchments_OCN},
 \code{draw_thematic_OCN}. If the river object does not have an elevation field (i.e., it has been generated
 by \code{create_OCN} or \code{create_general_contour_OCN}, but \code{landscape_OCN} has not 
 been run), the plotting function used is \code{draw_simple_OCN}. If the elevation field is present, but the river 
 has not been aggregated (via \code{aggregate_OCN} or \code{aggregate_river}), the plotting function used is 
- \code{draw_contour_OCN}. If the river has been aggregated,  \code{draw_thematic_OCN} is used.
+ \code{draw_contour_OCN}. If the river has been aggregated, \code{draw_subcatchments_OCN} or \code{draw_thematic_OCN} are used depending on \code{level}.
 }
 
 \seealso{
-\code{\link{draw_simple_OCN}}, \code{\link{draw_contour_OCN}}, \code{\link{draw_thematic_OCN}}
+\code{\link{draw_simple_OCN}}, \code{\link{draw_contour_OCN}}, \code{\link{draw_subcatchments_OCN}}, \code{\link{draw_thematic_OCN}}
 }
 
 \examples{
@@ -49,9 +51,16 @@ plot(r)	# equivalent to draw_contour_OCN
 \donttest{
 r <- aggregate_river(r)
 plot(r) # equivalent to draw_thematic_OCN
+plot(r, level = "SC") # equivalent to draw_subcatchments_OCN
 
 # equivalent to draw_thematic_OCN with 'theme' specified
-plot(r, r$AG$streamOrder, discreteLevels=TRUE) 
+plot(r, r$AG$streamOrder, discreteLevels=TRUE)
+plot(r$AG$streamOrder, r, discreteLevels=TRUE)  # swapping arguments is allowed
+
+# equivalent to draw_subcatchments_OCN with 'theme' specified
+plot(r, r$SC$Y, level="SC", addLegend=FALSE)
+plot(r$SC$Y, r, level="SC", addLegend=FALSE)  # swapping arguments is allowed
+
 }
 \dontshow{\}) # examplesIf}	
 }
