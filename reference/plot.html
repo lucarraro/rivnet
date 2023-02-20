@@ -46,11 +46,11 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for river,numeric</span></span>
-<span><span class="fu">plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">level</span>, <span class="va">...</span><span class="op">)</span></span>
 <span><span class="co"># S4 method for numeric,river</span></span>
-<span><span class="fu">plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">level</span>, <span class="va">...</span><span class="op">)</span></span>
 <span><span class="co"># S4 method for river,missing</span></span>
-<span><span class="fu">plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">level</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -60,8 +60,12 @@
 
 <dt>y</dt>
 <dd><p>A numeric vector to be displayed (or a river if <code>x</code> is a numeric vector). 
-It is equivalent to <code>theme</code> in <code>draw_thematic_OCN</code>. If <code>y</code> is specified, the river must 
+It is equivalent to <code>theme</code> in <code>draw_subcatchments_OCN</code> and <code>draw_thematic_OCN</code>. If <code>y</code> is specified, the river must 
 have been aggregated. See details.</p></dd>
+
+<dt>level</dt>
+<dd><p>Optional argument. If <code>level = "SC"</code>, <code>draw_subcatchments_OCN</code> is used (provided that the river object is aggregated); alternatively,
+<code>draw_thematic_OCN</code> is used.</p></dd>
 
 <dt>...</dt>
 <dd><p>Arguments passed to the plotting functions <code>draw_simple_OCN</code>, <code>draw_contour_OCN</code>, 
@@ -70,16 +74,16 @@ have been aggregated. See details.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This is an interface to the plotting functions <code>draw_simple_OCN</code>, <code>draw_contour_OCN</code>, 
+    <p>This is an interface to the plotting functions <code>draw_simple_OCN</code>, <code>draw_contour_OCN</code>, <code>draw_subcatchments_OCN</code>,
 <code>draw_thematic_OCN</code>. If the river object does not have an elevation field (i.e., it has been generated
 by <code>create_OCN</code> or <code>create_general_contour_OCN</code>, but <code>landscape_OCN</code> has not 
 been run), the plotting function used is <code>draw_simple_OCN</code>. If the elevation field is present, but the river 
 has not been aggregated (via <code>aggregate_OCN</code> or <code>aggregate_river</code>), the plotting function used is 
- <code>draw_contour_OCN</code>. If the river has been aggregated,  <code>draw_thematic_OCN</code> is used.</p>
+ <code>draw_contour_OCN</code>. If the river has been aggregated, <code>draw_subcatchments_OCN</code> or <code>draw_thematic_OCN</code> are used depending on <code>level</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code>draw_simple_OCN</code>, <code>draw_contour_OCN</code>, <code>draw_thematic_OCN</code></p></div>
+    <div class="dont-index"><p><code>draw_simple_OCN</code>, <code>draw_contour_OCN</code>, <code>draw_subcatchments_OCN</code>, <code>draw_thematic_OCN</code></p></div>
     </div>
 
     <div class="section level2">
@@ -93,9 +97,16 @@ has not been aggregated (via <code>aggregate_OCN</code> or <code>aggregate_river
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="aggregate_river.html">aggregate_river</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">plot</span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="co"># equivalent to draw_thematic_OCN</span></span></span>
+<span class="r-in"><span><span class="fu">plot</span><span class="op">(</span><span class="va">r</span>, level <span class="op">=</span> <span class="st">"SC"</span><span class="op">)</span> <span class="co"># equivalent to draw_subcatchments_OCN</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># equivalent to draw_thematic_OCN with 'theme' specified</span></span></span>
-<span class="r-in"><span><span class="fu">plot</span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span><span class="op">$</span><span class="va">AG</span><span class="op">$</span><span class="va">streamOrder</span>, discreteLevels<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> </span></span>
+<span class="r-in"><span><span class="fu">plot</span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span><span class="op">$</span><span class="va">AG</span><span class="op">$</span><span class="va">streamOrder</span>, discreteLevels<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">AG</span><span class="op">$</span><span class="va">streamOrder</span>, <span class="va">r</span>, discreteLevels<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>  <span class="co"># swapping arguments is allowed</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># equivalent to draw_subcatchments_OCN with 'theme' specified</span></span></span>
+<span class="r-in"><span><span class="fu">plot</span><span class="op">(</span><span class="va">r</span>, <span class="va">r</span><span class="op">$</span><span class="va">SC</span><span class="op">$</span><span class="va">Y</span>, level<span class="op">=</span><span class="st">"SC"</span>, addLegend<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot</span><span class="op">(</span><span class="va">r</span><span class="op">$</span><span class="va">SC</span><span class="op">$</span><span class="va">Y</span>, <span class="va">r</span>, level<span class="op">=</span><span class="st">"SC"</span>, addLegend<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>  <span class="co"># swapping arguments is allowed</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span><span class="op">}</span>  </span></span>
 </code></pre></div>
