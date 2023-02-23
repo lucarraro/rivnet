@@ -1,7 +1,7 @@
 path_velocities_river <- function(river, level = c("RN","AG"),
                                   displayUpdates = FALSE){
 
-  if (!("RN" %in% names(river))){
+  if (length(river$RN$X)==0){
     stop('Missing fields in river. You should run aggregate_river prior to path_velocities_river.') }
 
   if ("RN" %in% level){

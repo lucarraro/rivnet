@@ -3,7 +3,7 @@
 \title{Extract a river}
 \usage{
 extract_river(outlet, EPSG=NULL, ext=NULL, z=NULL, DEM=NULL, 
-  as.river=TRUE, as.rast=FALSE, filename=NULL, plot.rast=FALSE,
+  as.river=TRUE, as.rast=FALSE, filename=NULL, showPlot=FALSE,
   threshold_parameter=1000, n_processes=1, displayUpdates=FALSE, src="aws")
 }
 \description{
@@ -35,7 +35,7 @@ be created?}
 \item{filename}{Filename of the raster file produced if \code{as.rast=TRUE}. Only required if 
 \code{as.rast=TRUE}. It can be a single filename, or four filenames, in which case four different 
 raster files are produced. See Details.}
-\item{plot.rast}{Logical. Should a plot of the calculated contributing area and extracted catchment 
+\item{showPlot}{Logical. Should a plot of the calculated contributing area and extracted catchment 
 contour be produced?}
 \item{threshold_parameter}{Value passed to \code{taudem_threshold}. See example and `traudem` 
 documentation for details.}
@@ -110,7 +110,7 @@ plot(r2)
 r <- extract_river(outlet=data.frame(x=c(637478,629532),y=c(237413,233782)),
                     EPSG=21781, #CH1903/LV03 coordinate system
                     ext=c(6.2e5,6.6e5,2e5,2.5e5),
-                    z=10, plot.rast=T)
+                    z=10, showPlot=T)
 plot(r)
 
 r <- aggregate_river(r)
@@ -124,16 +124,16 @@ r <- extract_river(outlet = c(637478, 237413),
                     EPSG = 21781, #CH1903/LV03 coordinate system
                     ext = c(6.2e5, 6.6e5, 2e5, 2.5e5),
                     z = 8, threshold_parameter = 50,
-				    plot.rast = TRUE)
+				    showPlot = TRUE)
 plot(r) # if threshold_parameter is too small, the outlet might be located 
 # in a smaller river reach, and the extracted river network would be too small
-# plot.rast = TRUE can help identify what is going on
+# showPlot = TRUE can help identify what is going on
 
 r <- extract_river(outlet = c(637478, 237413),
                     EPSG = 21781, #CH1903/LV03 coordinate system
                     ext = c(6.2e5, 6.6e5, 2e5, 2.5e5),
                     z = 8, threshold_parameter = 1e5,
-				    plot.rast = TRUE)
+				    showPlot = TRUE)
 plot(r) # if threshold_parameter is too large, the outlet pixel might not be
 # located at all (for instance, in this case no cells have contributing area 
 # above threshold_parameter), hence throwing an error

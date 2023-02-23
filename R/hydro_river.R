@@ -7,7 +7,7 @@ hydro_river <- function(x, river, level = "AG",
                         ks = 30,
                         minSlope = NULL){
 
-  if (!("RN" %in% names(river))){
+  if (length(river$RN$X)==0){
     stop('Missing fields in river. You should run aggregate_river prior to hydro_river.')
   }
 

@@ -1,7 +1,7 @@
 covariate_river <- function(x, river,
                             categorical = TRUE){
 
-  if (!("RN" %in% names(river))){
+  if (length(river$RN$X)==0){
     stop('Missing fields in river. You should run aggregate_river prior to covariate_river.')
   }
 

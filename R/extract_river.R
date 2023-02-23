@@ -6,7 +6,7 @@ extract_river <- function(outlet,
                            as.river=TRUE,
                            as.rast=FALSE,
                            filename=NULL,
-                           plot.rast=FALSE,
+                           showPlot=FALSE,
                            threshold_parameter=1000,
                            n_processes=1,
                            displayUpdates=FALSE,
@@ -116,7 +116,7 @@ extract_river <- function(outlet,
   }
 
 
-  if (plot.rast==T){
+  if (showPlot==T){
     plot(ad8,col=hcl.colors(1000))
     lines(XContour,YContour,col="magenta")
     title(sprintf('Max drainage area: %.2e m2',max(values(ssa)*prod(res(ssa)),na.rm=T)))
@@ -312,10 +312,11 @@ setMethod("$<-",signature=c(x="river"),
           })
 
 setMethod("plot", signature(x="river",y="missing"),
-          function(x, level, ...){
-            if (missing(level)) level <- "RN"
-            if (length(x$AG) > 0) {
-              if (level=="SC"){
+          function(x, type, ...){
+            if (missing(type)) {type <- "RN"}
+            if (type=="elev2D") {OCNet::draw_elev2D_OCN(x, ...)}
+            else if (length(x$AG) > 0) {
+              if (type=="SC" | type=="subcatchments"){
                 OCNet::draw_subcatchments_OCN(x, ...)
               } else {OCNet::draw_thematic_OCN(x, ...)}
             } else if (length(x$CM) > 0) {
@@ -324,16 +325,16 @@ setMethod("plot", signature(x="river",y="missing"),
               OCNet::draw_simple_OCN(x, ...)}})
 
 setMethod("plot", signature(x="numeric",y="river"),
-          function(x, y, level, ...){
-            if (missing(level)) level <- "RN"
-            if (isTRUE(level=="SC")) {
+          function(x, y, type, ...){
+            if (missing(type)) type <- "RN"
+            if (isTRUE(type=="SC" | type=="subcatchments")) {
               OCNet::draw_subcatchments_OCN(y, x, ...)
             } else { OCNet::draw_thematic_OCN(y, x, ...)}})
 
 setMethod("plot", signature(x="river",y="numeric"),
-          function(x, y, level, ...){
-            if (missing(level)) level <- "RN"
-            if (isTRUE(level=="SC")) {
+          function(x, y, type, ...){
+            if (missing(type)) type <- "RN"
+            if (isTRUE(type=="SC" | type=="subcatchments")) {
               OCNet::draw_subcatchments_OCN(x, y, ...)
             } else { OCNet::draw_thematic_OCN(y, x, ...)}
             })

@@ -4,7 +4,7 @@ locate_site <- function(X,Y,river,
                         xlim=NULL,
                         ylim=NULL){
 
-  if (!("RN" %in% names(river))){
+  if (length(river$RN$X)==0){
     stop('Missing fields in river. You should run aggregate_river prior to locate_site.')
   }
 
