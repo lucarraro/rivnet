@@ -56,7 +56,7 @@ Among other packages, `rivnet` depends on the `traudem` package, and in turn, on
 
 Functions and output from packages `rivnet` and `OCNet` are interoperable according to the following workflow:
 
-```{r overview, echo=FALSE, fig.cap="Overview of `rivnet` and `OCNet` functions. `aggregate_river` is an alias for `aggregate_OCN`, and `paths_river` is an alias for `paths_OCN`; `path_velocities_river` requires `paths_river` and one between `hydro_river` and `rivergeometry_OCN`.", out.width = '80%'}
+```{r overview, echo=FALSE, fig.cap="Overview of `rivnet` and `OCNet` functions. `aggregate_river`, `paths_river`, `river_to_igraph` and `river_to_SSN` are aliases for `aggregate_OCN`, `paths_OCN`, `OCN_to_igraph` and `OCN_to_SSN`, respectively; `path_velocities_river` requires `paths_river` and one between `hydro_river` and `rivergeometry_OCN`.", out.width = '80%'}
 knitr::include_graphics("overview_rivnet.png")
 ```
 
