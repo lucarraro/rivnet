@@ -1,6 +1,6 @@
 Package: rivnet
 Type: Package
-Title: Extract And Analyze Rivers From Elevation Data 
+Title: Extract and Analyze Rivers from Elevation Data 
 Version: 0.1.0
 Author: Luca Carraro
 Maintainer: Luca Carraro <luca.carraro@hotmail.it>
