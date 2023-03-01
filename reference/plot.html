@@ -56,7 +56,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
-<dd><p>A river object (or a numeric vector if <code>y</code> is a river).</p></dd>
+<dd><p>A <code>river</code> object (or a numeric vector if <code>y</code> is a river).</p></dd>
 
 <dt>y</dt>
 <dd><p>A numeric vector to be displayed (or a river if <code>x</code> is a numeric vector). 
@@ -76,7 +76,7 @@ the river object is aggregated); if  <code>type = "elev2D"</code>, <code>draw_el
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This is an interface to the plotting functions <code>draw_simple_OCN</code>, <code>draw_elev2D_OCN</code>, <code>draw_contour_OCN</code>, <code>draw_subcatchments_OCN</code>,
-<code>draw_thematic_OCN</code>. If the river object does not have an elevation field (i.e., it has been generated
+<code>draw_thematic_OCN</code>. If the <code>river</code> object does not have an elevation field (i.e., it has been generated
 by <code>create_OCN</code> or <code>create_general_contour_OCN</code>, but <code>landscape_OCN</code> has not 
 been run), the plotting function used is <code>draw_simple_OCN</code>. If the elevation field is present, but the river 
 has not been aggregated (via <code>aggregate_OCN</code> or <code>aggregate_river</code>), the default plotting function used is 
@@ -120,7 +120,7 @@ has not been aggregated (via <code>aggregate_OCN</code> or <code>aggregate_river
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Luca Carraro.</p>
+  <p></p><p>Developed by Luca Carraro, University of Zurich.</p>
 </div>
 
 <div class="pkgdown-footer-right">

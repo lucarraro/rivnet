@@ -51,12 +51,18 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>river</dt>
-<dd><p>A river object.</p></dd>
+<dd><p>A <code>river</code> object.</p></dd>
 
 <dt>...</dt>
 <dd><p>Further arguments to be passed to <code>aggregate_OCN</code>.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>A <code>river</code> object. See <code>aggregate_OCN</code> for description of its structure.</p>
+    </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This is an alias to <code>aggregate_OCN</code>.</p>
@@ -69,9 +75,9 @@
 <span class="r-in"><span> <span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/wigger.tif"</span>, package<span class="op">=</span><span class="st">"rivnet"</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_river.html">extract_river</a></span><span class="op">(</span>outlet<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">637478</span>,<span class="fl">237413</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  DEM<span class="op">=</span><span class="va">fp</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">aggregate_river</span><span class="op">(</span><span class="va">r</span><span class="op">)</span>  </span></span>
+<span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu">aggregate_river</span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span><span class="op">}</span>  </span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -79,7 +85,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Luca Carraro.</p>
+  <p></p><p>Developed by Luca Carraro, University of Zurich.</p>
 </div>
 
 <div class="pkgdown-footer-right">
