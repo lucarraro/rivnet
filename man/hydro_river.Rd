@@ -7,13 +7,13 @@ hydro_river(x, river, level = "AG", leopold = TRUE,
  crossSection = "natural", ks = 30, minSlope = NULL)
 }
 \description{
-Assign hydraulic variables (width, water depth, discharge, water velocity, ...) across a river network from measured values based on 
+Assign hydraulic variables (width, water depth, discharge, water velocity, ...) across a \code{river} object from measured values based on 
 scaling relationships and/or uniform flow equations.
 }
 
 \arguments{
 \item{x}{Data frame containing measured hydraulic variables. It must consist of columns \code{data} (numeric values of width in m, depth in m or discharge in m^3 s^(-1)), \code{type} (containing the variable type: width (\code{"w"}), depth (\code{"d"}) or discharge (\code{"Q"})), and \code{node} (ID of AG or RN nodes to where \code{data} have been measured). See details.} 
-\item{river}{River object. It must have been aggregated (via \code{aggregate_river}).}
+\item{river}{\code{river} object. It must have been aggregated (via \code{aggregate_river}).}
 \item{level}{Aggregation level at which the nodes in \code{x$node} are defined and at which hydraulic variables are calculated. Possible values are \code{"RN"}, \code{"AG"}. See \code{\link{OCNet}} for details.}
 \item{leopold}{Logical. Should scaling relationships of hydraulic variables with drainage area (in the spirit of Leopold and Maddock, 1953) be preferred over uniform flow (Gauchler-Strickler/Manning) relationships? See details.}
 \item{expWidth}{Exponent for the scaling relationship of width to drainage area. See details.}
@@ -21,10 +21,10 @@ scaling relationships and/or uniform flow equations.
 \item{expQ}{Exponent for the scaling relationship of discharge to drainage area. See details.} 
 \item{crossSection}{Shape of the river cross-section (constant across the river network). Possible values are \code{"rectangular"}, \code{"natural"}, or a numeric value indicating the exponent of the width-depth relationship. See details.}
 \item{ks}{Roughness coefficient according to Gauchler-Strickler (in m^(1/3)s^(-1)). It is the inverse of Manning's roughness coefficient. It can be a single value (thus assumed constant for the whole river network), or a vector of length equal to the number of nodes at the specified \code{level} (one roughness coefficient value for each corresponding node).} 
-\item{minSlope}{Minimum slope value, replacing null or \code{NaN} values of slope in the river object. If \code{NULL}, it is assumed equal to either \code{river$slope0} (if the river is an OCN) or to the minimum positive slope value at the selected \code{level}.}
+\item{minSlope}{Minimum slope value, replacing null or \code{NaN} values of slope in the \code{river} object. If \code{NULL}, it is assumed equal to either \code{river$slope0} (if the river is an OCN) or to the minimum positive slope value at the selected \code{level}.}
 }
 \value{
-A river object. The following elements are added to the list indicated by \code{level}:
+A \code{river} object. The following elements are added to the list indicated by \code{level}:
 \item{width, depth, discharge}{Values assigned at all nodes (see Details). Units are m, m, m^3 s^(-1), respectively.}
 \item{velocity}{Values in m s^(-1). Calculated by continuity (i.e., ratio between discharge and cross-sectional area).} 
 \item{volume}{Values in m^3. Calculated as cross-sectional area times length.}

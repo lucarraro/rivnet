@@ -5,12 +5,14 @@
 river_to_igraph(river, ...)
 }
 \description{
-Transform a river in an igraph object
+Transform a \code{river} in an \code{igraph} object.
 }
 \arguments{
-\item{river}{A river object.}
+\item{river}{A \code{river} object.}
 \item{...}{Further arguments to be passed to \code{OCN_to_igraph}.}
 }
+\value{
+An \code{igraph} object.}
 \details{
 This is an alias to \code{\link{OCN_to_igraph}}.
 }

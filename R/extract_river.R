@@ -33,7 +33,8 @@ extract_river <- function(outlet,
   if ("x" %in% names(outlet)){x_outlet <- outlet$x} else {x_outlet <- outlet[,1]}
   if ("y" %in% names(outlet)){y_outlet <- outlet$y} else {y_outlet <- outlet[,2]}
 
-  test_dir <- withr::local_tempdir() # temporary directory storing intermediary files created by TauDEM
+  #test_dir <- withr::local_tempdir() # temporary directory storing intermediary files created by TauDEM
+  test_dir <- tempdir()
 
   quiet <- !displayUpdates
 
@@ -45,12 +46,17 @@ extract_river <- function(outlet,
   crs(r) <- paste0("epsg:",EPSG)
   crs_str <- crs(r)
 
-  elev <- get_elev_raster(locations = loc.df, prj = crs_str, z=z, verbose=!quiet, clip="bbox", src=src) # call elevatr
+  if (quiet){
+    elev <- suppressMessages(get_elev_raster(locations = loc.df, prj = crs_str, z = z,
+                                      verbose = !quiet, clip = "bbox", src = src))
+  } else {
+  elev <- get_elev_raster(locations = loc.df, prj = crs_str, z = z,
+                          verbose = !quiet, clip = "bbox", src = src)}
   elev <- rast(elev) # transform into spatRaster object
   elev <- classify(elev, matrix(c(NA,NA,0),1,3)) # all pixels with elev=NA are set to 0. Then the pit remove algorithm will take care of them
   }
 
-  writeRaster(elev,filename=file.path(test_dir, "DEM.tif")) # write elevation raster to temporary directory
+  writeRaster(elev, filename=file.path(test_dir, "DEM.tif"), overwrite=TRUE) # write elevation raster to temporary directory
 
   # apply TauDEM functions
   # Remove pits
@@ -77,7 +83,7 @@ extract_river <- function(outlet,
 
   p.sf <- sf::st_as_sf(data.frame(x = x_outlet,y= y_outlet), coords = c("x", "y")) # crs=EPSG
   out_shp <- file.path(test_dir,"ApproxOutlet.shp")
-  sf::st_write(p.sf, out_shp, driver="ESRI Shapefile", quiet=quiet)
+  sf::st_write(p.sf, out_shp, driver="ESRI Shapefile", quiet=quiet, append=FALSE)
 
 
   # Move outlet to stream

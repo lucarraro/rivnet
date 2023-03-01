@@ -45,7 +45,8 @@ path_velocities_river <- function(river, level = c("RN","AG"),
         }
       }
       if (displayUpdates){
-        message(sprintf("RN path velocities... %.1f%%\r",i/(1.001*river$RN$nNodes)*100), appendLF = FALSE)}
+        if ((i %% max(1,round(river$RN$nNodes*0.01)))==0){
+        message(sprintf("RN path velocities... %.1f%%\r",i/(1.001*river$RN$nNodes)*100), appendLF = FALSE)}}
     }
     set_values <- set_values[-(k:river$RN$nNodes^2)]
     set_nodes <- set_nodes[-(k:river$RN$nNodes^2),]
@@ -98,7 +99,8 @@ path_velocities_river <- function(river, level = c("RN","AG"),
         }
       }
       if (displayUpdates){
-        message(sprintf("AG path velocities... %.1f%%\r",i/(1.001*river$RN$nNodes)*100), appendLF = FALSE)}
+        if ((i %% max(1,round(river$AG$nNodes*0.01)))==0){
+        message(sprintf("AG path velocities... %.1f%%\r",i/(1.001*river$AG$nNodes)*100), appendLF = FALSE)}}
     }
     set_values <- set_values[-(k:river$AG$nNodes^2)]
     set_nodes <- set_nodes[-(k:river$AG$nNodes^2),]
@@ -107,7 +109,7 @@ path_velocities_river <- function(river, level = c("RN","AG"),
       river$AG$pathVelocities[i,i] <- river$AG$velocity[i] # patch to correct when length of path is null
     }
     if (displayUpdates){
-      message("AG path velocities... 100.0%\n", appendLF = FALSE)}
+      message("AG path velocities... 100.0%\n", appendLF = TRUE)}
   }
   invisible(river)
 }

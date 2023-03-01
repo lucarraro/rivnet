@@ -34,6 +34,9 @@ locate_site <- function(X,Y,river,
   Xnew <- river$RN$X[RNnode]; Ynew <- river$RN$Y[RNnode]
 
   if (showPlot){
+    oldpar <- par(no.readonly = TRUE)
+    on.exit(par(oldpar))
+
     Xmin <- min(X,Xnew)-20*river$cellsize; Xmax <- max(X,Xnew)+20*river$cellsize;
     Ymin <- min(Y,Ynew)-20*river$cellsize; Ymax <- max(Y,Ynew)+20*river$cellsize
 

@@ -6,13 +6,13 @@ locate_site(X, Y, river, euclidean = TRUE, showPlot = FALSE,
   xlim = NULL, ylim = NULL)
 }
 \description{
-Finds location of a site (with coordinates X,Y) within a river object.
+Finds location of a site (with coordinates X, Y) within a \code{river} object.
 }
 
 \arguments{
 \item{X, Y}{Longitudinal and latitudinal coordinates of the site. They must be given in the same
 coordinate system as the \code{river} object.}
-\item{river}{River object where the site is to be located. It must have been aggregated (via \code{aggregate_river}).}
+\item{river}{\code{river} object where the site is to be located. It must have been aggregated (via \code{aggregate_river}).}
 \item{euclidean}{Logical. Should the location of the site in the \code{river} be attributed "as the crow flies"? 
 If \code{FALSE}, the downstream path from (\code{X}, \code{Y}) is followed until the river network is met.}
 \item{showPlot}{Logical. Should a close-up of the relocated site be shown?}
@@ -57,8 +57,8 @@ and argument \code{breakpoints}).
  locate_site(X, Y, r, showPlot = TRUE, euclidean = FALSE) # follow downstream path
  }
  
- \dontrun{
- # define X, Y by clicking on the map
+  # define X, Y by clicking on the map
+ if (interactive()) {
  fp <- system.file("extdata/wigger.tif", package = "rivnet")
  r <- extract_river(outlet = c(637478, 237413),
 	                  DEM = fp)					  

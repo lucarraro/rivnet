@@ -5,22 +5,22 @@
 covariate_river(x, river, categorical = TRUE)
 }
 \description{
-Attributes covariate values from raster files to subcatchments of a river network. Both local and upstream-averaged 
+Attributes covariate values from raster files to subcatchments of a \code{river} object. Both local and upstream-averaged 
 covariate values are calculated.
 }
 
 \arguments{
-\item{x}{SpatRaster object (obtained via \code{rast}) containing categorical or continuous variables from which covariates
+\item{x}{\code{SpatRaster} object (obtained via \code{rast}) containing categorical or continuous variables from which covariates
 are computed. Its coordinate system must be the same of \code{river}. Consider using \code{terra::project} to change
 coordinate system.} 
-\item{river}{River object. It must have been aggregated (via \code{aggregate_river}).}
+\item{river}{\code{river} object. It must have been aggregated (via \code{aggregate_river}).}
 \item{categorical}{Logical. Is the covariate categorical (e.g. land cover classes)? If \code{x} consists of several
 layers, it is possible to specify \code{categorical} as a vector of logicals (one per each layer); alternatively, 
 the single value of \code{categorical} is applied to all layers of \code{x}.}
 }
 
 \value{
-A river object. The following elements are added:
+A \code{river} object. The following elements are added:
 \item{SC$locCov}{Data frame of covariates evaluated as local values for each subcatchment (i.e., mean covariate value
 within a catchment).}
 \item{SC$upsCov}{Data frame of covariates evaluated as upstream-averaged values for each subcatchment (i.e., mean 
@@ -37,7 +37,7 @@ If \code{categorical = FALSE}, \code{SC$locCov} and \code{SC$upsCov} have a sing
 correspond to the mean covariate value within the local/upstream reference area.
 
 If \code{x} has multiple layers, columns in the data frames are added sequentially. The same occurs if \code{covariate_river}
-is run repeated times (for instance, to compute covariates for one SpatRaster object at a time).
+is run repeated times (for instance, to compute covariates for one \code{SpatRaster} object at a time).
 }
 
 \seealso{

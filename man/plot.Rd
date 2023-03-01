@@ -18,7 +18,7 @@
 }
 
 \arguments{
-\item{x}{A river object (or a numeric vector if \code{y} is a river).}
+\item{x}{A \code{river} object (or a numeric vector if \code{y} is a river).}
 \item{y}{A numeric vector to be displayed (or a river if \code{x} is a numeric vector). 
 It is equivalent to \code{theme} in \code{draw_subcatchments_OCN} and \code{draw_thematic_OCN}. If \code{y} is specified, the river must 
 have been aggregated. See details.}
@@ -31,7 +31,7 @@ the river object is aggregated); if  \code{type = "elev2D"}, \code{draw_elev2D_O
 
 \details{
 This is an interface to the plotting functions \code{draw_simple_OCN}, \code{\link{draw_elev2D_OCN}}, \code{draw_contour_OCN}, \code{draw_subcatchments_OCN},
-\code{draw_thematic_OCN}. If the river object does not have an elevation field (i.e., it has been generated
+\code{draw_thematic_OCN}. If the \code{river} object does not have an elevation field (i.e., it has been generated
 by \code{create_OCN} or \code{create_general_contour_OCN}, but \code{landscape_OCN} has not 
 been run), the plotting function used is \code{draw_simple_OCN}. If the elevation field is present, but the river 
 has not been aggregated (via \code{aggregate_OCN} or \code{aggregate_river}), the default plotting function used is 

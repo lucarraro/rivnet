@@ -6,17 +6,17 @@ path_velocities_river(river, level = c("RN", "AG"),
   displayUpdates = FALSE)
 }
 \description{
-Calculate mean water velocities along paths in a river network.
+Calculate mean water velocities along paths in a \code{river} object.
 }
 
 \arguments{
-\item{river}{River object. It must have been aggregated (via \code{aggregate_river}), and contain paths (via \code{paths_river} with \code{includeDownstreamNode = TRUE}) 
+\item{river}{A \code{river} object. It must have been aggregated (via \code{aggregate_river}), and contain paths (via \code{paths_river} with \code{includeDownstreamNode = TRUE}) 
 and velocities (via \code{hydro_river} or \code{rivergeometry_OCN}) at the desired aggregation level(s). See \code{level}.}
 \item{level}{Aggregation level(s) at which path velocities should be calculated. Possible values are \code{"RN"}, \code{"AG"}, \code{c("RN","AG")}.}
 \item{displayUpdates}{Logical. State if updates are printed on the console while \code{path_velocities_river} runs.}
 }
 \value{
-A river object. The following element is added to the list indicated by \code{level}:
+A \code{river} object. The following element is added to the list indicated by \code{level}:
 \item{pathVelocities}{It is a \code{spam} object. \code{pathVelocities[i, j]} is the mean water velocity along the downstream path from nodes \code{i} to \code{j}, and is null if the two nodes are not connected by such a path.}
 
 }

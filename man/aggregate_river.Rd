@@ -8,9 +8,11 @@ aggregate_river(river, ...)
 Aggregates a river
 }
 \arguments{
-\item{river}{A river object.}
+\item{river}{A \code{river} object.}
 \item{...}{Further arguments to be passed to \code{aggregate_OCN}.}
 }
+\value{
+A \code{river} object. See \code{aggregate_OCN} for description of its structure.}
 \details{
 This is an alias to \code{\link{aggregate_OCN}}.
 }
@@ -20,7 +22,7 @@ This is an alias to \code{\link{aggregate_OCN}}.
  fp <- system.file("extdata/wigger.tif", package="rivnet")
  r <- extract_river(outlet=c(637478,237413),
 	DEM=fp)
-r <- aggregate_river(r)	
+r <- aggregate_river(r)
 }
-\dontshow{\}) # examplesIf}	
+\dontshow{\}) # examplesIf}
 }

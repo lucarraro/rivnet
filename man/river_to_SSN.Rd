@@ -5,12 +5,14 @@
 river_to_SSN(river, ...)
 }
 \description{
-Function that transforms a river object into a SpatialStreamNetwork object.
+Transform a \code{river} in a \code{SpatialStreamNetwork} object.
 }
 \arguments{
-\item{river}{A river object.}
+\item{river}{A \code{river} object.}
 \item{...}{Further arguments to be passed to \code{OCN_to_SSN}.}
 }
+\value{
+A \code{SpatialStreamNetwork} object if \code{importToR} is \code{TRUE}, otherwise \code{NULL}.}
 \details{
 This is an alias to \code{\link{OCN_to_SSN}}.
 }
