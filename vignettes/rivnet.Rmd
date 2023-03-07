@@ -44,7 +44,13 @@ rivnet produces `river` objects, which are compatible with the `OCNet` package, 
 
 # Installing the package
 
-`rivnet` can be installed from Github:
+`rivnet` can be installed from CRAN:
+
+```{r, eval=FALSE}
+install.packages("rivnet")
+```
+
+The development version can be installed from Github:
 
 ```{r, eval=FALSE}
 devtools::install_github("lucarraro/rivnet")

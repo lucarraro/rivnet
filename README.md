@@ -2,7 +2,9 @@
 
 # rivnet
 
-An R-package allowing seamless extraction of river networks from Digital Elevation Models data. 
+An R-package allowing seamless extraction of river networks from Digital Elevation Models data.
+
+[![CRAN](http://www.r-pkg.org/badges/version/rivnet)](http://CRAN.R-project.org/package=rivnet)
 
 ## What this package does 
 
