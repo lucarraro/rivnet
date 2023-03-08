@@ -9,7 +9,7 @@
 
 \title{Plot a river }
 
-\description{Plots a river object}
+\description{Plots a \code{river} object}
 
 \usage{
 \S4method{plot}{river,numeric}(x, y, type, ...)
@@ -18,12 +18,12 @@
 }
 
 \arguments{
-\item{x}{A \code{river} object (or a numeric vector if \code{y} is a river).}
+\item{x}{A \code{river} object (or a numeric vector if \code{y} is a \code{river}).}
 \item{y}{A numeric vector to be displayed (or a river if \code{x} is a numeric vector). 
 It is equivalent to \code{theme} in \code{draw_subcatchments_OCN} and \code{draw_thematic_OCN}. If \code{y} is specified, the river must 
 have been aggregated. See details.}
 \item{type}{Optional argument. If \code{type = "SC"} or \code{type = "subcatchments"}, \code{draw_subcatchments_OCN} is used (provided that 
-the river object is aggregated); if  \code{type = "elev2D"}, \code{draw_elev2D_OCN} is used; alternatively,
+the \code{river} object is aggregated); if  \code{type = "elev2D"}, \code{draw_elev2D_OCN} is used; alternatively,
 \code{draw_thematic_OCN} is used.}
 \item{...}{Arguments passed to the plotting functions \code{draw_simple_OCN}, \code{draw_contour_OCN}, 
 \code{draw_thematic_OCN}. See details.} 
