@@ -60,6 +60,27 @@ river object, see OCNet-package."><!-- mathjax --><script src="https://cdnjs.clo
 
 
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive() &amp;&amp; traudem::can_register_taudem()</span></span></span>
+<span class="r-in"><span><span class="va">fp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/wigger.tif"</span>, package<span class="op">=</span><span class="st">"rivnet"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_river.html">extract_river</a></span><span class="op">(</span>outlet<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">637478</span>,<span class="fl">237413</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  DEM<span class="op">=</span><span class="va">fp</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">show</span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># extract or replace parts of a river object</span></span></span>
+<span class="r-in"><span><span class="va">r</span><span class="op">$</span><span class="va">dimX</span></span></span>
+<span class="r-in"><span><span class="va">r</span><span class="op">@</span><span class="va">dimX</span></span></span>
+<span class="r-in"><span><span class="va">dim</span> <span class="op">&lt;-</span> <span class="va">r</span><span class="op">[[</span><span class="st">"dimX"</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">r</span><span class="op">$</span><span class="va">dimX</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="va">r</span><span class="op">[[</span><span class="st">"dimX"</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">r</span><span class="op">[[</span><span class="st">"dimX"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">dim</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+</code></pre></div>
+    </div>
   </main></div>
 
 
