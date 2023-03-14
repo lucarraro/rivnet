@@ -318,6 +318,17 @@ setMethod("$<-",signature=c(x="river"),
             return(x)
           })
 
+setMethod("[[",c("river","character","missing"),
+          function(x,i){
+            slot(x,i)
+          })
+
+setMethod("[[<-",signature=c("river","character","missing"),
+          function(x,i,value){
+            slot(x, i) <- value
+            return(x)
+          })
+
 setMethod("plot", signature(x="river",y="missing"),
           function(x, type, ...){
             if (missing(type)) {type <- "RN"}
