@@ -9,7 +9,7 @@ Find paths in a river
 }
 \arguments{
 \item{river}{A \code{river} object.}
-\item{...}{Further arguments to be passed to \code{aggregate_OCN}.}
+\item{...}{Further arguments to be passed to \code{paths_OCN}.}
 }
 \value{
 A \code{river} object. See \code{paths_OCN} for description of its structure.}
