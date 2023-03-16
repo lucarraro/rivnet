@@ -3,6 +3,8 @@
 ## Major changes
 
 - `"[["`, `"[[<-"` methods for `river` class defined and examples added. 
+- `path_velocities_river`: C++ implementation added.
+- Dependency on `Rcpp` added.
 
 ## Minor changes
 
