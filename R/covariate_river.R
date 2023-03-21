@@ -1,5 +1,6 @@
 covariate_river <- function(x, river,
-                            categorical = TRUE){
+                            categorical = TRUE,
+                            overwrite = FALSE){
 
   if (length(river$RN$X)==0){
     stop('Missing fields in river. You should run aggregate_river prior to covariate_river.')
@@ -52,7 +53,7 @@ covariate_river <- function(x, river,
     upsCov <- data.frame(covariatesUps)
     names(upsCov) <- names(locCov)
 
-    if (is.null(river$SC$locCov)){
+    if (is.null(river$SC$locCov) | overwrite){
       river$SC[["locCov"]] <- locCov
     } else {
       tmp <- river$SC[["locCov"]]
@@ -61,7 +62,7 @@ covariate_river <- function(x, river,
       river$SC$locCov <- df
     }
 
-    if (is.null(river$SC$upsCov)){
+    if (is.null(river$SC$upsCov) | overwrite){
       river$SC[["upsCov"]] <- upsCov
     } else {
       tmp <- river$SC[["upsCov"]]

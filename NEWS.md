@@ -5,6 +5,7 @@
 - `"[["`, `"[[<-"` methods for `river` class defined and examples added. 
 - `path_velocities_river`: C++ implementation added.
 - Dependency on `Rcpp` added.
+- `covariate_river`: argument `overwrite` added.
 
 ## Minor changes
 

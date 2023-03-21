@@ -2,7 +2,7 @@
 \alias{covariate_river}
 \title{Attribute covariates to nodes of a river network}
 \usage{
-covariate_river(x, river, categorical = TRUE)
+covariate_river(x, river, categorical = TRUE, overwrite = FALSE)
 }
 \description{
 Attributes covariate values from raster files to subcatchments of a \code{river} object. Both local and upstream-averaged 
@@ -17,6 +17,7 @@ coordinate system.}
 \item{categorical}{Logical. Is the covariate categorical (e.g. land cover classes)? If \code{x} consists of several
 layers, it is possible to specify \code{categorical} as a vector of logicals (one per each layer); alternatively, 
 the single value of \code{categorical} is applied to all layers of \code{x}.}
+\item{overwrite}{Logical. If \code{TRUE}, overwrite previously calculated covariates.}
 }
 
 \value{
@@ -37,7 +38,7 @@ If \code{categorical = FALSE}, \code{SC$locCov} and \code{SC$upsCov} have a sing
 correspond to the mean covariate value within the local/upstream reference area.
 
 If \code{x} has multiple layers, columns in the data frames are added sequentially. The same occurs if \code{covariate_river}
-is run repeated times (for instance, to compute covariates for one \code{SpatRaster} object at a time).
+is run repeated times (for instance, to compute covariates for one \code{SpatRaster} object at a time) when \code{overwrite = FALSE}.
 }
 
 \seealso{
