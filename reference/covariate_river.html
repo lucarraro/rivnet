@@ -51,7 +51,7 @@ covariate values are calculated.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">covariate_river</span><span class="op">(</span><span class="va">x</span>, <span class="va">river</span>, categorical <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">covariate_river</span><span class="op">(</span><span class="va">x</span>, <span class="va">river</span>, categorical <span class="op">=</span> <span class="cn">TRUE</span>, overwrite <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -68,6 +68,9 @@ coordinate system.</p></dd>
 <dd><p>Logical. Is the covariate categorical (e.g. land cover classes)? If <code>x</code> consists of several
 layers, it is possible to specify <code>categorical</code> as a vector of logicals (one per each layer); alternatively, 
 the single value of <code>categorical</code> is applied to all layers of <code>x</code>.</p></dd>
+
+<dt>overwrite</dt>
+<dd><p>Logical. If <code>TRUE</code>, overwrite previously calculated covariates.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -93,7 +96,7 @@ area that are covered by a given category (e.g., land cover type).</p>
 <p>If <code>categorical = FALSE</code>, <code>SC$locCov</code> and <code>SC$upsCov</code> have a single column named <code>names(x)</code>. Values 
 correspond to the mean covariate value within the local/upstream reference area.</p>
 <p>If <code>x</code> has multiple layers, columns in the data frames are added sequentially. The same occurs if <code>covariate_river</code>
-is run repeated times (for instance, to compute covariates for one <code>SpatRaster</code> object at a time).</p>
+is run repeated times (for instance, to compute covariates for one <code>SpatRaster</code> object at a time) when <code>overwrite = FALSE</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
