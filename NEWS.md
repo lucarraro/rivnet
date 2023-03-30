@@ -10,3 +10,10 @@
 ## Minor changes
 
 - Info on installation from CRAN updated in vignette.
+- `inst/extdata/temperature.tif` changed.
+- `extract_river`: a warning is thrown when the WGS84 (`EPSG = 4326`) projection system is selected.
+
+## Bugs solved
+
+- `extract_river`: multiple catchment shapes are shown when `showPlot = TRUE` 
+and multiple, non-neighboring catchments are extracted.
