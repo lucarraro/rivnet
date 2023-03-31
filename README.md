@@ -18,7 +18,7 @@ An R-package allowing seamless extraction of river networks from Digital Elevati
 Extract the river Wigger (Switzerland) from an externally provided DEM raster file. Outlet coordinates are in the CH1903/LV03 projected coordinate system (i.e., the same as the DEM file):
 
 ```
- fp <- system.file("extdata/wigger.tif", package = "rivers")
+ fp <- system.file("extdata/wigger.tif", package = "rivnet")
  r <- extract_river(outlet = c(637478, 237413),
 	                  DEM = fp)
 ````
