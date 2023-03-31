@@ -12,6 +12,10 @@ extract_river <- function(outlet,
                            displayUpdates=FALSE,
                            src="aws"){
 
+  if (EPSG==4326){
+    warning("You are using the WGS84 geographic coordinate system.
+    It is recommended that you use a projected coordinate system.")}
+
   if (!is.null(DEM)){
     elev <- rast(DEM)
     ext <- as.vector(ext(elev))}
@@ -112,19 +116,21 @@ extract_river <- function(outlet,
   ssa_cont <- classify(ssa,matrix(c(NA,NA,-1e6,1,Inf,1e6),2,3,byrow=T))
   cont <- as.contour(ssa_cont,levels=c(0,1e6))
   cont <- subset(cont, cont$level==0) # pick most external contour
-  XContour <-  crds(cont)[,1]
-  YContour <-  crds(cont)[,2]
+  XC <-  crds(cont)[,1]
+  YC <-  crds(cont)[,2]
   # patch for irregular contour: cut part of a contour that is unconnected to the rest
-  ind_cut <- which(abs(diff(XContour))>10*cellsize | abs(diff(YContour))>10*cellsize)
-  if (length(ind_cut)>0){
-    XContour <- XContour[1:ind_cut]
-    YContour <- YContour[1:ind_cut]
+  ind_cut <- which(abs(diff(XC))>10*cellsize | abs(diff(YC))>10*cellsize)
+  XContour <- YContour <- list()
+  ind_cut <- c(0,ind_cut,length(XC))
+  for (i in 1:(length(ind_cut)-1)){
+    XContour[[i]] <- XC[(ind_cut[i]+1):ind_cut[i+1]]
+    YContour[[i]] <- YC[(ind_cut[i]+1):ind_cut[i+1]]
   }
-
 
   if (showPlot==T){
     plot(ad8,col=hcl.colors(1000))
-    lines(XContour,YContour,col="magenta")
+    for (i in 1:length(XContour)){
+    lines(XContour[[i]],YContour[[i]],col="magenta")}
     title(sprintf('Max drainage area: %.2e m2',max(values(ssa)*prod(res(ssa)),na.rm=T)))
   }
 
@@ -185,6 +191,11 @@ extract_river <- function(outlet,
     W_FD[ind] <- 1
     rm(ind)
     Outlet_FD <- which(downNode_FD==0)
+    if (length(Outlet_FD) != length(outlet$x)){
+      stop("The number of identified outlets is not equal to the number of inputted outlets.
+       Some of the extracted catchments might be nested.
+       If this is the case, run extract_river separately for each catchment.")
+    }
     # reassign outlet order
     if (length(Outlet_FD)>1){
       ind_out <- numeric(length(Outlet_FD))
