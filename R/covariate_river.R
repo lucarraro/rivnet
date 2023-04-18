@@ -28,7 +28,9 @@ covariate_river <- function(x, river,
       covariates <- matrix(0,river$SC$nNodes,length(classes))
       for (ind in 1:length(classes)){
         for (i in 1:river$SC$nNodes){
-          covariates[i,ind] <- sum(LC_values[river$FD$toDEM[river$SC$toFD[[i]]]]==classes[ind])/length(river$SC$toFD[[i]])
+          num <- sum(LC_values[river$FD$toDEM[river$SC$toFD[[i]]]]==classes[ind], na.rm=TRUE)
+          den <- sum(!is.na(LC_values[river$FD$toDEM[river$SC$toFD[[i]]]]))
+          covariates[i,ind] <- num/den
         }
       }
       locCov <- data.frame(covariates)
@@ -36,7 +38,7 @@ covariate_river <- function(x, river,
     } else {
       covariate <- numeric(river$SC$nNodes)
       for (i in 1:river$SC$nNodes){
-        covariate[i] <- mean(LC_values[river$FD$toDEM[river$SC$toFD[[i]]]])
+        covariate[i] <- mean(LC_values[river$FD$toDEM[river$SC$toFD[[i]]]], na.rm=TRUE)
       }
       locCov <- data.frame(covariate)
       names(locCov) <- names(r3)[val]

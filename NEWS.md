@@ -17,3 +17,4 @@
 
 - `extract_river`: multiple catchment shapes are shown when `showPlot = TRUE` 
 and multiple, non-neighboring catchments are extracted.
+- `covariate_river`: fixed bug for raster file containing `NA` values.
