@@ -12,9 +12,10 @@ extract_river <- function(outlet,
                            displayUpdates=FALSE,
                            src="aws"){
 
-  if (EPSG==4326){
+  if (!is.null(EPSG)){
+  if ( EPSG==4326){
     warning("You are using the WGS84 geographic coordinate system.
-    It is recommended that you use a projected coordinate system.")}
+    It is recommended that you use a projected coordinate system.")}}
 
   if (!is.null(DEM)){
     elev <- rast(DEM)
@@ -191,7 +192,7 @@ extract_river <- function(outlet,
     W_FD[ind] <- 1
     rm(ind)
     Outlet_FD <- which(downNode_FD==0)
-    if (length(Outlet_FD) != length(outlet$x)){
+    if (length(Outlet_FD) != dim(outlet)[1]){
       stop("The number of identified outlets is not equal to the number of inputted outlets.
        Some of the extracted catchments might be nested.
        If this is the case, run extract_river separately for each catchment.")
@@ -246,8 +247,8 @@ extract_river <- function(outlet,
         YContour <- c(YContour, list(list(YCont)))
       }
     } else {
-      XContour <- list(list(XContour))
-      YContour <- list(list(YContour))
+      XContour <- list(XContour)
+      YContour <- list(YContour)
     }
 
     if (!quiet){message("Creation of river object... 100.0% \n", appendLF = FALSE)}
