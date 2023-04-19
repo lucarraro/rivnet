@@ -48,15 +48,19 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">locate_site</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, <span class="va">river</span>, euclidean <span class="op">=</span> <span class="cn">TRUE</span>, showPlot <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">locate_site</span><span class="op">(</span><span class="va">X</span>, Y<span class="op">=</span><span class="cn">NULL</span>, <span class="va">river</span>, euclidean <span class="op">=</span> <span class="cn">TRUE</span>, showPlot <span class="op">=</span> <span class="cn">FALSE</span>, </span>
 <span>  xlim <span class="op">=</span> <span class="cn">NULL</span>, ylim <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>X, Y</dt>
-<dd><p>Longitudinal and latitudinal coordinates of the site. They must be given in the same
-coordinate system as the <code>river</code> object.</p></dd>
+    <dl><dt>X</dt>
+<dd><p>Either a list or a numeric value. If <code>X</code> is a list, it must contain the longitudinal and latitudinal 
+coordinates of the site in columns <code>x</code> (or <code>X</code>) and <code>y</code> (or <code>Y</code>), respectively. If numeric, it represents 
+the longitudinal coordinate of the site. Coordinate values must be given in the same coordinate system as the <code>river</code> object.</p></dd>
+
+<dt>Y</dt>
+<dd><p>Latitudinal coordinate of the site. If <code>X</code> is a list, it can contain the <code>river</code> object.</p></dd>
 
 <dt>river</dt>
 <dd><p><code>river</code> object where the site is to be located. It must have been aggregated (via <code>aggregate_river</code>).</p></dd>
@@ -95,7 +99,7 @@ that belongs to the river network.</p></dd>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This function identifies the node in the river network (at the RN and AG levels) that is closest to
-an arbitrary site of coordinates <code>X</code>, <code>Y</code>.</p>
+an arbitrary site of coordinates <code>X</code>, <code>Y</code>. Only a single site can be processed per function call.</p>
 <p>Desired coordinates X, Y can be found in an interactive way by clicking on the river map and using 
 function <code>locator</code>.</p>
 <p>Nodes at the RN level thus found can be defined as new breakpoints for reaches (see <code>aggregate_OCN</code> 
@@ -130,6 +134,9 @@ and argument <code>breakpoints</code>).</p>
 <span class="r-in"><span> </span></span>
 <span class="r-in"><span> <span class="va">point</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/locator.html" class="external-link">locator</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># click on the map to define point</span></span></span>
 <span class="r-in"><span> <span class="fu">locate_site</span><span class="op">(</span><span class="va">point</span><span class="op">$</span><span class="va">X</span>, <span class="va">point</span><span class="op">$</span><span class="va">Y</span>, <span class="va">r</span><span class="op">)</span></span></span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span> <span class="co"># alternative: specify X as a list and pass river as second argument</span></span></span>
+<span class="r-in"><span> <span class="fu">locate_site</span><span class="op">(</span><span class="va">point</span>, <span class="va">r</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="op">}</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
