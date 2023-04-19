@@ -2,7 +2,7 @@
 \alias{locate_site}
 \title{Locate site in a river}
 \usage{
-locate_site(X, Y, river, euclidean = TRUE, showPlot = FALSE, 
+locate_site(X, Y=NULL, river, euclidean = TRUE, showPlot = FALSE, 
   xlim = NULL, ylim = NULL)
 }
 \description{
@@ -10,8 +10,10 @@ Finds location of a site (with coordinates X, Y) within a \code{river} object.
 }
 
 \arguments{
-\item{X, Y}{Longitudinal and latitudinal coordinates of the site. They must be given in the same
-coordinate system as the \code{river} object.}
+\item{X}{Either a list or a numeric value. If \code{X} is a list, it must contain the longitudinal and latitudinal 
+coordinates of the site in columns \code{x} (or \code{X}) and \code{y} (or \code{Y}), respectively. If numeric, it represents 
+the longitudinal coordinate of the site. Coordinate values must be given in the same coordinate system as the \code{river} object.}
+\item{Y}{Latitudinal coordinate of the site. If \code{X} is a list, it can contain the \code{river} object.}
 \item{river}{\code{river} object where the site is to be located. It must have been aggregated (via \code{aggregate_river}).}
 \item{euclidean}{Logical. Should the location of the site in the \code{river} be attributed "as the crow flies"? 
 If \code{FALSE}, the downstream path from (\code{X}, \code{Y}) is followed until the river network is met.}
@@ -31,7 +33,7 @@ that belongs to the river network.}
 
 \details{
 This function identifies the node in the river network (at the RN and AG levels) that is closest to
-an arbitrary site of coordinates \code{X}, \code{Y}. 
+an arbitrary site of coordinates \code{X}, \code{Y}. Only a single site can be processed per function call.
 
 Desired coordinates X, Y can be found in an interactive way by clicking on the river map and using 
 function \code{locator}.
@@ -67,6 +69,9 @@ and argument \code{breakpoints}).
  
  point <- locator(1) # click on the map to define point
  locate_site(point$X, point$Y, r)
+ 
+ # alternative: specify X as a list and pass river as second argument
+ locate_site(point, r)
  }
 \dontshow{\}) # examplesIf}
 }

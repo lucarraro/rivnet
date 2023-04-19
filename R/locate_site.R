@@ -1,12 +1,34 @@
-locate_site <- function(X,Y,river,
+locate_site <- function(X,Y=NULL,river,
                         euclidean=TRUE,
                         showPlot=FALSE,
                         xlim=NULL,
                         ylim=NULL){
 
+  if (missing(river)){
+      if (is(Y,"river")){river <- Y
+      } else stop("river object must be provided.")}
+
   if (length(river$RN$X)==0){
     stop('Missing fields in river. You should run aggregate_river prior to locate_site.')
   }
+
+  if (is.list(X)){
+    if ("x" %in% names(X)){
+      x <- X$x
+    } else if ("X" %in% names(X)){
+      x <- X$X
+    } else stop("If X is a data frame, it must contain object x or X")
+    if ("y" %in% names(X)){
+      y <- X$y
+    } else if ("Y" %in% names(X)){
+      y <- X$Y
+    } else stop("If X is a data frame, it must contain object y or Y")
+    X <- x; Y <- y
+  } else if(is.numeric(X) & is.null(Y)){
+    stop("If X is numeric, Y cannot be NULL.")
+  }
+
+  if (length(X)>1 | length(Y)>1) stop("Coordinates cannot have length > 1.")
 
   distVec_FD <- sqrt((river$FD$X-X)^2 + (river$FD$Y-Y)^2)
   indFD <- which(distVec_FD == min(distVec_FD))[1]

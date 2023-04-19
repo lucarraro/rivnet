@@ -6,6 +6,7 @@
 - `path_velocities_river`: C++ implementation added.
 - Dependency on `Rcpp` added.
 - `covariate_river`: argument `overwrite` added.
+- `locate_site`: site coordinates can be passed as a list. Example added.
 
 ## Minor changes
 
