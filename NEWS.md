@@ -1,4 +1,4 @@
-# rivnet 0.1.0.9000
+# rivnet 0.2.0
 
 ## Major changes
 
