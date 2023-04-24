@@ -214,7 +214,8 @@ extract_river <- function(outlet,
     slot(newW, "dimension", check = FALSE) <- W_FD@dimension
     W_FD <- newW
 
-    pl <- initial_permutation_rev(downNode_rev, Outlet_FD)
+    #pl <- initial_permutation_rev(downNode_rev, Outlet_FD)
+    pl <- init_perm_rev_cpp(downNode_rev, Outlet_FD)
     pl <- as.integer(pl$perm)
 
     toCM <- numeric(Nnodes_FD)
@@ -384,13 +385,11 @@ neigh <- function(dir) {
   return(mov)
 }
 
-
+# deprecated
 initial_permutation_rev <- function(downNode_rev, Outlet){
-
   nNodes <- length(downNode_rev)
   NodesToExplore <- Outlet # start from outlets
   reverse_perm <- numeric(nNodes) # build permutation vector from outlets to headwaters, then flip it
-
   k <- 0
   while (length(NodesToExplore)>0){ # continue until all the network has been explored
     k <- k + 1
@@ -408,11 +407,8 @@ initial_permutation_rev <- function(downNode_rev, Outlet){
       UpNodes <- downNode_rev[[node]]
     }
   }
-
   perm <- reverse_perm[nNodes:1] # flip permutation
-
   OutList = list(perm=perm,noDAG=0)
-
   invisible(OutList)
 }
 

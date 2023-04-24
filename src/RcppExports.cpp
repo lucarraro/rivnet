@@ -10,6 +10,18 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// init_perm_rev_cpp
+List init_perm_rev_cpp(List downNode_rev, IntegerVector outlet);
+RcppExport SEXP _rivnet_init_perm_rev_cpp(SEXP downNode_revSEXP, SEXP outletSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type downNode_rev(downNode_revSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type outlet(outletSEXP);
+    rcpp_result_gen = Rcpp::wrap(init_perm_rev_cpp(downNode_rev, outlet));
+    return rcpp_result_gen;
+END_RCPP
+}
 // path_vel_cpp
 List path_vel_cpp(S4 OCN, String str, bool includeDownstreamNode);
 RcppExport SEXP _rivnet_path_vel_cpp(SEXP OCNSEXP, SEXP strSEXP, SEXP includeDownstreamNodeSEXP) {
@@ -25,6 +37,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_rivnet_init_perm_rev_cpp", (DL_FUNC) &_rivnet_init_perm_rev_cpp, 2},
     {"_rivnet_path_vel_cpp", (DL_FUNC) &_rivnet_path_vel_cpp, 3},
     {NULL, NULL, 0}
 };
