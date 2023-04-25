@@ -274,9 +274,9 @@ extract_river <- function(outlet,
   t3 <- Sys.time()
   if (displayUpdates){
     message("extract_river has finished. \n",appendLF = FALSE)
-    message(sprintf("Time for DEM download: %.1f s \n",difftime(t1,t0,unit="secs")),appendLF = FALSE)
-    message(sprintf("Time for TauDEM processing: %.1f s \n",difftime(t2,t1,unit="secs")),appendLF = FALSE)
-    message(sprintf("Time for creation of river object: %.1f s \n",difftime(t3,t2,unit="secs")),appendLF = FALSE)
+    message(sprintf("Time for DEM download: %.1f s \n",difftime(t1,t0,units="secs")),appendLF = FALSE)
+    message(sprintf("Time for TauDEM processing: %.1f s \n",difftime(t2,t1,units="secs")),appendLF = FALSE)
+    message(sprintf("Time for creation of river object: %.1f s \n",difftime(t3,t2,units="secs")),appendLF = FALSE)
   }
 }
 
