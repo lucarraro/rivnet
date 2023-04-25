@@ -268,8 +268,6 @@ extract_river <- function(outlet,
     river_S4 <- new("river")
     fieldnames <- names(river)
     for (i in 1:length(fieldnames)){slot(river_S4, fieldnames[i]) <- river[[fieldnames[i]]]}
-
-    invisible(river_S4)
   }
   t3 <- Sys.time()
   if (displayUpdates){
@@ -278,6 +276,7 @@ extract_river <- function(outlet,
     message(sprintf("Time for TauDEM processing: %.1f s \n",difftime(t2,t1,units="secs")),appendLF = FALSE)
     message(sprintf("Time for creation of river object: %.1f s \n",difftime(t3,t2,units="secs")),appendLF = FALSE)
   }
+  if (as.river==TRUE){invisible(river_S4)}
 }
 
 setClass("river",
