@@ -43,6 +43,7 @@ extract_river <- function(outlet,
 
   quiet <- !displayUpdates
 
+  t0 <- Sys.time()
   if (is.null(DEM)){
 
   # use elevatr to download DEM
@@ -62,6 +63,7 @@ extract_river <- function(outlet,
   }
 
   writeRaster(elev, filename=file.path(test_dir, "DEM.tif"), overwrite=TRUE) # write elevation raster to temporary directory
+  t1 <- Sys.time()
 
   # apply TauDEM functions
   # Remove pits
@@ -111,6 +113,7 @@ extract_river <- function(outlet,
 
   shp <- sf::st_read(out_moved.shp,quiet=T)
   out_moved <- sf::st_coordinates(shp)
+  t2 <- Sys.time()
 
   # create catchment contour
   cellsize <- sqrt(prod(res(fel)))
@@ -267,6 +270,13 @@ extract_river <- function(outlet,
     for (i in 1:length(fieldnames)){slot(river_S4, fieldnames[i]) <- river[[fieldnames[i]]]}
 
     invisible(river_S4)
+  }
+  t3 <- Sys.time()
+  if (displayUpdates){
+    message("extract_river has finished. \n",appendLF = FALSE)
+    message(sprintf("Time for DEM download: %.1f s \n",difftime(t1,t0,unit="secs")),appendLF = FALSE)
+    message(sprintf("Time for TauDEM processing: %.1f s \n",difftime(t2,t1,unit="secs")),appendLF = FALSE)
+    message(sprintf("Time for creation of river object: %.1f s \n",difftime(t3,t2,unit="secs")),appendLF = FALSE)
   }
 }
 
