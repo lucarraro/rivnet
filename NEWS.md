@@ -1,3 +1,9 @@
+# rivnet 0.2.0.9000
+
+# Minor changes
+
+- `locate_site`: `par` is exported when `showPlot = TRUE`. Example updated.
+
 # rivnet 0.2.0
 
 ## Major changes
