@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rivnet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,6 +95,10 @@ that belongs to the river network.</p></dd>
 <dt>AGode</dt>
 <dd><p>index at the AG level of the relocated site.</p></dd>
 
+<dt>par</dt>
+<dd><p>List of graphical parameters as produced by a call to <code><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></code> 
+(only if <code>showPlot = TRUE</code>). This can be used to add features to the existing plot.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -120,8 +124,10 @@ and argument <code>breakpoints</code>).</p>
 <span class="r-in"><span> <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="aggregate_river.html">aggregate_river</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span></span></span>
 <span class="r-in"><span> </span></span>
 <span class="r-in"><span> <span class="va">X</span> <span class="op">&lt;-</span> <span class="fl">641329</span>; <span class="va">Y</span> <span class="op">&lt;-</span> <span class="fl">227414</span> </span></span>
-<span class="r-in"><span> <span class="fu">locate_site</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, <span class="va">r</span>, showPlot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># as the crow flies</span></span></span>
-<span class="r-in"><span> <span class="fu">locate_site</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, <span class="va">r</span>, showPlot <span class="op">=</span> <span class="cn">TRUE</span>, euclidean <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># follow downstream path</span></span></span>
+<span class="r-in"><span> <span class="va">out1</span> <span class="op">&lt;-</span> <span class="fu">locate_site</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, <span class="va">r</span>, showPlot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># as the crow flies</span></span></span>
+<span class="r-in"><span> <span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu">locate_site</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, <span class="va">r</span>, showPlot <span class="op">=</span> <span class="cn">TRUE</span>, euclidean <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># follow downstream path</span></span></span>
+<span class="r-in"><span> </span></span>
+<span class="r-in"><span> <span class="co"># par(out2$par) # reset graphical parameters before adding new features to the current plot</span></span></span>
 <span class="r-in"><span> <span class="co"># }</span></span></span>
 <span class="r-in"><span> </span></span>
 <span class="r-in"><span>  <span class="co"># define X, Y by clicking on the map</span></span></span>
