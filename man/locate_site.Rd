@@ -29,6 +29,8 @@ that belongs to the river network.}
 \code{euclidean = TRUE}), or as downstream distance alternatively.}
 \item{RNode}{index at the RN level of the relocated site.}
 \item{AGode}{index at the AG level of the relocated site.}
+\item{par}{List of graphical parameters as produced by a call to \code{\link{par}} 
+(only if \code{showPlot = TRUE}). This can be used to add features to the existing plot.}
 }
 
 \details{
@@ -55,8 +57,10 @@ and argument \code{breakpoints}).
  r <- aggregate_river(r)
  
  X <- 641329; Y <- 227414 
- locate_site(X, Y, r, showPlot = TRUE) # as the crow flies
- locate_site(X, Y, r, showPlot = TRUE, euclidean = FALSE) # follow downstream path
+ out1 <- locate_site(X, Y, r, showPlot = TRUE) # as the crow flies
+ out2 <- locate_site(X, Y, r, showPlot = TRUE, euclidean = FALSE) # follow downstream path
+ 
+ # par(out2$par) # reset graphical parameters before adding new features to the current plot
  }
  
   # define X, Y by clicking on the map

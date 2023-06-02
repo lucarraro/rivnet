@@ -77,6 +77,7 @@ locate_site <- function(X,Y=NULL,river,
     points(X,Y,pch=15,col="red")
     points(Xnew,Ynew,pch=20,col="black")
 
+    parfig <- par()
   }
 
   explist <- vector("list")
@@ -84,6 +85,7 @@ locate_site <- function(X,Y=NULL,river,
   explist[["distance"]] <- distanz
   explist[["AGnode"]] <- AGnode
   explist[["RNnode"]] <- RNnode
+  if (showPlot) explist[["par"]] <- parfig
 
   invisible(explist)
 }
