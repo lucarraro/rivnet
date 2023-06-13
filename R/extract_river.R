@@ -52,6 +52,13 @@ extract_river <- function(outlet,
   crs(r) <- paste0("epsg:",EPSG)
   crs_str <- crs(r)
 
+  # override curl::has_internet() check by get_elev_raster
+  op <- get("has_internet_via_proxy", environment(curl::has_internet)) # old value
+  # check for internet
+  np <- !is.null(curl::nslookup("r-project.org", error = FALSE))
+  assign("has_internet_via_proxy", np, environment(curl::has_internet))
+  on.exit(assign("has_internet_via_proxy", op, environment(curl::has_internet)))
+
   if (quiet){
     elev <- suppressMessages(get_elev_raster(locations = loc.df, prj = crs_str, z = z,
                                       verbose = !quiet, clip = "bbox", src = src))
@@ -88,7 +95,12 @@ extract_river <- function(outlet,
                                        n_processes = n_processes,
                                        quiet = quiet)
 
-  p.sf <- sf::st_as_sf(data.frame(x = x_outlet,y= y_outlet), coords = c("x", "y")) # crs=EPSG
+  if (!is.null(EPSG)){
+  p.sf <- sf::st_as_sf(data.frame(x = x_outlet,y= y_outlet), coords = c("x", "y"), crs=EPSG) # crs=EPSG
+  } else {
+    p.sf <- sf::st_as_sf(data.frame(x = x_outlet,y= y_outlet), coords = c("x", "y"))
+  }
+
   out_shp <- file.path(test_dir,"ApproxOutlet.shp")
   sf::st_write(p.sf, out_shp, driver="ESRI Shapefile", quiet=quiet, append=FALSE)
 

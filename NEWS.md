@@ -1,7 +1,9 @@
-# rivnet 0.2.0.9000
+# rivnet 0.2.1
 
 # Minor changes
 
+- `extract_river`: `curl::has_internet()` check by `elevatr::get_elev_raster` is overridden.
+- `extract_river`: crs attributed when outlet shapefile is written in temporary directory.
 - `locate_site`: `par` is exported when `showPlot = TRUE`. Example updated.
 
 # rivnet 0.2.0

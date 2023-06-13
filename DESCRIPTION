@@ -1,7 +1,7 @@
 Package: rivnet
 Type: Package
 Title: Extract and Analyze Rivers from Elevation Data 
-Version: 0.2.0.9000
+Version: 0.2.1
 Authors@R: 
     c(person("Luca", "Carraro", 
 	email = "luca.carraro@hotmail.it", role = c("cre", "aut")),
@@ -15,7 +15,7 @@ Description: Seamless extraction of river networks from digital
 	Digital Elevation Models), thus interfacing with the 'traudem' 
 	package. Resulting river networks are compatible with functions 
 	from the 'OCNet' package. 
-Imports: spam, raster, sf, terra, traudem, elevatr, OCNet (>= 1.0.0), methods, Rcpp (>= 1.0.9) 
+Imports: spam, raster, sf, terra, traudem, elevatr, OCNet (>= 1.0.0), methods, Rcpp (>= 1.0.9), curl 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Suggests: 
