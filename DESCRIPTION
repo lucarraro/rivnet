@@ -15,7 +15,7 @@ Description: Seamless extraction of river networks from digital
 	Digital Elevation Models), thus interfacing with the 'traudem' 
 	package. Resulting river networks are compatible with functions 
 	from the 'OCNet' package. 
-Imports: spam, raster, sf, terra, traudem, elevatr, OCNet (>= 1.0.0), methods, Rcpp (>= 1.0.9), curl 
+Imports: spam, raster, sf, terra, traudem, elevatr, OCNet (>= 1.0.0), methods, Rcpp (>= 1.0.9), curl
 License: MIT + file LICENSE
 Encoding: UTF-8
 Suggests: 
