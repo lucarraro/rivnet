@@ -1,3 +1,9 @@
+# rivnet 0.3.0
+
+## Major changes
+
+- `river_to_AEM`: function added.
+
 # rivnet 0.2.1
 
 ## Minor changes
