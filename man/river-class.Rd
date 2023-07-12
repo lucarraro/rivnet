@@ -11,7 +11,7 @@
 \alias{names,river-method}
 \alias{[[,river,character,missing-method}
 \alias{[[<-,river,character,missing-method}
-
+\alias{[[<-,river,character,missing,ANY-method}
 
 \title{river class}
 
