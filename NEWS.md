@@ -1,3 +1,9 @@
+# rivnet 0.3.0.9000
+
+## Major changes
+
+- `points_colorscale`: function added.
+
 # rivnet 0.3.0
 
 ## Major changes
