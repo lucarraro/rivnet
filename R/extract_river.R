@@ -10,7 +10,8 @@ extract_river <- function(outlet,
                            threshold_parameter=1000,
                            n_processes=1,
                            displayUpdates=FALSE,
-                           src="aws"){
+                           src="aws",
+                           args_get_elev_raster=list()){
 
   if (!is.null(EPSG)){
   if ( EPSG==4326){
@@ -59,12 +60,17 @@ extract_river <- function(outlet,
   assign("has_internet_via_proxy", np, environment(curl::has_internet))
   on.exit(assign("has_internet_via_proxy", op, environment(curl::has_internet)))
 
+  if (is.null(args_get_elev_raster$locations)) args_get_elev_raster$locations=loc.df
+  if (is.null(args_get_elev_raster$prj)) args_get_elev_raster$prj=crs_str
+  if (is.null(args_get_elev_raster$z)) args_get_elev_raster$z=z
+  if (is.null(args_get_elev_raster$verbose)) args_get_elev_raster$verbose=!quiet
+  if (is.null(args_get_elev_raster$clip)) args_get_elev_raster$clip="bbox"
+  if (is.null(args_get_elev_raster$src)) args_get_elev_raster$src=src
+
   if (quiet){
-    elev <- suppressMessages(get_elev_raster(locations = loc.df, prj = crs_str, z = z,
-                                      verbose = !quiet, clip = "bbox", src = src))
+    elev <- suppressMessages(do.call(get_elev_raster, args_get_elev_raster))
   } else {
-  elev <- get_elev_raster(locations = loc.df, prj = crs_str, z = z,
-                          verbose = !quiet, clip = "bbox", src = src)}
+  elev <- do.call(get_elev_raster, args_get_elev_raster)}
   elev <- rast(elev) # transform into spatRaster object
   elev <- classify(elev, matrix(c(NA,NA,0),1,3)) # all pixels with elev=NA are set to 0. Then the pit remove algorithm will take care of them
   }

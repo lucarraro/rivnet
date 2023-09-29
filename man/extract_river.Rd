@@ -4,7 +4,8 @@
 \usage{
 extract_river(outlet, EPSG=NULL, ext=NULL, z=NULL, DEM=NULL,
   as.river=TRUE, as.rast=FALSE, filename=NULL, showPlot=FALSE,
-  threshold_parameter=1000, n_processes=1, displayUpdates=FALSE, src="aws")
+  threshold_parameter=1000, n_processes=1, displayUpdates=FALSE, src="aws",
+  args_get_elev_raster=list())
 }
 \description{
 Function that extracts a river network from elevation data via TauDEM's D8 flow direction
@@ -43,7 +44,10 @@ documentation for details.}
 \item{displayUpdates}{Logical. If \code{FALSE} console output is suppressed (barring some messages from
 \code{elevatr::get_elev_raster}, if \code{DEM} is not provided). If \code{TRUE}, console output from
 \code{elevatr::get_elev_raster} and \code{traudem} functions is displayed. }
-\item{src}{Value passed to \code{get_elev_raster}.}
+\item{src}{Value passed to \code{get_elev_raster}. Deprecated.}
+\item{args_get_elev_raster}{List of additional parameters to be passed to \code{get_elev_raster}. 
+Parameters included in this list override default options (for example, if two zoom different zoom 
+values are specified in \code{args_get_elev_raster$z} and \code{z}, then the latter is not considered. )}
 }
 
 \value{

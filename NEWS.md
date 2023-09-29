@@ -1,5 +1,7 @@
 # rivnet 0.3.1.9000
 
+- `extract_river`: option `args_get_elev_raster` is added.
+
 # rivnet 0.3.1
 
 ## Major changes
