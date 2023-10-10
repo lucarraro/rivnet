@@ -46,7 +46,7 @@ documentation for details.}
 \code{elevatr::get_elev_raster} and \code{traudem} functions is displayed. }
 \item{src}{Value passed to \code{get_elev_raster}. Deprecated.}
 \item{args_get_elev_raster}{List of additional parameters to be passed to \code{get_elev_raster}. 
-Parameters included in this list override default options (for example, if two zoom different zoom 
+Parameters included in this list override default options (for example, if two different zoom 
 values are specified in \code{args_get_elev_raster$z} and \code{z}, then the latter is not considered. )}
 }
 
