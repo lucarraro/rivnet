@@ -34,6 +34,7 @@ A call to \code{points} is performed in the background. Therefore, a plot window
 when this function is called.
 }
 \examples{
+\dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 fp <- system.file("extdata/wigger.tif", package="rivnet")
 river <- extract_river(outlet=c(637478,237413), DEM=fp)
 river <- aggregate_river(river)
@@ -85,4 +86,5 @@ points_colorscale(river$AG$X[samplingSites], river$AG$Y[samplingSites],
             data.frame(river$AG$A[samplingSites], river$AG$Z[samplingSites]),
             col.palette = terrain.colors(1000),
             lwd = 4, add.col.legend = TRUE)
+\dontshow{\}) # examplesIf}
 }
