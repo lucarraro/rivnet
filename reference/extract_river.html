@@ -14,7 +14,7 @@ Elevation data can be either downloaded from the web or provided externally."><!
     
     <a class="navbar-brand me-2" href="../index.html">rivnet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,8 @@ Elevation data can be either downloaded from the web or provided externally.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">extract_river</span><span class="op">(</span><span class="va">outlet</span>, EPSG<span class="op">=</span><span class="cn">NULL</span>, ext<span class="op">=</span><span class="cn">NULL</span>, z<span class="op">=</span><span class="cn">NULL</span>, DEM<span class="op">=</span><span class="cn">NULL</span>,</span>
 <span>  as.river<span class="op">=</span><span class="cn">TRUE</span>, as.rast<span class="op">=</span><span class="cn">FALSE</span>, filename<span class="op">=</span><span class="cn">NULL</span>, showPlot<span class="op">=</span><span class="cn">FALSE</span>,</span>
-<span>  threshold_parameter<span class="op">=</span><span class="fl">1000</span>, n_processes<span class="op">=</span><span class="fl">1</span>, displayUpdates<span class="op">=</span><span class="cn">FALSE</span>, src<span class="op">=</span><span class="st">"aws"</span><span class="op">)</span></span></code></pre></div>
+<span>  threshold_parameter<span class="op">=</span><span class="fl">1000</span>, n_processes<span class="op">=</span><span class="fl">1</span>, displayUpdates<span class="op">=</span><span class="cn">FALSE</span>, src<span class="op">=</span><span class="st">"aws"</span>,</span>
+<span>  args_get_elev_raster<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -116,7 +117,12 @@ documentation for details.</p></dd>
 <code><a href="https://rdrr.io/pkg/elevatr/man/get_elev_raster.html" class="external-link">elevatr::get_elev_raster</a></code> and <code>traudem</code> functions is displayed.</p></dd>
 
 <dt>src</dt>
-<dd><p>Value passed to <code>get_elev_raster</code>.</p></dd>
+<dd><p>Value passed to <code>get_elev_raster</code>. Deprecated.</p></dd>
+
+<dt>args_get_elev_raster</dt>
+<dd><p>List of additional parameters to be passed to <code>get_elev_raster</code>. 
+Parameters included in this list override default options (for example, if two different zoom 
+values are specified in <code>args_get_elev_raster$z</code> and <code>z</code>, then the latter is not considered. )</p></dd>
 
 </dl></div>
     <div class="section level2">
