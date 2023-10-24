@@ -1,3 +1,10 @@
+# rivnet 0.3.3
+
+## Minor changes
+
+- `DESCRIPTION` updated with DOI of published article.
+- `CITATION` added. 
+
 # rivnet 0.3.2
 
 ## Minor changes

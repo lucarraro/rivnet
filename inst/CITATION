@@ -1,0 +1,5 @@
+bibentry(bibtype = "article", header = "To cite 'rivnet' in publications use:",
+         title = "Technical note: Seamless extraction and analysis of river networks in R",
+         author = c(person("Luca", "Carraro")),
+         year = "2023", journal = "Hydrology and Earth System Sciences", 
+         doi = "10.5194/hess-27-3733-2023")
