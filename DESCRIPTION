@@ -1,7 +1,7 @@
 Package: rivnet
 Type: Package
 Title: Extract and Analyze Rivers from Elevation Data 
-Version: 0.3.3
+Version: 0.3.3.9000
 Authors@R: 
     c(person("Luca", "Carraro", 
 	email = "luca.carraro@hotmail.it", role = c("cre", "aut")),

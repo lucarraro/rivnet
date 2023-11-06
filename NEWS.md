@@ -1,3 +1,9 @@
+# rivnet 0.3.3.9000
+
+## Minor changes
+
+- `points_colorscale`: Argument `...` added.
+
 # rivnet 0.3.3
 
 ## Minor changes
