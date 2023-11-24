@@ -1,3 +1,19 @@
+# rivnet 0.3.3.9000
+
+## Minor changes
+
+- `extract_river`: a warning is thrown whenever `EPSG` identifies a geographic projection system.
+- `extract_river`: option `showPlot = TRUE` shows an additional plot with a zoom-in in the outlet 
+area, which can help diagnose issues in catchment delineation.
+- `points_colorscale`: Argument `...` added.
+
+# rivnet 0.3.3
+
+## Minor changes
+
+- `DESCRIPTION` updated with DOI of published article.
+- `CITATION` added. 
+
 # rivnet 0.3.2
 
 ## Minor changes

@@ -7,7 +7,7 @@ points_colorscale(X, Y, values,
                   col.palette = hcl.colors(1000, "Reds 3",rev=T),
                   bg.range = NULL, col.range = NULL,
                   pch = 21, cex = 2, lwd = 1.5, force.range = TRUE,
-                  add.col.legend = FALSE)
+                  add.col.legend = FALSE, ...)
 }
 \description{
 Draw points with values displayed as colors. Two different sets of values can be shown simultaneously: 
@@ -24,7 +24,8 @@ one in the background and one in the contour.
 \item{pch, cex, lwd}{Same as in plot() (Note: only use values between 21-25 for pch).}
 \item{force.range}{Locical. If TRUE, values outside the range are constrained at the boundaries of 
 the range; if FALSE, a transparent color is used.}
-\item{add.col.legend}{Logical. Add a legend for values on the outside of the points?}							
+\item{add.col.legend}{Logical. Add a legend for values on the outside of the points?}	
+\item{...}{Additional arguments to be passed to \code{imagePlot} to draw the legend.}						
 }
 \value{
 No output is produced. This function is used for its side effetcs.

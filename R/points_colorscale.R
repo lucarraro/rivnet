@@ -3,7 +3,7 @@ points_colorscale <- function(X, Y, values,
                               col.palette = hcl.colors(1000, "Reds 3",rev=T),
                               bg.range = NULL, col.range = NULL,
                               pch = 21, cex = 2, lwd = 1.5, force.range = TRUE,
-                              add.col.legend = FALSE){
+                              add.col.legend = FALSE, ...){
 
   if (is.data.frame(values)){
     values.bg <- values[,1]
@@ -41,11 +41,11 @@ points_colorscale <- function(X, Y, values,
 
   # add legend
   imagePlot(col=bg.palette, add=T,legend.only=T,
-                    zlim=bg.range)
+                    zlim=bg.range, ...)
 
   if (add.col.legend & is.data.frame(values)){
     imagePlot(col=col.palette, add=T,legend.only=T,
-                      zlim=col.range, horizontal=T)}
+                      zlim=col.range, horizontal=T, ...)}
 
 
   invisible()

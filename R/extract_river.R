@@ -1,21 +1,21 @@
 extract_river <- function(outlet,
-                           EPSG=NULL,
-                           ext=NULL,
-                           z=NULL,
-                           DEM=NULL,
-                           as.river=TRUE,
-                           as.rast=FALSE,
-                           filename=NULL,
-                           showPlot=FALSE,
-                           threshold_parameter=1000,
-                           n_processes=1,
-                           displayUpdates=FALSE,
-                           src="aws",
-                           args_get_elev_raster=list()){
+                          EPSG=NULL,
+                          ext=NULL,
+                          z=NULL,
+                          DEM=NULL,
+                          as.river=TRUE,
+                          as.rast=FALSE,
+                          filename=NULL,
+                          showPlot=FALSE,
+                          threshold_parameter=1000,
+                          n_processes=1,
+                          displayUpdates=FALSE,
+                          src="aws",
+                          args_get_elev_raster=list()){
 
   if (!is.null(EPSG)){
-  if ( EPSG==4326){
-    warning("You are using the WGS84 geographic coordinate system.
+    if ( is.null(st_crs(EPSG)$units)){
+      warning("You are using a geographic coordinate system.
     It is recommended that you use a projected coordinate system.")}}
 
   if (!is.null(DEM)){
@@ -47,32 +47,32 @@ extract_river <- function(outlet,
   t0 <- Sys.time()
   if (is.null(DEM)){
 
-  # use elevatr to download DEM
-  loc.df <- data.frame(x=c(ext[1], ext[2]), y=c(ext[3],ext[4]))
-  r <- rast()
-  crs(r) <- paste0("epsg:",EPSG)
-  crs_str <- crs(r)
+    # use elevatr to download DEM
+    loc.df <- data.frame(x=c(ext[1], ext[2]), y=c(ext[3],ext[4]))
+    r <- rast()
+    crs(r) <- paste0("epsg:",EPSG)
+    crs_str <- crs(r)
 
-  # override curl::has_internet() check by get_elev_raster
-  op <- get("has_internet_via_proxy", environment(curl::has_internet)) # old value
-  # check for internet
-  np <- !is.null(curl::nslookup("r-project.org", error = FALSE))
-  assign("has_internet_via_proxy", np, environment(curl::has_internet))
-  on.exit(assign("has_internet_via_proxy", op, environment(curl::has_internet)))
+    # override curl::has_internet() check by get_elev_raster
+    op <- get("has_internet_via_proxy", environment(curl::has_internet)) # old value
+    # check for internet
+    np <- !is.null(curl::nslookup("r-project.org", error = FALSE))
+    assign("has_internet_via_proxy", np, environment(curl::has_internet))
+    on.exit(assign("has_internet_via_proxy", op, environment(curl::has_internet)))
 
-  if (is.null(args_get_elev_raster$locations)) args_get_elev_raster$locations=loc.df
-  if (is.null(args_get_elev_raster$prj)) args_get_elev_raster$prj=crs_str
-  if (is.null(args_get_elev_raster$z)) args_get_elev_raster$z=z
-  if (is.null(args_get_elev_raster$verbose)) args_get_elev_raster$verbose=!quiet
-  if (is.null(args_get_elev_raster$clip)) args_get_elev_raster$clip="bbox"
-  if (is.null(args_get_elev_raster$src)) args_get_elev_raster$src=src
+    if (is.null(args_get_elev_raster$locations)) args_get_elev_raster$locations=loc.df
+    if (is.null(args_get_elev_raster$prj)) args_get_elev_raster$prj=crs_str
+    if (is.null(args_get_elev_raster$z)) args_get_elev_raster$z=z
+    if (is.null(args_get_elev_raster$verbose)) args_get_elev_raster$verbose=!quiet
+    if (is.null(args_get_elev_raster$clip)) args_get_elev_raster$clip="bbox"
+    if (is.null(args_get_elev_raster$src)) args_get_elev_raster$src=src
 
-  if (quiet){
-    elev <- suppressMessages(do.call(get_elev_raster, args_get_elev_raster))
-  } else {
-  elev <- do.call(get_elev_raster, args_get_elev_raster)}
-  elev <- rast(elev) # transform into spatRaster object
-  elev <- classify(elev, matrix(c(NA,NA,0),1,3)) # all pixels with elev=NA are set to 0. Then the pit remove algorithm will take care of them
+    if (quiet){
+      elev <- suppressMessages(do.call(get_elev_raster, args_get_elev_raster))
+    } else {
+      elev <- do.call(get_elev_raster, args_get_elev_raster)}
+    elev <- rast(elev) # transform into spatRaster object
+    elev <- classify(elev, matrix(c(NA,NA,0),1,3)) # all pixels with elev=NA are set to 0. Then the pit remove algorithm will take care of them
   }
 
   writeRaster(elev, filename=file.path(test_dir, "DEM.tif"), overwrite=TRUE) # write elevation raster to temporary directory
@@ -102,7 +102,7 @@ extract_river <- function(outlet,
                                        quiet = quiet)
 
   if (!is.null(EPSG)){
-  p.sf <- sf::st_as_sf(data.frame(x = x_outlet,y= y_outlet), coords = c("x", "y"), crs=EPSG) # crs=EPSG
+    p.sf <- sf::st_as_sf(data.frame(x = x_outlet,y= y_outlet), coords = c("x", "y"), crs=EPSG) # crs=EPSG
   } else {
     p.sf <- sf::st_as_sf(data.frame(x = x_outlet,y= y_outlet), coords = c("x", "y"))
   }
@@ -131,10 +131,36 @@ extract_river <- function(outlet,
 
   shp <- sf::st_read(out_moved.shp,quiet=T)
   out_moved <- sf::st_coordinates(shp)
-  t2 <- Sys.time()
-
-  # create catchment contour
   cellsize <- sqrt(prod(res(fel)))
+  no.cells <- as.numeric(as.matrix(extract(ad8, out_moved)))
+  if (length(no.cells)==1){
+    outlet <- matrix(outlet,nrow=1,ncol=2,byrow=T)
+    out_moved <- matrix(out_moved,nrow=1,ncol=2,byrow=T)
+  }
+
+  if (showPlot==T){
+    oldpar <- par(no.readonly = TRUE)
+    if (length(no.cells)>1){
+      par(mfrow=c(1,2))
+      on.exit(par(oldpar))
+    }
+    for (ind_out in 1:length(no.cells)){
+    plot(ad8,col=hcl.colors(1000),
+         xlim=out_moved[ind_out, 1]+cellsize*c(-50,50),
+         ylim=out_moved[ind_out, 2]+cellsize*c(-50,50))
+    points(outlet[ind_out, 1],outlet[ind_out, 2], pch=22,bg="red")
+    points(out_moved[ind_out, 1],out_moved[ind_out, 2],
+           pch=21 ,bg="magenta",cex=0.8)
+    legend(out_moved[ind_out, 1]-50*cellsize, out_moved[ind_out, 2]+50*cellsize,
+           pt.bg=c("red","magenta"), pch=c(22,21), pt.cex=c(1,0.8),cex=c(0.75,0.75),
+           legend=c("Original","Moved"), title="Outlet")
+    title(sprintf("Catchment contains %d pixels",no.cells[ind_out]))
+    }
+    par(oldpar)
+  }
+
+  t2 <- Sys.time()
+  # create catchment contour
   ssa_cont <- classify(ssa,matrix(c(NA,NA,-1e6,1,Inf,1e6),2,3,byrow=T))
   cont <- as.contour(ssa_cont,levels=c(0,1e6))
   cont <- subset(cont, cont$level==0) # pick most external contour
@@ -152,7 +178,7 @@ extract_river <- function(outlet,
   if (showPlot==T){
     plot(ad8,col=hcl.colors(1000))
     for (i in 1:length(XContour)){
-    lines(XContour[[i]],YContour[[i]],col="magenta")}
+      lines(XContour[[i]],YContour[[i]],col="magenta")}
     title(sprintf('Max drainage area: %.2e m2',max(values(ssa)*prod(res(ssa)),na.rm=T)))
   }
 
@@ -395,7 +421,7 @@ setMethod("plot", signature(x="river",y="numeric"),
             if (isTRUE(type=="SC" | type=="subcatchments")) {
               OCNet::draw_subcatchments_OCN(x, y, ...)
             } else { OCNet::draw_thematic_OCN(y, x, ...)}
-            })
+          })
 
 
 neigh <- function(dir) {

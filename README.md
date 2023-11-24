@@ -13,6 +13,8 @@ An R-package allowing seamless extraction of river networks from Digital Elevati
 - Resulting river networks are compatible with functions from the `OCNet` package, and can be plotted and analyzed accordingly (and are thus also compatible with packages `igraph` and `SSN`). 
 - Distances, areas, subcatchments, slopes and so on can be computed. The obtained river networks can be used for further hydrological and ecological modelling studies.
 
+For further details, please see Carraro (2023). Technical note: Seamless extraction and analysis of river networks in R. *Hydrology and Earth System Sciences*. https://doi.org/10.5194/hess-27-3733-2023.
+
 ## A minimal working example
 
 Extract the river Wigger (Switzerland) from an externally provided DEM raster file. Outlet coordinates are in the CH1903/LV03 projected coordinate system (i.e., the same as the DEM file):
