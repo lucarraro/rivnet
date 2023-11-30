@@ -20,9 +20,9 @@ This is an alias to \code{\link{OCN_to_AEM}}.
 \dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{
  fp <- system.file("extdata/wigger.tif", package="rivnet")
- r <- extract_river(outlet=c(637478,237413),
-	DEM=fp)
-r <- aggregate_river(r)^
+ r <- extract_river(outlet=c(637478, 237413),
+	DEM = fp)
+r <- aggregate_river(r)
 out.aem <- river_to_AEM(r)
 }
 \dontshow{\}) # examplesIf}
