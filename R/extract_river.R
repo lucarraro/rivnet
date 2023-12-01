@@ -138,6 +138,9 @@ extract_river <- function(outlet,
     out_moved <- matrix(out_moved,nrow=1,ncol=2,byrow=T)
   }
 
+  file.remove(out_fel, out_p, out_ad8, out_src,
+              out_ssa, out_shp, out_moved.shp)
+
   if (showPlot==T){
     oldpar <- par(no.readonly = TRUE)
     if (length(no.cells)>1){
