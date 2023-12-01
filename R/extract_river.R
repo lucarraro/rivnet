@@ -138,9 +138,6 @@ extract_river <- function(outlet,
     out_moved <- matrix(out_moved,nrow=1,ncol=2,byrow=T)
   }
 
-  file.remove(out_fel, out_p, out_ad8, out_src,
-              out_ssa, out_shp, out_moved.shp)
-
   if (showPlot==T){
     oldpar <- par(no.readonly = TRUE)
     if (length(no.cells)>1){
@@ -323,6 +320,10 @@ extract_river <- function(outlet,
     message(sprintf("Time for TauDEM processing: %.1f s \n",difftime(t2,t1,units="secs")),appendLF = FALSE)
     message(sprintf("Time for creation of river object: %.1f s \n",difftime(t3,t2,units="secs")),appendLF = FALSE)
   }
+
+  ff <-   file.remove(out_fel, out_p, out_ad8, out_src,
+                      out_ssa, out_shp, out_moved.shp)
+
   if (as.river==TRUE){invisible(river_S4)}
 }
 
