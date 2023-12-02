@@ -321,8 +321,7 @@ extract_river <- function(outlet,
     message(sprintf("Time for creation of river object: %.1f s \n",difftime(t3,t2,units="secs")),appendLF = FALSE)
   }
 
-  ff <-   file.remove(out_fel, out_p, out_ad8, out_src,
-                      out_ssa, out_shp, out_moved.shp)
+  unlink(file.path(test_dir,"*"))
 
   if (as.river==TRUE){invisible(river_S4)}
 }
