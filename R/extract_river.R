@@ -320,6 +320,9 @@ extract_river <- function(outlet,
     message(sprintf("Time for TauDEM processing: %.1f s \n",difftime(t2,t1,units="secs")),appendLF = FALSE)
     message(sprintf("Time for creation of river object: %.1f s \n",difftime(t3,t2,units="secs")),appendLF = FALSE)
   }
+
+  unlink(file.path(test_dir,"*"))
+
   if (as.river==TRUE){invisible(river_S4)}
 }
 
