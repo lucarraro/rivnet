@@ -19,24 +19,27 @@
 
 \arguments{
 \item{x}{A \code{river} object (or a numeric vector if \code{y} is a \code{river}).}
-\item{y}{A numeric vector to be displayed (or a river if \code{x} is a numeric vector). 
-It is equivalent to \code{theme} in \code{draw_subcatchments_OCN} and \code{draw_thematic_OCN}. If \code{y} is specified, the river must 
+\item{y}{A numeric vector to be displayed (or a river if \code{x} is a numeric vector).
+It is equivalent to \code{theme} in \code{draw_subcatchments_OCN} and \code{draw_thematic_OCN}. If \code{y} is specified, the river must
 have been aggregated. See details.}
-\item{type}{Optional argument. If \code{type = "SC"} or \code{type = "subcatchments"}, \code{draw_subcatchments_OCN} is used (provided that 
+\item{type}{Optional argument. If \code{type = "SC"} or \code{type = "subcatchments"}, \code{draw_subcatchments_OCN} is used (provided that
 the \code{river} object is aggregated); if  \code{type = "elev2D"}, \code{draw_elev2D_OCN} is used; alternatively,
 \code{draw_thematic_OCN} is used.}
-\item{...}{Arguments passed to the plotting functions \code{draw_simple_OCN}, \code{draw_contour_OCN}, 
-\code{draw_thematic_OCN}. See details.} 
+\item{...}{Arguments passed to the plotting functions \code{draw_simple_OCN}, \code{draw_contour_OCN},
+\code{draw_thematic_OCN}. See details.}
 }
 
 \details{
 This is an interface to the plotting functions \code{draw_simple_OCN}, \code{\link{draw_elev2D_OCN}}, \code{draw_contour_OCN}, \code{draw_subcatchments_OCN},
 \code{draw_thematic_OCN}. If the \code{river} object does not have an elevation field (i.e., it has been generated
-by \code{create_OCN} or \code{create_general_contour_OCN}, but \code{landscape_OCN} has not 
-been run), the plotting function used is \code{draw_simple_OCN}. If the elevation field is present, but the river 
-has not been aggregated (via \code{aggregate_OCN} or \code{aggregate_river}), the default plotting function used is 
+by \code{create_OCN} or \code{create_general_contour_OCN}, but \code{landscape_OCN} has not
+been run), the plotting function used is \code{draw_simple_OCN}. If the elevation field is present, but the river
+has not been aggregated (via \code{aggregate_OCN} or \code{aggregate_river}), the default plotting function used is
  \code{draw_contour_OCN}. If the river has been aggregated, \code{draw_subcatchments_OCN} or \code{draw_thematic_OCN} are used depending on \code{type}.
  Elevation maps can be produced with \code{type = "elev2D"}, regardless of whether the river has been aggregated.
+
+\emph{Adding scale bar and north arrow.} Scale bar and north arrow can be added via \code{terra}'s functions \code{\link{sbar}} and \code{\link{north}}, respectively.
+However, note that arguments \code{d} and \code{xy} must be specified by the user (because no \code{rast} object is plotted). See example.
 }
 
 \seealso{
@@ -65,6 +68,12 @@ plot(r$SC$Y, r,  type = "subcatchments", addLegend = FALSE)  # swapping argument
 
 # plot elevation map
 plot(r, type = "elev2D", drawRiver = TRUE)
+# now add scale bar and north arrow
+library(terra)
+# sbar() # this would throw an error
+# north()# this would throw an error
+sbar(d=1000, xy=c(min(r$FD$X), min(r$FD$Y)-r$cellsize)) # this works
+north(d=1000, xy=c(max(r$FD$X)+r$cellsize, max(r$FD$Y))) # this works
 }
-\dontshow{\}) # examplesIf}	
+\dontshow{\}) # examplesIf}
 }
