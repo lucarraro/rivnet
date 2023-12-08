@@ -8,11 +8,11 @@ points_colorscale <- function(X, Y, values,
   if (is.data.frame(values)){
     values.bg <- values[,1]
     values.col <- values[,2]
-    if (is.null(col.range)) col.range <- range(values.col, na.rm=T)
+    if (is.null(col.range)) col.range <- range(values.col, na.rm=T, finite=T)
   } else {
     values.bg <- values
   }
-  if (is.null(bg.range)) bg.range <- range(values.bg, na.rm=T)
+  if (is.null(bg.range)) bg.range <- range(values.bg, na.rm=T, finite=T)
 
   bg.length <- length(bg.palette)
   col.length <- length(col.palette)

@@ -7,7 +7,8 @@ needed.
 
 ## Minor changes
 
-- `plot`: example with use of `terra::north` and `terrs::sbar` added.
+- `plot`: example with use of `terra::north` and `terra::sbar` added.
+- `points_colorscale`: bug fixed for `Inf` and `-Inf` values.
 
 # rivnet 0.3.4
 
