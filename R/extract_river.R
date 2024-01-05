@@ -9,7 +9,7 @@ extract_river <- function(outlet,
                           showPlot=FALSE,
                           threshold_parameter=1000,
                           n_processes=1,
-                          displayUpdates=FALSE,
+                          displayUpdates=0,
                           src="aws",
                           args_get_elev_raster=list()){
 
@@ -42,7 +42,7 @@ extract_river <- function(outlet,
   #test_dir <- withr::local_tempdir() # temporary directory storing intermediary files created by TauDEM
   test_dir <- tempdir()
 
-  quiet <- !displayUpdates
+  if (displayUpdates==2) {quiet=FALSE} else {quiet=TRUE}
 
   t0 <- Sys.time()
   if (is.null(DEM)){
@@ -63,7 +63,7 @@ extract_river <- function(outlet,
     if (is.null(args_get_elev_raster$locations)) args_get_elev_raster$locations=loc.df
     if (is.null(args_get_elev_raster$prj)) args_get_elev_raster$prj=crs_str
     if (is.null(args_get_elev_raster$z)) args_get_elev_raster$z=z
-    if (is.null(args_get_elev_raster$verbose)) args_get_elev_raster$verbose=!quiet
+    if (is.null(args_get_elev_raster$verbose)) args_get_elev_raster$verbose=(displayUpdates>0)
     if (is.null(args_get_elev_raster$clip)) args_get_elev_raster$clip="bbox"
     if (is.null(args_get_elev_raster$src)) args_get_elev_raster$src=src
 
@@ -80,22 +80,26 @@ extract_river <- function(outlet,
 
   # apply TauDEM functions
   # Remove pits
+  if (displayUpdates==1) message('Remove pits...\n',appendLF=FALSE)
   out_fel <- traudem::taudem_pitremove(file.path(test_dir, "DEM.tif"),
                                        n_processes = n_processes,
                                        quiet = quiet)
 
   # D8 flow directions
+  if (displayUpdates==1) message('D8 flow directions...\n',appendLF=FALSE)
   out_p <- traudem::taudem_d8flowdir(out_fel,
                                      n_processes = n_processes,
                                      quiet = quiet)
   out_p <- out_p$output_d8flowdir_grid # file path of flow direction file
 
   # Contributing area
+  if (displayUpdates==1) message('Contributing areas...\n',appendLF=FALSE)
   out_ad8 <- traudem::taudem_aread8(out_p,
                                     n_processes = n_processes,
                                     quiet = quiet)
 
   # Threshold
+  if (displayUpdates==1) message('Stream definition by threshold...\n',appendLF=FALSE)
   out_src <- traudem::taudem_threshold(out_ad8,
                                        threshold_parameter = threshold_parameter,
                                        n_processes = n_processes,
@@ -112,6 +116,7 @@ extract_river <- function(outlet,
 
 
   # Move outlet to stream
+  if (displayUpdates==1) message('Move outlet to stream...\n',appendLF=FALSE)
   out_moved.shp <- traudem::taudem_moveoutletstostream(out_p, out_src, outlet_file = out_shp,
                                                        output_moved_outlets_file = file.path(test_dir,"Outlet.shp"),
                                                        n_processes = n_processes,
@@ -119,6 +124,7 @@ extract_river <- function(outlet,
 
 
   # Contributing area upstream of outlet
+  if (displayUpdates==1) message('Contributing area upstream of outlet...\n',appendLF=FALSE)
   out_ssa <- traudem::taudem_aread8(out_p, output_contributing_area_grid = file.path(test_dir,"ssa.tif"),
                                     n_processes = n_processes,
                                     outlet_file = out_moved.shp, quiet = quiet)
@@ -189,7 +195,7 @@ extract_river <- function(outlet,
   }
 
   if (as.river==TRUE){
-    if (!quiet){message("Creation of river object...      \r", appendLF = FALSE)}
+    if (displayUpdates>0){message("Creation of river object...      \r", appendLF = FALSE)}
     ncols <- ncol(ssa)
     nrows <- nrow(ssa)
     ssa_val <- values(ssa)
@@ -299,7 +305,7 @@ extract_river <- function(outlet,
       YContour <- list(YContour)
     }
 
-    if (!quiet){message("Creation of river object... 100.0% \n", appendLF = FALSE)}
+    if (displayUpdates>0){message("Creation of river object... 100.0% \n", appendLF = FALSE)}
 
     CM <- list(A=A_FD[Outlet_FD], XContour=XContour, YContour=YContour,
                XContourDraw=XContour, YContourDraw=YContour)
@@ -314,7 +320,7 @@ extract_river <- function(outlet,
     for (i in 1:length(fieldnames)){slot(river_S4, fieldnames[i]) <- river[[fieldnames[i]]]}
   }
   t3 <- Sys.time()
-  if (displayUpdates){
+  if (displayUpdates>0){
     message("extract_river has finished. \n",appendLF = FALSE)
     message(sprintf("Time for DEM download: %.1f s \n",difftime(t1,t0,units="secs")),appendLF = FALSE)
     message(sprintf("Time for TauDEM processing: %.1f s \n",difftime(t2,t1,units="secs")),appendLF = FALSE)

@@ -4,7 +4,7 @@
 \usage{
 extract_river(outlet, EPSG=NULL, ext=NULL, z=NULL, DEM=NULL,
   as.river=TRUE, as.rast=FALSE, filename=NULL, showPlot=FALSE,
-  threshold_parameter=1000, n_processes=1, displayUpdates=FALSE, src="aws",
+  threshold_parameter=1000, n_processes=1, displayUpdates=0, src="aws",
   args_get_elev_raster=list())
 }
 \description{
@@ -41,8 +41,9 @@ contour be produced?}
 \item{threshold_parameter}{Value passed to \code{taudem_threshold}. See example and `traudem`
 documentation for details.}
 \item{n_processes}{Value passed to the \code{traudem} functions.}
-\item{displayUpdates}{Logical. If \code{FALSE} console output is suppressed (barring some messages from
-\code{elevatr::get_elev_raster}, if \code{DEM} is not provided). If \code{TRUE}, console output from
+\item{displayUpdates}{Numeric. Possible values are \code{0}, \code{1}, \code{2}. If \code{0}, console output 
+is suppressed (barring some messages from \code{elevatr::get_elev_raster}, if \code{DEM} is not provided). 
+If \code{1}, succint console output is produced. If \code{2}, extensive  console output from 
 \code{elevatr::get_elev_raster} and \code{traudem} functions is displayed. }
 \item{src}{Value passed to \code{get_elev_raster}. Deprecated.}
 \item{args_get_elev_raster}{List of additional parameters to be passed to \code{get_elev_raster}. 

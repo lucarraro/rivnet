@@ -7,6 +7,7 @@ needed.
 
 ## Minor changes
 
+- `extract_river`: argument `displayUpdates` accepts numeric values 0, 1, 2.
 - `plot`: example with use of `terra::north` and `terra::sbar` added.
 - `points_colorscale`: bug fixed for `Inf` and `-Inf` values.
 
