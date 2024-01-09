@@ -25,4 +25,5 @@ Suggests:
     bookdown
 VignetteBuilder: knitr
 URL: https://lucarraro.github.io/rivnet/
+BugReports: https://github.com/lucarraro/rivnet/issues
 LinkingTo: Rcpp
