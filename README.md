@@ -1,10 +1,10 @@
-<img align="right" width="250" src="man/figures/rivnet_logo.png">
+# rivnet <img align="right" width="250" src="man/figures/logo.png">
 
-# rivnet
+<!-- badges: start -->
+[![CRAN](http://www.r-pkg.org/badges/version/rivnet)](http://CRAN.R-project.org/package=rivnet)
+<!-- badges: end -->
 
 An R-package allowing seamless extraction of river networks from Digital Elevation Models data.
-
-[![CRAN](http://www.r-pkg.org/badges/version/rivnet)](http://CRAN.R-project.org/package=rivnet)
 
 ## What this package does 
 
