@@ -1,4 +1,8 @@
-# rivnet 0.3.4.9000
+# rivnet 0.4.0.9000
+
+- BugReports link added in `DESCRIPTION`.
+
+# rivnet 0.4.0
 
 ## Major changes
 
