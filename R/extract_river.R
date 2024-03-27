@@ -153,14 +153,14 @@ extract_river <- function(outlet,
     for (ind_out in 1:length(no.cells)){
     plot(ad8,col=hcl.colors(1000),
          xlim=out_moved[ind_out, 1]+cellsize*c(-50,50),
-         ylim=out_moved[ind_out, 2]+cellsize*c(-50,50))
+         ylim=out_moved[ind_out, 2]+cellsize*c(-50,50),
+         main=sprintf("Catchment contains %d pixels",no.cells[ind_out]))
     points(outlet[ind_out, 1],outlet[ind_out, 2], pch=22,bg="red")
     points(out_moved[ind_out, 1],out_moved[ind_out, 2],
            pch=21 ,bg="magenta",cex=0.8)
     legend(out_moved[ind_out, 1]-50*cellsize, out_moved[ind_out, 2]+50*cellsize,
            pt.bg=c("red","magenta"), pch=c(22,21), pt.cex=c(1,0.8),cex=c(0.75,0.75),
            legend=c("Original","Moved"), title="Outlet")
-    title(sprintf("Catchment contains %d pixels",no.cells[ind_out]))
     }
     par(oldpar)
   }
@@ -182,10 +182,10 @@ extract_river <- function(outlet,
   }
 
   if (showPlot==T){
-    plot(ad8,col=hcl.colors(1000))
+    plot(ad8,col=hcl.colors(1000),
+         main=sprintf('Max drainage area: %.2e m2',max(values(ssa)*prod(res(ssa)),na.rm=T)))
     for (i in 1:length(XContour)){
       lines(XContour[[i]],YContour[[i]],col="magenta")}
-    title(sprintf('Max drainage area: %.2e m2',max(values(ssa)*prod(res(ssa)),na.rm=T)))
   }
 
   if (as.rast==T){

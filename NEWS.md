@@ -1,6 +1,9 @@
 # rivnet 0.4.0.9000
 
+## Minor changes
+
 - BugReports link added in `DESCRIPTION`.
+- `extract_river`: improved title appearance in figures when `showPlot = TRUE`.
 
 # rivnet 0.4.0
 
