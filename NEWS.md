@@ -4,6 +4,7 @@
 
 - BugReports link added in `DESCRIPTION`.
 - `extract_river`: improved title appearance in figures when `showPlot = TRUE`.
+- `plot`: option `type = "contour"` and relative example added.
 
 # rivnet 0.4.0
 

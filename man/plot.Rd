@@ -23,14 +23,15 @@
 It is equivalent to \code{theme} in \code{draw_subcatchments_OCN} and \code{draw_thematic_OCN}. If \code{y} is specified, the river must
 have been aggregated. See details.}
 \item{type}{Optional argument. If \code{type = "SC"} or \code{type = "subcatchments"}, \code{draw_subcatchments_OCN} is used (provided that
-the \code{river} object is aggregated); if  \code{type = "elev2D"}, \code{draw_elev2D_OCN} is used; alternatively,
+the \code{river} object is aggregated); if  \code{type = "elev2D"}, \code{draw_elev2D_OCN} is used; if \code{type = "contour"}, \code{draw_contour_OCN}
+is used (provided that the \code{river} object contains the \code{CM} field as produced by \code{landscape_OCN} or \code{extract_river}); alternatively,
 \code{draw_thematic_OCN} is used.}
 \item{...}{Arguments passed to the plotting functions \code{draw_simple_OCN}, \code{draw_contour_OCN},
 \code{draw_thematic_OCN}. See details.}
 }
 
 \details{
-This is an interface to the plotting functions \code{draw_simple_OCN}, \code{\link{draw_elev2D_OCN}}, \code{draw_contour_OCN}, \code{draw_subcatchments_OCN},
+This is an interface to the plotting functions \code{draw_simple_OCN}, \code{draw_elev2D_OCN}, \code{draw_contour_OCN}, \code{draw_subcatchments_OCN},
 \code{draw_thematic_OCN}. If the \code{river} object does not have an elevation field (i.e., it has been generated
 by \code{create_OCN} or \code{create_general_contour_OCN}, but \code{landscape_OCN} has not
 been run), the plotting function used is \code{draw_simple_OCN}. If the elevation field is present, but the river
@@ -56,7 +57,8 @@ plot(r)	# equivalent to draw_contour_OCN
 \donttest{
 r <- aggregate_river(r)
 plot(r) # equivalent to draw_thematic_OCN
-plot(r,  type = "SC") # equivalent to draw_subcatchments_OCN
+plot(r, type = "SC") # equivalent to draw_subcatchments_OCN
+plot(r, type = "contour")	# equivalent to draw_contour_OCN 
 
 # equivalent to draw_thematic_OCN with 'theme' specified
 plot(r, r$AG$streamOrder, discreteLevels = TRUE)

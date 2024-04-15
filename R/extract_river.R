@@ -411,6 +411,8 @@ setMethod("plot", signature(x="river",y="missing"),
             else if (length(x$AG) > 0) {
               if (type=="SC" | type=="subcatchments"){
                 OCNet::draw_subcatchments_OCN(x, ...)
+              } else if (type=="contour"){
+                OCNet::draw_contour_OCN(x, ...)
               } else {OCNet::draw_thematic_OCN(x, ...)}
             } else if (length(x$CM) > 0) {
               OCNet::draw_contour_OCN(x, ...)
