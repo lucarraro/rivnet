@@ -3,7 +3,7 @@ pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   rivnet: rivnet.html
-last_built: 2024-04-29T05:18Z
+last_built: 2024-05-22T08:08Z
 urls:
   reference: https://lucarraro.github.io/rivnet/reference
   article: https://lucarraro.github.io/rivnet/articles
