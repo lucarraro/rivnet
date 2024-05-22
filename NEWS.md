@@ -1,4 +1,10 @@
-# rivnet 0.4.1.9000
+# rivnet 0.4.2.9000
+
+## Minor changes
+
+- `extract_river`: argument `n_processes` cannot be greater than the number of available cores.
+
+# rivnet 0.4.2
 
 ## Minor changes
 

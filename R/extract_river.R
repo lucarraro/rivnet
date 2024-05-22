@@ -18,6 +18,13 @@ extract_river <- function(outlet,
       warning("You are using a geographic coordinate system.
     It is recommended that you use a projected coordinate system.")}}
 
+  maxAvailableProcessors <- as.numeric(parallelly::availableCores(constraints="connections"))
+  if (n_processes > maxAvailableProcessors){
+    n_processes <- max(1, maxAvailableProcessors - 1)
+    warning(sprintf(
+     "The input n_processes is higher than the number
+of available cores. n_processes has been set to %d.",n_processes))}
+
   if (!is.null(DEM)){
     elev <- rast(DEM)
     ext <- as.vector(ext(elev))}
