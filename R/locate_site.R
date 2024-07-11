@@ -56,8 +56,8 @@ locate_site <- function(X,Y=NULL,river,
   Xnew <- river$RN$X[RNnode]; Ynew <- river$RN$Y[RNnode]
 
   if (showPlot){
-    oldpar <- par(no.readonly = TRUE)
-    on.exit(par(oldpar))
+    #oldpar <- par(no.readonly = TRUE)
+    #on.exit(par(oldpar))
 
     Xmin <- min(X,Xnew)-20*river$cellsize; Xmax <- max(X,Xnew)+20*river$cellsize;
     Ymin <- min(Y,Ynew)-20*river$cellsize; Ymax <- max(Y,Ynew)+20*river$cellsize
@@ -69,7 +69,6 @@ locate_site <- function(X,Y=NULL,river,
     plot(river,theme, discreteLevels = T,
          colPalette = colorRampPalette(c("blue2","orange")),
          xlim=xlim, ylim=ylim)
-
     xy_lim <- par("usr")
 
     legend(x=xy_lim[1]+river$cellsize, y=xy_lim[4], legend=c("Original site","RN node","AG reach"),
@@ -77,7 +76,7 @@ locate_site <- function(X,Y=NULL,river,
     points(X,Y,pch=15,col="red")
     points(Xnew,Ynew,pch=20,col="black")
 
-    parfig <- par()
+    parfig <- par() # useless?
   }
 
   explist <- vector("list")

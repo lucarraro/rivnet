@@ -2,7 +2,7 @@
 \alias{locate_site}
 \title{Locate site in a river}
 \usage{
-locate_site(X, Y=NULL, river, euclidean = TRUE, showPlot = FALSE, 
+locate_site(X, Y = NULL, river, euclidean = TRUE, showPlot = FALSE, 
   xlim = NULL, ylim = NULL)
 }
 \description{
@@ -18,7 +18,7 @@ the longitudinal coordinate of the site. Coordinate values must be given in the 
 \item{euclidean}{Logical. Should the location of the site in the \code{river} be attributed "as the crow flies"? 
 If \code{FALSE}, the downstream path from (\code{X}, \code{Y}) is followed until the river network is met.}
 \item{showPlot}{Logical. Should a close-up of the relocated site be shown?}
-\item{xlim, ylim}{Ranges of x- and y-axis limits for the plot. Only active if \code{showPlots = TRUE}.}
+\item{xlim, ylim}{Ranges of x- and y-axis limits for the plot. Only active if \code{showPlot = TRUE}.}
 }
 
 \value{
@@ -30,7 +30,7 @@ that belongs to the river network.}
 \item{RNode}{index at the RN level of the relocated site.}
 \item{AGode}{index at the AG level of the relocated site.}
 \item{par}{List of graphical parameters as produced by a call to \code{\link{par}} 
-(only if \code{showPlot = TRUE}). This can be used to add features to the existing plot.}
+(only if \code{showPlot = TRUE}). This can be used to add features to the existing plot. Deprecated.}
 }
 
 \details{
@@ -60,7 +60,6 @@ and argument \code{breakpoints}).
  out1 <- locate_site(X, Y, r, showPlot = TRUE) # as the crow flies
  out2 <- locate_site(X, Y, r, showPlot = TRUE, euclidean = FALSE) # follow downstream path
  
- # par(out2$par) # reset graphical parameters before adding new features to the current plot
  }
  
   # define X, Y by clicking on the map

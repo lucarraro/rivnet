@@ -3,6 +3,7 @@
 ## Minor changes
 
 - `extract_river`: argument `n_processes` cannot be greater than the number of available cores.
+- `locate_site`: call to graphical parameters removed. Exported value `par` is now deprecated (because useless).
 
 # rivnet 0.4.2
 
