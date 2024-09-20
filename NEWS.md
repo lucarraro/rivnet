@@ -1,4 +1,9 @@
-# rivnet 0.4.2.9000
+# rivnet 0.5.0
+
+## Major changes
+
+- `river_to_shapefile`: function added.
+- `contour_to_shapefile`: function added.
 
 ## Minor changes
 
