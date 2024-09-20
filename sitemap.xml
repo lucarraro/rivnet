@@ -7,6 +7,7 @@
 <url><loc>https://lucarraro.github.io/rivnet/index.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/news/index.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/aggregate_river.html</loc></url>
+<url><loc>https://lucarraro.github.io/rivnet/reference/contour_to_shapefile.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/covariate_river.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/extract_river.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/hydro_river.html</loc></url>
@@ -20,6 +21,7 @@
 <url><loc>https://lucarraro.github.io/rivnet/reference/river_to_AEM.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/river_to_SSN.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/river_to_igraph.html</loc></url>
+<url><loc>https://lucarraro.github.io/rivnet/reference/river_to_shapefile.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/rivnet-package.html</loc></url>
 </urlset>
 
