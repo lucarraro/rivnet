@@ -14,7 +14,7 @@ Construct asymmetric eigenvector maps (AEM) from a river
 \value{
 A \code{river} object. }
 \details{
-This is an alias to \code{\link{OCN_to_AEM}}.
+This is an alias to \code{\link[OCNet:OCN_to_AEM]{OCNet::OCN_to_AEM}}.
 }
 \examples{
 \dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

@@ -14,7 +14,7 @@ Aggregates a river
 \value{
 A \code{river} object. See \code{aggregate_OCN} for description of its structure.}
 \details{
-This is an alias to \code{\link{aggregate_OCN}}.
+This is an alias to \code{\link[OCNet:aggregate_OCN]{OCNet::aggregate_OCN}}.
 }
 \examples{
 \dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

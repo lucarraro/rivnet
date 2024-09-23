@@ -77,8 +77,8 @@ If nested outlets are specified, the function ignores the upstream outlet.
 }
 
 \seealso{
-\code{\link{get_elev_raster}}, \code{\link{taudem_threshold}},
-\code{\link{create_OCN}}, \code{\link{landscape_OCN}}.
+\code{\link[elevatr:get_elev_raster]{elevatr::get_elev_raster}}, \code{\link[traudem:taudem_threshold]{traudem::taudem_threshold}},
+\code{\link[OCNet:create_OCN]{OCNet::create_OCN}}, \code{\link[OCNet:landscape_OCN]{OCNet::landscape_OCN}}.
 }
 
 \examples{

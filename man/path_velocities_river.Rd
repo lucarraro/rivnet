@@ -29,7 +29,7 @@ In both cases, diagonal entries of \code{pathVelocity} are set equal to the resp
 }
 
 \seealso{
-\code{\link{paths_river}}, \code{\link{hydro_river}}, \code{\link{rivergeometry_OCN}}. 
+\code{\link{paths_river}}, \code{\link{hydro_river}}, \code{\link[OCNet:rivergeometry_OCN]{OCNet::rivergeometry_OCN}}. 
 }
 
 \examples{

@@ -42,7 +42,7 @@ is run repeated times (for instance, to compute covariates for one \code{SpatRas
 }
 
 \seealso{
-\code{\link{rast}}, \code{\link{project}}
+\code{\link[terra:rast]{terra::rast}}, \code{\link[terra:project]{terra::project}}
 }
 
 \examples{

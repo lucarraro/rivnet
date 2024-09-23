@@ -14,7 +14,7 @@ Transform a \code{river} in an \code{igraph} object.
 \value{
 An \code{igraph} object.}
 \details{
-This is an alias to \code{\link{OCN_to_igraph}}.
+This is an alias to \code{\link[OCNet:OCN_to_igraph]{OCNet::OCN_to_igraph}}.
 }
 \examples{
 \dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

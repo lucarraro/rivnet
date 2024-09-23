@@ -14,7 +14,7 @@ Transform a \code{river} in a \code{SpatialStreamNetwork} object.
 \value{
 A \code{SpatialStreamNetwork} object if \code{importToR} is \code{TRUE}, otherwise \code{NULL}.}
 \details{
-This is an alias to \code{\link{OCN_to_SSN}}.
+This is an alias to \code{\link[OCNet:OCN_to_SSN]{OCNet::OCN_to_SSN}}.
 }
 \examples{
 \dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

@@ -45,7 +45,7 @@ and argument \code{breakpoints}).
 }
 
 \seealso{
-\code{\link{aggregate_OCN}}, \code{\link{locator}}
+\code{\link[OCNet:aggregate_OCN]{OCNet::aggregate_OCN}}, \code{\link{locator}}
 }
 
 \examples{

@@ -22,7 +22,7 @@ allows overwriting an existing shapefile).}
 No output is produced. This function is used for its side effetcs.
 }
 \seealso{
-\code{\link{writeVector}}
+\code{\link[terra:writeVector]{terra::writeVector}}
 }
 \examples{
 \dontshow{if (interactive() && traudem::can_register_taudem()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
