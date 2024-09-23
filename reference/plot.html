@@ -79,12 +79,13 @@ been run), the plotting function used is <code>draw_simple_OCN</code>. If the el
 has not been aggregated (via <code>aggregate_OCN</code> or <code>aggregate_river</code>), the default plotting function used is
  <code>draw_contour_OCN</code>. If the river has been aggregated, <code>draw_subcatchments_OCN</code> or <code>draw_thematic_OCN</code> are used depending on <code>type</code>.
  Elevation maps can be produced with <code>type = "elev2D"</code>, regardless of whether the river has been aggregated.</p>
-<p><em>Adding scale bar and north arrow.</em> Scale bar and north arrow can be added via <code>terra</code>'s functions <code><a href="https://rspatial.github.io/terra/reference/sbar.html" class="external-link">sbar</a></code> and <code><a href="https://rspatial.github.io/terra/reference/north.html" class="external-link">north</a></code>, respectively.
+<p><em>Adding scale bar and north arrow.</em> Scale bar and north arrow can be added via <code>terra</code>'s functions <code><a href="https://rspatial.github.io/terra/reference/sbar.html" class="external-link">terra::sbar</a></code> and <code><a href="https://rspatial.github.io/terra/reference/north.html" class="external-link">terra::north</a></code>, respectively.
 However, note that arguments <code>d</code> and <code>xy</code> must be specified by the user (because no <code>rast</code> object is plotted). See example.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code>draw_simple_OCN</code>, <code>draw_elev2D_OCN</code>, <code>draw_contour_OCN</code>, <code>draw_subcatchments_OCN</code>, <code>draw_thematic_OCN</code></p></div>
+    <div class="dont-index"><p><code><a href="https://lucarraro.github.io/OCNet/reference/draw_simple_OCN.html" class="external-link">OCNet::draw_simple_OCN</a></code>, <code><a href="https://lucarraro.github.io/OCNet/reference/draw_elev2D_OCN.html" class="external-link">OCNet::draw_elev2D_OCN</a></code>, <code><a href="https://lucarraro.github.io/OCNet/reference/draw_contour_OCN.html" class="external-link">OCNet::draw_contour_OCN</a></code>,
+<code><a href="https://lucarraro.github.io/OCNet/reference/draw_subcatchments_OCN.html" class="external-link">OCNet::draw_subcatchments_OCN</a></code>, <code><a href="https://lucarraro.github.io/OCNet/reference/draw_thematic_OCN.html" class="external-link">OCNet::draw_thematic_OCN</a></code></p></div>
     </div>
 
     <div class="section level2">
