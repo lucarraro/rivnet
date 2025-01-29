@@ -10,6 +10,7 @@
 <url><loc>https://lucarraro.github.io/rivnet/reference/contour_to_shapefile.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/covariate_river.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/extract_river.html</loc></url>
+<url><loc>https://lucarraro.github.io/rivnet/reference/get_riverweight.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/hydro_river.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/index.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/locate_site.html</loc></url>
@@ -17,11 +18,13 @@
 <url><loc>https://lucarraro.github.io/rivnet/reference/paths_river.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/plot.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/points_colorscale.html</loc></url>
+<url><loc>https://lucarraro.github.io/rivnet/reference/rast_riverweight.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/river-class.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/river_to_AEM.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/river_to_SSN.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/river_to_igraph.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/river_to_shapefile.html</loc></url>
 <url><loc>https://lucarraro.github.io/rivnet/reference/rivnet-package.html</loc></url>
+<url><loc>https://lucarraro.github.io/rivnet/reference/wigger.html</loc></url>
 </urlset>
 
