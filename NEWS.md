@@ -1,3 +1,10 @@
+# rivnet 0.6.0
+
+## Major changes
+
+- `get_riverweight`: function added.
+- `rast_riverweight`: function added.
+
 # rivnet 0.5.0
 
 ## Major changes
