@@ -35,10 +35,154 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// eval_weight_cpp
+double eval_weight_cpp(double dst, List weightList, double A);
+RcppExport SEXP _rivnet_eval_weight_cpp(SEXP dstSEXP, SEXP weightListSEXP, SEXP ASEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type dst(dstSEXP);
+    Rcpp::traits::input_parameter< List >::type weightList(weightListSEXP);
+    Rcpp::traits::input_parameter< double >::type A(ASEXP);
+    rcpp_result_gen = Rcpp::wrap(eval_weight_cpp(dst, weightList, A));
+    return rcpp_result_gen;
+END_RCPP
+}
+// eval_wu_exp_cpp
+NumericMatrix eval_wu_exp_cpp(NumericMatrix val, S4 OCN, NumericVector wl, bool FA, bool unweighted);
+RcppExport SEXP _rivnet_eval_wu_exp_cpp(SEXP valSEXP, SEXP OCNSEXP, SEXP wlSEXP, SEXP FASEXP, SEXP unweightedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type val(valSEXP);
+    Rcpp::traits::input_parameter< S4 >::type OCN(OCNSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type wl(wlSEXP);
+    Rcpp::traits::input_parameter< bool >::type FA(FASEXP);
+    Rcpp::traits::input_parameter< bool >::type unweighted(unweightedSEXP);
+    rcpp_result_gen = Rcpp::wrap(eval_wu_exp_cpp(val, OCN, wl, FA, unweighted));
+    return rcpp_result_gen;
+END_RCPP
+}
+// eval_wu_euclidean_cpp
+NumericMatrix eval_wu_euclidean_cpp(NumericMatrix val, S4 OCN, List weightNum, List weightDen, IntegerVector hw);
+RcppExport SEXP _rivnet_eval_wu_euclidean_cpp(SEXP valSEXP, SEXP OCNSEXP, SEXP weightNumSEXP, SEXP weightDenSEXP, SEXP hwSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type val(valSEXP);
+    Rcpp::traits::input_parameter< S4 >::type OCN(OCNSEXP);
+    Rcpp::traits::input_parameter< List >::type weightNum(weightNumSEXP);
+    Rcpp::traits::input_parameter< List >::type weightDen(weightDenSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type hw(hwSEXP);
+    rcpp_result_gen = Rcpp::wrap(eval_wu_euclidean_cpp(val, OCN, weightNum, weightDen, hw));
+    return rcpp_result_gen;
+END_RCPP
+}
+// eval_wu_euclidean_stream_cpp
+NumericMatrix eval_wu_euclidean_stream_cpp(NumericMatrix val, S4 OCN, List weightNum, List weightDen, IntegerVector hw, NumericVector distRiver, IntegerVector rvr);
+RcppExport SEXP _rivnet_eval_wu_euclidean_stream_cpp(SEXP valSEXP, SEXP OCNSEXP, SEXP weightNumSEXP, SEXP weightDenSEXP, SEXP hwSEXP, SEXP distRiverSEXP, SEXP rvrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type val(valSEXP);
+    Rcpp::traits::input_parameter< S4 >::type OCN(OCNSEXP);
+    Rcpp::traits::input_parameter< List >::type weightNum(weightNumSEXP);
+    Rcpp::traits::input_parameter< List >::type weightDen(weightDenSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type hw(hwSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type distRiver(distRiverSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type rvr(rvrSEXP);
+    rcpp_result_gen = Rcpp::wrap(eval_wu_euclidean_stream_cpp(val, OCN, weightNum, weightDen, hw, distRiver, rvr));
+    return rcpp_result_gen;
+END_RCPP
+}
+// eval_wu_euclidean_stream_cpp_equalND
+NumericMatrix eval_wu_euclidean_stream_cpp_equalND(NumericMatrix val, S4 OCN, List weightNum, IntegerVector hw, NumericVector distRiver, IntegerVector rvr, bool unweighted);
+RcppExport SEXP _rivnet_eval_wu_euclidean_stream_cpp_equalND(SEXP valSEXP, SEXP OCNSEXP, SEXP weightNumSEXP, SEXP hwSEXP, SEXP distRiverSEXP, SEXP rvrSEXP, SEXP unweightedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type val(valSEXP);
+    Rcpp::traits::input_parameter< S4 >::type OCN(OCNSEXP);
+    Rcpp::traits::input_parameter< List >::type weightNum(weightNumSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type hw(hwSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type distRiver(distRiverSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type rvr(rvrSEXP);
+    Rcpp::traits::input_parameter< bool >::type unweighted(unweightedSEXP);
+    rcpp_result_gen = Rcpp::wrap(eval_wu_euclidean_stream_cpp_equalND(val, OCN, weightNum, hw, distRiver, rvr, unweighted));
+    return rcpp_result_gen;
+END_RCPP
+}
+// eval_wu_generic_flow_cpp_equalND
+NumericVector eval_wu_generic_flow_cpp_equalND(NumericMatrix val, S4 OCN, List weightNum, IntegerVector hw, bool unweighted);
+RcppExport SEXP _rivnet_eval_wu_generic_flow_cpp_equalND(SEXP valSEXP, SEXP OCNSEXP, SEXP weightNumSEXP, SEXP hwSEXP, SEXP unweightedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type val(valSEXP);
+    Rcpp::traits::input_parameter< S4 >::type OCN(OCNSEXP);
+    Rcpp::traits::input_parameter< List >::type weightNum(weightNumSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type hw(hwSEXP);
+    Rcpp::traits::input_parameter< bool >::type unweighted(unweightedSEXP);
+    rcpp_result_gen = Rcpp::wrap(eval_wu_generic_flow_cpp_equalND(val, OCN, weightNum, hw, unweighted));
+    return rcpp_result_gen;
+END_RCPP
+}
+// eval_wu_generic_flow_cpp
+NumericVector eval_wu_generic_flow_cpp(NumericMatrix val, S4 OCN, List weightNum, List weightDen, IntegerVector hw);
+RcppExport SEXP _rivnet_eval_wu_generic_flow_cpp(SEXP valSEXP, SEXP OCNSEXP, SEXP weightNumSEXP, SEXP weightDenSEXP, SEXP hwSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type val(valSEXP);
+    Rcpp::traits::input_parameter< S4 >::type OCN(OCNSEXP);
+    Rcpp::traits::input_parameter< List >::type weightNum(weightNumSEXP);
+    Rcpp::traits::input_parameter< List >::type weightDen(weightDenSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type hw(hwSEXP);
+    rcpp_result_gen = Rcpp::wrap(eval_wu_generic_flow_cpp(val, OCN, weightNum, weightDen, hw));
+    return rcpp_result_gen;
+END_RCPP
+}
+// dist_to_river_cpp
+NumericVector dist_to_river_cpp(S4 OCN, IntegerVector no_river, IntegerVector rvr);
+RcppExport SEXP _rivnet_dist_to_river_cpp(SEXP OCNSEXP, SEXP no_riverSEXP, SEXP rvrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< S4 >::type OCN(OCNSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type no_river(no_riverSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type rvr(rvrSEXP);
+    rcpp_result_gen = Rcpp::wrap(dist_to_river_cpp(OCN, no_river, rvr));
+    return rcpp_result_gen;
+END_RCPP
+}
+// eval_wu_euclidean_cpp_equalND
+NumericMatrix eval_wu_euclidean_cpp_equalND(NumericMatrix val, S4 OCN, List weightList, IntegerVector hw, bool unweighted);
+RcppExport SEXP _rivnet_eval_wu_euclidean_cpp_equalND(SEXP valSEXP, SEXP OCNSEXP, SEXP weightListSEXP, SEXP hwSEXP, SEXP unweightedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type val(valSEXP);
+    Rcpp::traits::input_parameter< S4 >::type OCN(OCNSEXP);
+    Rcpp::traits::input_parameter< List >::type weightList(weightListSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type hw(hwSEXP);
+    Rcpp::traits::input_parameter< bool >::type unweighted(unweightedSEXP);
+    rcpp_result_gen = Rcpp::wrap(eval_wu_euclidean_cpp_equalND(val, OCN, weightList, hw, unweighted));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rivnet_init_perm_rev_cpp", (DL_FUNC) &_rivnet_init_perm_rev_cpp, 2},
     {"_rivnet_path_vel_cpp", (DL_FUNC) &_rivnet_path_vel_cpp, 3},
+    {"_rivnet_eval_weight_cpp", (DL_FUNC) &_rivnet_eval_weight_cpp, 3},
+    {"_rivnet_eval_wu_exp_cpp", (DL_FUNC) &_rivnet_eval_wu_exp_cpp, 5},
+    {"_rivnet_eval_wu_euclidean_cpp", (DL_FUNC) &_rivnet_eval_wu_euclidean_cpp, 5},
+    {"_rivnet_eval_wu_euclidean_stream_cpp", (DL_FUNC) &_rivnet_eval_wu_euclidean_stream_cpp, 7},
+    {"_rivnet_eval_wu_euclidean_stream_cpp_equalND", (DL_FUNC) &_rivnet_eval_wu_euclidean_stream_cpp_equalND, 7},
+    {"_rivnet_eval_wu_generic_flow_cpp_equalND", (DL_FUNC) &_rivnet_eval_wu_generic_flow_cpp_equalND, 5},
+    {"_rivnet_eval_wu_generic_flow_cpp", (DL_FUNC) &_rivnet_eval_wu_generic_flow_cpp, 5},
+    {"_rivnet_dist_to_river_cpp", (DL_FUNC) &_rivnet_dist_to_river_cpp, 3},
+    {"_rivnet_eval_wu_euclidean_cpp_equalND", (DL_FUNC) &_rivnet_eval_wu_euclidean_cpp_equalND, 5},
     {NULL, NULL, 0}
 };
 

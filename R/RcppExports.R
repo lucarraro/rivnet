@@ -9,3 +9,39 @@ path_vel_cpp <- function(OCN, str = "RN", includeDownstreamNode = FALSE) {
     .Call(`_rivnet_path_vel_cpp`, OCN, str, includeDownstreamNode)
 }
 
+eval_weight_cpp <- function(dst, weightList, A) {
+    .Call(`_rivnet_eval_weight_cpp`, dst, weightList, A)
+}
+
+eval_wu_exp_cpp <- function(val, OCN, wl, FA = FALSE, unweighted = FALSE) {
+    .Call(`_rivnet_eval_wu_exp_cpp`, val, OCN, wl, FA, unweighted)
+}
+
+eval_wu_euclidean_cpp <- function(val, OCN, weightNum, weightDen, hw) {
+    .Call(`_rivnet_eval_wu_euclidean_cpp`, val, OCN, weightNum, weightDen, hw)
+}
+
+eval_wu_euclidean_stream_cpp <- function(val, OCN, weightNum, weightDen, hw, distRiver, rvr) {
+    .Call(`_rivnet_eval_wu_euclidean_stream_cpp`, val, OCN, weightNum, weightDen, hw, distRiver, rvr)
+}
+
+eval_wu_euclidean_stream_cpp_equalND <- function(val, OCN, weightNum, hw, distRiver, rvr, unweighted = FALSE) {
+    .Call(`_rivnet_eval_wu_euclidean_stream_cpp_equalND`, val, OCN, weightNum, hw, distRiver, rvr, unweighted)
+}
+
+eval_wu_generic_flow_cpp_equalND <- function(val, OCN, weightNum, hw, unweighted = FALSE) {
+    .Call(`_rivnet_eval_wu_generic_flow_cpp_equalND`, val, OCN, weightNum, hw, unweighted)
+}
+
+eval_wu_generic_flow_cpp <- function(val, OCN, weightNum, weightDen, hw) {
+    .Call(`_rivnet_eval_wu_generic_flow_cpp`, val, OCN, weightNum, weightDen, hw)
+}
+
+dist_to_river_cpp <- function(OCN, no_river, rvr) {
+    .Call(`_rivnet_dist_to_river_cpp`, OCN, no_river, rvr)
+}
+
+eval_wu_euclidean_cpp_equalND <- function(val, OCN, weightList, hw, unweighted = FALSE) {
+    .Call(`_rivnet_eval_wu_euclidean_cpp_equalND`, val, OCN, weightList, hw, unweighted)
+}
+
