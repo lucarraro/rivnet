@@ -58,7 +58,7 @@ The output \code{SpatRaster} object has the same extent and resolution (i.e., ce
 }
 
 \seealso{
-\code{\link{aggregate_river}}, \code{\link{rast}}, \code{\link{project}}, \code{\link{get_riverweight}}
+\code{\link{aggregate_river}}, \code{\link[terra:rast]{terra::rast}}, \code{\link[terra:project]{terra::project}}, \code{\link{get_riverweight}}
 }
 
 \examples{

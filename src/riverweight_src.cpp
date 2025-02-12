@@ -7,7 +7,7 @@ double eval_weight_cpp(double dst, List weightList, double A){
   double weightDist = weightList["scale.length"];
   bool FA = weightList["FA"];
   double weight = 1; // default value when distFunction is not a standard name
-  if ((distFunction=="exponential") | (distFunction=="gexponential") ){
+  if ((distFunction=="exponential") || (distFunction=="gexponential") ){
     weight = exp(-dst/weightDist);
   } else if (distFunction=="cauchy"){
     weight = pow(weightDist,2)/(pow(weightDist,2) + pow(dst,2));
